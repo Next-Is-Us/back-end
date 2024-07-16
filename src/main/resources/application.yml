@@ -4,3 +4,8 @@ spring:
 
   profiles:
     active: local
+
+  security:
+    user:
+      name: admin
+      password: S3cureP@ssw0rd!
