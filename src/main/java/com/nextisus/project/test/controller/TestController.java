@@ -39,4 +39,9 @@ public class TestController {
     public ResponseEntity<String> deleteTest() {
         return ResponseEntity.ok("DELETE SUCCESS");
     }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> helloTest() {
+        return ResponseEntity.ok("HELLO SUCCESS");
+    }
 }
