@@ -9,3 +9,6 @@ spring:
     user:
       name: admin
       password: S3cureP@ssw0rd!
+
+server:
+  port: 80
