@@ -23,7 +23,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .requiresChannel((channel) -> channel.anyRequest().requiresSecure())
+                /**
+                 *  최종 배포 서버에서 반영하기
+                 *  로컬에서 테스트 시 방해됨
+                 */
+//                .requiresChannel((channel) -> channel.anyRequest().requiresSecure())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/**").permitAll())
