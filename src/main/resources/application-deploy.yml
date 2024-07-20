@@ -16,3 +16,4 @@ server:
     key-store: classpath:keystore.p12
     key-store-password: Passw0rd@=
     key-store-type: PKCS12
+  port: 443
