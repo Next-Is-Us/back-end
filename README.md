@@ -11,6 +11,7 @@
     - ex) close #1, refs #1
     - `close #1` 은 Issue 번호가 1번인 것과 연결되며 자동으로 Issue가 닫히게 된다.
     - `refs #1` 은 Issue 번호가 1번인 것과 연결되며 자동으로 Issue가 닫히지는 않는다.
+5. main 브랜치에 merge 후 작업했던 branch는 삭제한다. (개발이 완료된 것으로 간주하기 위함)
 
 
 <br>
