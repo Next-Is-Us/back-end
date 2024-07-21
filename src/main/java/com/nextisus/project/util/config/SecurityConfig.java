@@ -1,5 +1,7 @@
 package com.nextisus.project.util.config;
 
+import com.nextisus.project.util.jwt.JwtTokenFilter;
+import com.nextisus.project.util.jwt.JwtTokenProvider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,15 +13,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * 로컬 : http://localhost:8080/swagger-ui/index.html
- * 서버 : https://15.164.134.131/swagger-ui/index.html
- */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * Swagger와 관련된 URI
@@ -79,6 +80,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(PERMIT_ALL_URI)
                         .permitAll())
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
