@@ -3,15 +3,18 @@ spring:
     name: project
 
   profiles:
-    active: deploy
+    active: local
 
   security:
     user:
       name: admin
       password: S3cureP@ssw0rd!
-    secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-    expiration: 2592000000 # 1 month
 
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 2592000000 # 1 month
 
 
 cloud:
