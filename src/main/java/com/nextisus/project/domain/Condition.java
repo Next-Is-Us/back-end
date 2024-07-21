@@ -25,34 +25,38 @@ public class Condition extends BaseEntity {
     private String record;
 
     //안면 홍조
-    @Column(name="BLUSH")
-    private Boolean blush;
+    @Column(name="IS_BLUSHING")
+    private Boolean isBlushing;
 
     //두통
-    @Column(name="HEADACHE")
-    private Boolean headache;
+    @Column(name="IS_HEADACHING")
+    private Boolean isHeadaching;
 
     //복통
-    @Column(name="STOMACHACHE")
-    private Boolean stomachache;
+    @Column(name="IS_STOMACHACHING")
+    private Boolean isStomachaching;
 
     //변비
-    @Column(name="CONSTIPATION")
-    private Boolean constipation;
+    @Column(name="IS_CONSTIPATED")
+    private Boolean isConstipated;
 
     //근육통
-    @Column(name="MUSCLE")
-    private Boolean muscle;
+    @Column(name="IS_MUSCLE_PAINFUL")
+    private Boolean isMusclePainful;
 
     //피부 트러블
-    @Column(name="PIMPLE")
-    private Boolean pimple;
+    @Column(name="IS_SKIN_TROUBLED")
+    private Boolean isSkinTroubled;
 
     //손발 저림
-    @Column(name="NUMBNESS")
-    private Boolean numbness;
+    @Column(name="IS_NUMBNESS")
+    private Boolean isNumbness;
 
     //오한
-    @Column(name="CHILL")
-    private Boolean chill;
+    @Column(name="IS_CHILLED")
+    private Boolean isChilled;
+
+    //우울
+    @Column(name="IS_DEPRESSED")
+    private Boolean isDepressed;
 }
