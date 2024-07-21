@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "`CONDITION`")
 public class Condition extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conditionId;
@@ -26,38 +25,34 @@ public class Condition extends BaseEntity {
     private String record;
 
     //안면 홍조
-    @Column(name="IS_BLUSHING")
-    private Boolean isBlushing;
+    @Column(name="BLUSH")
+    private Boolean blush;
 
     //두통
-    @Column(name="IS_HEADACHING")
-    private Boolean isHeadache;
+    @Column(name="HEADACHE")
+    private Boolean headache;
 
     //복통
-    @Column(name="IS_STOMACHACHING")
-    private Boolean isStomachache;
+    @Column(name="STOMACHACHE")
+    private Boolean stomachache;
 
     //변비
-    @Column(name="IS_CONSTIPATED")
-    private Boolean isConstipated;
+    @Column(name="CONSTIPATION")
+    private Boolean constipation;
 
     //근육통
-    @Column(name="IS_MUSCLE_PAINFUL")
-    private Boolean isMusclePainful;
+    @Column(name="MUSCLE")
+    private Boolean muscle;
 
     //피부 트러블
-    @Column(name="IS_SKIN_TROUBLED")
-    private Boolean isSkinTroubled;
+    @Column(name="PIMPLE")
+    private Boolean pimple;
 
     //손발 저림
-    @Column(name="IS_NUMBNESS")
-    private Boolean isNumbness;
+    @Column(name="NUMBNESS")
+    private Boolean numbness;
 
     //오한
-    @Column(name="IS_CHILLED")
-    private Boolean isChilled;
-
-    //우울
-    @Column(name="IS_DEPRESSED")
-    private Boolean isDepressed;
+    @Column(name="CHILL")
+    private Boolean chill;
 }
