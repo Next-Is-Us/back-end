@@ -1,5 +1,6 @@
 package com.nextisus.project.domain;
 
+import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "`CONDITION`")
-public class Condition {
+public class Condition extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conditionId;
