@@ -21,29 +21,4 @@ public class TestController implements TestControllerApi {
     public ResponseEntity<String> getTest() {
         return ResponseEntity.ok("GET SUCCESS");
     }
-
-    @PostMapping
-    public ResponseEntity<String> postTest() {
-        return ResponseEntity.ok("POST SUCCESS");
-    }
-
-    @PutMapping
-    public ResponseEntity<String> putTest() {
-        return ResponseEntity.ok("PUT SUCCESS");
-    }
-
-    @PatchMapping
-    public ResponseEntity<String> patchTest() {
-        return ResponseEntity.ok("PATCH SUCCESS");
-    }
-
-    @DeleteMapping
-    public ResponseEntity<String> deleteTest() {
-        return ResponseEntity.ok("DELETE SUCCESS");
-    }
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> helloTest() {
-        return ResponseEntity.ok("HELLO SUCCESS");
-    }
 }
