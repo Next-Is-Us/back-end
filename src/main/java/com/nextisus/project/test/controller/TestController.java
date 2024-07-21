@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/test")
 @RequiredArgsConstructor
 @Slf4j
-public class TestController {
+public class TestController implements TestControllerApi {
 
     @GetMapping
     public ResponseEntity<String> getTest() {
