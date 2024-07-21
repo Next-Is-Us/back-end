@@ -1,4 +1,4 @@
-package com.nextisus.project.security;
+package com.nextisus.project.util.config;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
