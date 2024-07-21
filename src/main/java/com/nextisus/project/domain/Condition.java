@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "`CONDITION`")
 public class Condition extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conditionId;
@@ -30,11 +31,11 @@ public class Condition extends BaseEntity {
 
     //두통
     @Column(name="IS_HEADACHING")
-    private Boolean isHeadaching;
+    private Boolean isHeadache;
 
     //복통
     @Column(name="IS_STOMACHACHING")
-    private Boolean isStomachaching;
+    private Boolean isStomachache;
 
     //변비
     @Column(name="IS_CONSTIPATED")
