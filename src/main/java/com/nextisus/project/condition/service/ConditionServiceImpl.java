@@ -15,6 +15,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     @Override
     public SuccessResponse<?> createCondition(CreateConditionRequestDto request) {
+
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()
                 .sleepTime(request.getSleepTime())
@@ -27,6 +28,7 @@ public class ConditionServiceImpl implements ConditionService {
                 .isNumbness(request.getIsNumbness())
                 .isChilled(request.getIsChilled())
                 .isDepressed(request.getIsDepressed())
+                .record(request.getRecord())
                 .build();
 
         // TODO 연관관계 맺기

@@ -9,17 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/condition")
+@RequestMapping("/api/test/condition")
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "*")
 public class ConditionController {
 
     private final ConditionService conditionService;
 
     // 오늘의 상태 기록
     @PostMapping
-    public ResponseEntity<SuccessResponse<?>> createCondition(@Valid @RequestBody CreateConditionRequestDto request) {
-        SuccessResponse<?> response = conditionService.createCondition(request);
-        return ResponseEntity.ok(response);
+    public SuccessResponse<CreateConditionRequestDto> createCondition(@Valid @RequestBody CreateConditionRequestDto request) {
+        conditionService.createCondition(request);
+        return SuccessResponse.empty();
     }
 }
