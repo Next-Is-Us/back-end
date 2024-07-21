@@ -9,3 +9,16 @@ spring:
     user:
       name: admin
       password: S3cureP@ssw0rd!
+
+cloud:
+  aws:
+    s3:
+      bucket: todays-mom-bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA3SUSXNPNEH7MTUFE
+      secret-key: 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
