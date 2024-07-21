@@ -3,7 +3,7 @@ spring:
     name: project
 
   profiles:
-    active: local
+    active: deploy
 
   security:
     user:
