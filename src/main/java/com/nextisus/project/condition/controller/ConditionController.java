@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/test/condition")
+@RequestMapping("/api/condition")
 @RequiredArgsConstructor
 public class ConditionController {
 
