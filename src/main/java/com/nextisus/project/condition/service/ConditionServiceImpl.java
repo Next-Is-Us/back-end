@@ -1,7 +1,9 @@
 package com.nextisus.project.condition.service;
 
 import com.nextisus.project.condition.dto.request.CreateConditionRequestDto;
+import com.nextisus.project.condition.dto.request.DateRequestDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
+import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDate;
 import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.util.response.SuccessResponse;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +30,12 @@ public class ConditionServiceImpl implements ConditionService {
         LocalDateTime today = LocalDateTime.now();
 
         //날짜 형식 포맷
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-        String date = today.format(formatter);
+        DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyy");
+        DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("M");
+        DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("dd");
+        String year = today.format(yearformatter);
+        String month = today.format(monthformatter);
+        String day = today.format(dayformatter);
 
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()
@@ -42,7 +50,9 @@ public class ConditionServiceImpl implements ConditionService {
                 .isChilled(request.getIsChilled())
                 .isDepressed(request.getIsDepressed())
                 .record(request.getRecord())
-                .date(date)
+                .year(Long.parseLong(year))
+                .month(Long.parseLong(month))
+                .day(Long.parseLong(day))
                 .build();
 
         // TODO 연관관계 맺기
@@ -54,42 +64,51 @@ public class ConditionServiceImpl implements ConditionService {
         return SuccessResponse.of(condition);
     }
 
-    //오늘의 상태 조회
+    // 날짜별 상태 기록 여부 조회
     @Override
-    public ConditionListResponseDto getConditionByToday() {
+    public ConditionListResponseDtoByDate getConditionByDate(DateRequestDto date) {
 
-        //오늘 날짜
-        LocalDateTime today = LocalDateTime.now();
+        List<Condition> findConditionByYear = conditionRepository.findByYear(date.getYear());
+        Condition finConditionByDate = null;
+        for(Condition condition : findConditionByYear) {
+            if(condition.getMonth().equals(date.getMonth()) && condition.getDay().equals(date.getDay())) {
+                finConditionByDate = condition;
+            }
+            else {
+                ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
+                        false,
+                        null
+                );
+                return response;
+            }
+        }
         //날짜 형식 포맷
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-        String date = today.format(formatter);
+        LocalDateTime createAt = finConditionByDate.getCreateAt();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        String recordDate = createAt.format(formatter);
 
-        Condition findTodaysCondition = conditionRepository.getByDate(date);
-        //오늘 날짜로 작성된 기록이 있으면 응답 Dto 생성
-        ConditionListResponseDto response = new ConditionListResponseDto(
-                findTodaysCondition.getDate(),
-                findTodaysCondition.getSleepTime(),
-                findTodaysCondition.getIsBlushing(),
-                findTodaysCondition.getIsHeadache(),
-                findTodaysCondition.getIsStomachache(),
-                findTodaysCondition.getIsConstipated(),
-                findTodaysCondition.getIsMusclePainful(),
-                findTodaysCondition.getIsSkinTroubled(),
-                findTodaysCondition.getIsNumbness(),
-                findTodaysCondition.getIsChilled(),
-                findTodaysCondition.getIsDepressed(),
-                findTodaysCondition.getRecord()
+        ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
+                true,
+                recordDate
         );
         return response;
     }
 
-    // 날짜별 상태 조회
+    //해당 날짜에 기록한 내용 상세 조회
     @Override
-    public ConditionListResponseDto getConditionByDate(String date) {
+    public ConditionListResponseDto getDetailConditionByDate(DateRequestDto date) {
 
-        Condition findConditionByDate = conditionRepository.getByDate(date);
+        List<Condition> findConditionByYear = conditionRepository.findByYear(date.getYear());
+        Condition findConditionByDate = null;
+        for(Condition condition : findConditionByYear) {
+            if(condition.getMonth().equals(date.getMonth()) && condition.getDay().equals(date.getDay())) {
+                findConditionByDate = condition;
+            }
+        }
         ConditionListResponseDto response = new ConditionListResponseDto(
-                findConditionByDate.getDate(),
+                findConditionByDate.getYear(),
+                findConditionByDate.getMonth(),
+                findConditionByDate.getDay(),
                 findConditionByDate.getSleepTime(),
                 findConditionByDate.getIsBlushing(),
                 findConditionByDate.getIsHeadache(),
