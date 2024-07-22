@@ -69,4 +69,13 @@ public class Condition extends BaseEntity {
 
     @Column(name="DAY")
     private Long day;
+
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+    //연관관계 설정
+    public void createdCondition(User user) {
+        this.user = user;
+    }
 }
