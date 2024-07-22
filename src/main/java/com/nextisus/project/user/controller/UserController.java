@@ -1,6 +1,7 @@
 package com.nextisus.project.user.controller;
 
 import com.nextisus.project.user.dto.SignUpRequestDto;
+import com.nextisus.project.user.dto.SignUpResponseDto;
 import com.nextisus.project.user.service.UserService;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -26,9 +27,9 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("/signUp")
-    public SuccessResponse<Long> signUp(@RequestBody @Valid SignUpRequestDto dto) {
-        Long userId = userService.signUp(dto);
-        return SuccessResponse.of(userId);
+    public SuccessResponse<SignUpResponseDto> signUp(@RequestBody @Valid SignUpRequestDto dto) {
+        SignUpResponseDto res = userService.signUp(dto);
+        return SuccessResponse.of(res);
     }
 
 }

@@ -6,6 +6,7 @@ import com.nextisus.project.domain.User;
 import com.nextisus.project.link.repository.LinkRepository;
 import com.nextisus.project.role.repository.RoleRepository;
 import com.nextisus.project.user.dto.SignUpRequestDto;
+import com.nextisus.project.user.dto.SignUpResponseDto;
 import com.nextisus.project.user.exception.UserNicknameDuplicatedException;
 import com.nextisus.project.user.repository.UserRepository;
 import com.nextisus.project.util.exception.EnumUtils;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public Long signUp(SignUpRequestDto dto) {
+    public SignUpResponseDto signUp(SignUpRequestDto dto) {
 
         // Link
         Link link = linkRepository.getByLink(dto.getLink());
@@ -48,6 +49,13 @@ public class UserServiceImpl implements UserService {
         User user = User.toEntity(dto, roles, link);
         userRepository.save(user);
 
-        return user.getId();
+        // accessToken 발급
+        String accessToken = jwtTokenProvider.createToken(user.getId().toString(), roles);
+
+        // 응답
+        return SignUpResponseDto.builder()
+                .id(user.getId())
+                .accessToken(accessToken)
+                .build();
     }
 }
