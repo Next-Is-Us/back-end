@@ -2,7 +2,7 @@ package com.nextisus.project.util.init;
 
 import com.nextisus.project.domain.Role;
 import com.nextisus.project.domain.RoleName;
-import com.nextisus.project.role.RoleRepository;
+import com.nextisus.project.role.repository.RoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

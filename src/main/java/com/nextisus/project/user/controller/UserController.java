@@ -3,6 +3,7 @@ package com.nextisus.project.user.controller;
 import com.nextisus.project.user.dto.SignUpRequestDto;
 import com.nextisus.project.user.service.UserService;
 import com.nextisus.project.util.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("/signUp")
-    public SuccessResponse<Long> signUp(@RequestBody SignUpRequestDto dto) {
+    public SuccessResponse<Long> signUp(@RequestBody @Valid SignUpRequestDto dto) {
         Long userId = userService.signUp(dto);
         return SuccessResponse.of(userId);
     }

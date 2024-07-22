@@ -38,12 +38,12 @@ public class SecurityConfig {
     };
 
     /**
-     * TestController와 관련된 URI
      * 아무나 접근 가능
      * 실 서비스 시에는 막아야 함
      */
     private static final String[] TEST_WHITELIST = {
-            "api/test/**",
+//            "api/test/**",
+            "api/**",
     };
 
     /**
