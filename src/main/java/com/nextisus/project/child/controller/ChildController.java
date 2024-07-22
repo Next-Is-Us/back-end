@@ -20,8 +20,7 @@ public class ChildController {
      */
 
     @GetMapping
-    public String hello() {
-        log.info("hello 접근");
-        return "권한 확인 성공";
+    public void hello() {
+        log.info("SON or DAUGHTER");
     }
 }
