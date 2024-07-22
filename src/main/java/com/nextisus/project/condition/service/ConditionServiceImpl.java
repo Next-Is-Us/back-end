@@ -1,21 +1,16 @@
 package com.nextisus.project.condition.service;
 
 import com.nextisus.project.condition.dto.request.CreateConditionRequestDto;
-import com.nextisus.project.condition.dto.response.TodaysConditionResponseDto;
+import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
-import com.nextisus.project.util.exception.BaseErrorCode;
-import com.nextisus.project.util.response.ErrorResponse;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +44,7 @@ public class ConditionServiceImpl implements ConditionService {
                 .record(request.getRecord())
                 .date(date)
                 .build();
+
         // TODO 연관관계 맺기
 
         // DB에 저장
@@ -60,7 +56,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     //오늘의 상태 조회
     @Override
-    public TodaysConditionResponseDto getConditionByToday() {
+    public ConditionListResponseDto getConditionByToday() {
 
         //오늘 날짜
         LocalDateTime today = LocalDateTime.now();
@@ -70,7 +66,7 @@ public class ConditionServiceImpl implements ConditionService {
 
         Condition findTodaysCondition = conditionRepository.getByDate(date);
         //오늘 날짜로 작성된 기록이 있으면 응답 Dto 생성
-        TodaysConditionResponseDto response = new TodaysConditionResponseDto(
+        ConditionListResponseDto response = new ConditionListResponseDto(
                 findTodaysCondition.getDate(),
                 findTodaysCondition.getSleepTime(),
                 findTodaysCondition.getIsBlushing(),
@@ -83,6 +79,28 @@ public class ConditionServiceImpl implements ConditionService {
                 findTodaysCondition.getIsChilled(),
                 findTodaysCondition.getIsDepressed(),
                 findTodaysCondition.getRecord()
+        );
+        return response;
+    }
+
+    // 날짜별 상태 조회
+    @Override
+    public ConditionListResponseDto getConditionByDate(String date) {
+
+        Condition findConditionByDate = conditionRepository.getByDate(date);
+        ConditionListResponseDto response = new ConditionListResponseDto(
+                findConditionByDate.getDate(),
+                findConditionByDate.getSleepTime(),
+                findConditionByDate.getIsBlushing(),
+                findConditionByDate.getIsHeadache(),
+                findConditionByDate.getIsStomachache(),
+                findConditionByDate.getIsConstipated(),
+                findConditionByDate.getIsMusclePainful(),
+                findConditionByDate.getIsSkinTroubled(),
+                findConditionByDate.getIsNumbness(),
+                findConditionByDate.getIsChilled(),
+                findConditionByDate.getIsDepressed(),
+                findConditionByDate.getRecord()
         );
         return response;
     }

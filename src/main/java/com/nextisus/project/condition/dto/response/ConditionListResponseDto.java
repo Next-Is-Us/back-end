@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodaysConditionResponseDto {
+public class ConditionListResponseDto {
     String date;
     String sleepTime;
     Boolean isBlushing;
