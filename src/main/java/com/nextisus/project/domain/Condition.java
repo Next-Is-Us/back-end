@@ -60,4 +60,7 @@ public class Condition extends BaseEntity {
     //우울
     @Column(name="IS_DEPRESSED")
     private Boolean isDepressed;
+
+    @Column(name="DATE")
+    private String date;
 }
