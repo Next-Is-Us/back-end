@@ -9,5 +9,5 @@ public interface ConditionService {
 
     SuccessResponse<?> createCondition(CreateConditionRequestDto request);
 
-    TodaysConditionResponseDto getTodaysConditions();
+    TodaysConditionResponseDto getConditionByToday();
 }

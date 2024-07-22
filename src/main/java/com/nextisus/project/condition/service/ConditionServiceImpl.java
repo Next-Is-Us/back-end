@@ -60,7 +60,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     //오늘의 상태 조회
     @Override
-    public TodaysConditionResponseDto getTodaysConditions() {
+    public TodaysConditionResponseDto getConditionByToday() {
 
         //오늘 날짜
         LocalDateTime today = LocalDateTime.now();
