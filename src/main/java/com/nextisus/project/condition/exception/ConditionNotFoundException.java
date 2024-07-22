@@ -1,4 +1,9 @@
 package com.nextisus.project.condition.exception;
 
-public class ConditionNotFoundException {
+import com.nextisus.project.util.exception.BaseException;
+
+public class ConditionNotFoundException extends BaseException {
+    public ConditionNotFoundException() {
+        super(ConditionErrorCode.CONDITION_NOT_FOUND);
+    }
 }

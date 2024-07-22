@@ -68,26 +68,21 @@ public class ConditionServiceImpl implements ConditionService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         String date = today.format(formatter);
 
-        Optional<Condition> findTodaysCondition = conditionRepository.findByDate(date);
-
-        if(findTodaysCondition.isEmpty()) {
-            log.info("TodaysCondition not found");
-            return null;
-        }
+        Condition findTodaysCondition = conditionRepository.getByDate(date);
         //오늘 날짜로 작성된 기록이 있으면 응답 Dto 생성
         TodaysConditionResponseDto response = new TodaysConditionResponseDto(
-                date,
-                findTodaysCondition.get().getSleepTime(),
-                findTodaysCondition.get().getIsBlushing(),
-                findTodaysCondition.get().getIsHeadache(),
-                findTodaysCondition.get().getIsStomachache(),
-                findTodaysCondition.get().getIsConstipated(),
-                findTodaysCondition.get().getIsMusclePainful(),
-                findTodaysCondition.get().getIsSkinTroubled(),
-                findTodaysCondition.get().getIsNumbness(),
-                findTodaysCondition.get().getIsChilled(),
-                findTodaysCondition.get().getIsDepressed(),
-                findTodaysCondition.get().getRecord()
+                findTodaysCondition.getDate(),
+                findTodaysCondition.getSleepTime(),
+                findTodaysCondition.getIsBlushing(),
+                findTodaysCondition.getIsHeadache(),
+                findTodaysCondition.getIsStomachache(),
+                findTodaysCondition.getIsConstipated(),
+                findTodaysCondition.getIsMusclePainful(),
+                findTodaysCondition.getIsSkinTroubled(),
+                findTodaysCondition.getIsNumbness(),
+                findTodaysCondition.getIsChilled(),
+                findTodaysCondition.getIsDepressed(),
+                findTodaysCondition.getRecord()
         );
         return response;
     }
