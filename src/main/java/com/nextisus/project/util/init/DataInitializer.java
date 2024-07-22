@@ -18,8 +18,9 @@ public class DataInitializer {
         if (roleRepository.count() == 0) {
             roleRepository.save(new Role(1L, RoleName.ROLE_ADMIN));
             roleRepository.save(new Role(2L, RoleName.ROLE_MOM));
-            roleRepository.save(new Role(3L, RoleName.ROLE_CHILD));
-            roleRepository.save(new Role(4L, RoleName.ROLE_DOCTOR));
+            roleRepository.save(new Role(3L, RoleName.ROLE_SON));
+            roleRepository.save(new Role(4L, RoleName.ROLE_DAUGHTER));
+            roleRepository.save(new Role(5L, RoleName.ROLE_DOCTOR));
         }
     }
 }
