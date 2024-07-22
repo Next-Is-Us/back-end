@@ -6,6 +6,11 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 로컬 : http://localhost:8080/swagger-ui/index.html
+ * 서버 : https://15.164.134.131/swagger-ui/index.html
+ */
+
 @Configuration
 public class SwaggerConfig {
 
