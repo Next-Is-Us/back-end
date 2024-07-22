@@ -55,13 +55,15 @@ public class User extends BaseEntity {
                 .link(link)
                 .build();
 
-        user.userRoles = dto.getUserRoles().stream()
+        List<UserRole> userRoles = dto.getUserRoles().stream()
                 .map(roleName -> roles.stream()
                         .filter(role -> role.getRoleName().name().equals(roleName))
                         .findFirst()
                         .map(role -> new UserRole(null, user, role))
                         .orElseThrow(() -> new IllegalArgumentException(roleName + "는 존재하지 않는 역할입니다.")))
                 .collect(Collectors.toList());
+
+        user.userRoles = userRoles;
 
         return user;
     }
