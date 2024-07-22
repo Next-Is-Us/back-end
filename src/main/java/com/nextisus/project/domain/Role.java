@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "ROLES")
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Role extends BaseEntity {
 
     @Id

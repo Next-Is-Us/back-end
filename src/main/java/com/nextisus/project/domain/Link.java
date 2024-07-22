@@ -32,7 +32,7 @@ public class Link extends BaseEntity {
     @Column(name = "link", unique = true, nullable = false)
     private String link;
 
-    @OneToMany(mappedBy = "links", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
     private List<User> user;
 
     public static Link toEntity(String url) {
