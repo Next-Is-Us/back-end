@@ -6,6 +6,8 @@ import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDate;
 import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
+import com.nextisus.project.domain.User;
+import com.nextisus.project.user.repository.UserRepository;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,20 +24,25 @@ import java.util.Optional;
 public class ConditionServiceImpl implements ConditionService {
 
     private final ConditionRepository conditionRepository;
+    private final UserRepository userRepository;
 
     //오늘의 상태 기록
     @Override
     public SuccessResponse<?> createCondition(CreateConditionRequestDto request) {
-        //오늘 날짜
+
+        // 오늘 날짜
         LocalDateTime today = LocalDateTime.now();
 
-        //날짜 형식 포맷
+        // 날짜 형식 포맷
         DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyy");
         DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("M");
         DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("dd");
         String year = today.format(yearformatter);
         String month = today.format(monthformatter);
         String day = today.format(dayformatter);
+
+        // 사용자 조회
+        User user = userRepository.getByUser(request.getUserId());
 
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()
@@ -53,16 +60,17 @@ public class ConditionServiceImpl implements ConditionService {
                 .year(Long.parseLong(year))
                 .month(Long.parseLong(month))
                 .day(Long.parseLong(day))
+                .user(user)
                 .build();
 
-        // TODO 연관관계 맺기
-
+        // 연관관계 설정
+        condition.createdCondition(user);
         // DB에 저장
         conditionRepository.save(condition);
-
         // 성공 응답 생성
         return SuccessResponse.of(condition);
     }
+
 
     // 날짜별 상태 기록 여부 조회
     @Override
