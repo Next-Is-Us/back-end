@@ -1,7 +1,9 @@
 package com.nextisus.project.condition.controller;
 
 import com.nextisus.project.condition.dto.request.CreateConditionRequestDto;
+import com.nextisus.project.condition.dto.request.DateRequestDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
+import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDate;
 import com.nextisus.project.condition.service.ConditionService;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -22,17 +24,17 @@ public class ConditionController {
         return SuccessResponse.empty();
     }
 
-    // 오늘 날짜로 기록한 상태 조회
-    @GetMapping
-    public SuccessResponse<ConditionListResponseDto> getConditionByToday() {
-        ConditionListResponseDto response = conditionService.getConditionByToday();
+    // 날짜 별 상태 여부 조회
+    @GetMapping("/by-date")
+    public SuccessResponse<ConditionListResponseDtoByDate> getConditionByDate(@Valid @RequestBody DateRequestDto date) {
+        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(date);
         return SuccessResponse.of(response);
     }
 
-    // 날짜별 상태 조회
-    @GetMapping("/by-date")
-    public SuccessResponse<ConditionListResponseDto> getConditionByDate(@RequestParam String date) {
-        ConditionListResponseDto response = conditionService.getConditionByDate(date);
+    // 날짜 별 상태 기록 세부 조회
+    @GetMapping("/detail")
+    public SuccessResponse<ConditionListResponseDto> getDetailConditionByDate(@Valid @RequestBody DateRequestDto date) {
+        ConditionListResponseDto response = conditionService.getDetailConditionByDate(date);
         return SuccessResponse.of(response);
     }
 }

@@ -61,6 +61,12 @@ public class Condition extends BaseEntity {
     @Column(name="IS_DEPRESSED")
     private Boolean isDepressed;
 
-    @Column(name="DATE")
-    private String date;
+    @Column(name="YEAR")
+    private Long year;
+
+    @Column(name="MONTH")
+    private Long month;
+
+    @Column(name="DAY")
+    private Long day;
 }
