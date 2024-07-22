@@ -10,7 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConditionListResponseDto {
-    String date;
+    Long year;
+    Long month;
+    Long day;
     String sleepTime;
     Boolean isBlushing;
     Boolean isHeadache;
