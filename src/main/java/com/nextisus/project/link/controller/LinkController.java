@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/test/link")
+@RequestMapping("/api/link")
 public class LinkController {
 
     private final LinkService linkService;
