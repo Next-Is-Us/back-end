@@ -8,11 +8,13 @@ import com.nextisus.project.condition.service.ConditionService;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/condition")
 @RequiredArgsConstructor
+@RequestMapping("/api/condition")
+@PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_SON', 'ROLE_DAUGHTER')")
 public class ConditionController {
 
     private final ConditionService conditionService;
