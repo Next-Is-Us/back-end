@@ -28,7 +28,7 @@ public class MyUserDetailService implements UserDetailsService {
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
-                String.valueOf(user.getId()), String.valueOf(user.getLink()), authorities
+                String.valueOf(user.getId()), String.valueOf(user.getLinks()), authorities
         );
 
     }

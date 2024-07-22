@@ -4,15 +4,12 @@ import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.UUID;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,9 +29,15 @@ public class Link extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "url")
-    private UUID url;
+    @Column(name = "link", unique = true, nullable = false)
+    private String link;
 
-    @OneToOne(mappedBy = "link", cascade = CascadeType.ALL)
-    private User user;
+    @OneToMany(mappedBy = "links", cascade = CascadeType.ALL)
+    private List<User> user;
+
+    public static Link toEntity(String url) {
+        return Link.builder()
+                .link(url)
+                .build();
+    }
 }

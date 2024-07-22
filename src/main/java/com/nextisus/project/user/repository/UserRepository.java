@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findById(Long id);
-    Optional<User> findByLink(Link link);
-    Optional<User> findByIdAndLink(Long id, Link link);
+    Optional<User> findByLinks(Link link);
+    Optional<User> findByIdAndLinks(Long id, Link link);
 }
