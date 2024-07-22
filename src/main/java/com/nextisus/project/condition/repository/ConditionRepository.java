@@ -12,10 +12,10 @@ import java.util.Optional;
 @Repository
 public interface ConditionRepository  extends JpaRepository<Condition, Long> {
 /*
-    Optional<Condition> findByDate(String date);
+    Optional<Condition> findByUser(Long userId);
 
-    default Condition getByDate(String date) {
-        return findByDate(date).orElseThrow(ConditionNotFoundException::new);
+    default Condition getByUser(Long userId) {
+        return findByUser(userId).orElseThrow(ConditionNotFoundException::new);
     }*/
 
     List<Condition> findByYear(Long year);
