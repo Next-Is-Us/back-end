@@ -11,7 +11,6 @@ public class AuthUtil {
 
     public String getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println((String) authentication.getPrincipal());
         return (String) authentication.getPrincipal();
     }
 }
