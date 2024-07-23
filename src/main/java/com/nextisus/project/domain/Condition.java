@@ -74,6 +74,10 @@ public class Condition extends BaseEntity {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="NFT_ID")
+    private Nft nft;
+
     //연관관계 설정
     public void createdCondition(User user) {
         this.user = user;
