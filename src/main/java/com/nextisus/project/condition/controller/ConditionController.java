@@ -33,7 +33,7 @@ public class ConditionController {
     }
 
     // 날짜 별 상태 여부 조회
-    @GetMapping("/by-date")
+    @GetMapping("/byDate")
     public SuccessResponse<ConditionListResponseDtoByDate> getConditionByDate(@Valid @RequestBody DateRequestDto date) {
         ConditionListResponseDtoByDate response = conditionService.getConditionByDate(date);
         return SuccessResponse.of(response);
