@@ -8,7 +8,7 @@ import com.nextisus.project.util.response.SuccessResponse;
 
 public interface ConditionService {
 
-    SuccessResponse<?> createCondition(CreateConditionRequestDto request);
+    SuccessResponse<?> createCondition(CreateConditionRequestDto request, Long userId);
 
     ConditionListResponseDtoByDate getConditionByDate(DateRequestDto date);
 

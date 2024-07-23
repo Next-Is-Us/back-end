@@ -28,7 +28,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     //오늘의 상태 기록
     @Override
-    public SuccessResponse<?> createCondition(CreateConditionRequestDto request) {
+    public SuccessResponse<?> createCondition(CreateConditionRequestDto request, Long userId) {
 
         // 오늘 날짜
         LocalDateTime today = LocalDateTime.now();
@@ -42,7 +42,7 @@ public class ConditionServiceImpl implements ConditionService {
         String day = today.format(dayformatter);
 
         // 사용자 조회
-        User user = userRepository.getByUser(request.getUserId());
+        User user = userRepository.getByUser(userId);
 
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()

@@ -27,7 +27,8 @@ public class ConditionController {
     @PostMapping
     public SuccessResponse<?> createCondition(@Valid @RequestBody CreateConditionRequestDto request) {
         log.info(authUtil.getCurrentUserId()); // 사용자 PK 출력
-        conditionService.createCondition(request);
+        Long userId = Long.parseLong(authUtil.getCurrentUserId());
+        conditionService.createCondition(request,userId);
         return SuccessResponse.empty();
     }
 
