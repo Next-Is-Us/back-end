@@ -12,9 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateConditionRequestDto {
 
-    @NotNull(message = "작성자의 기본키를 입력해주세요.")
-    Long userId;
-
     @NotBlank(message = "수면 시간을 입력해주세요")
     String sleepTime;
 

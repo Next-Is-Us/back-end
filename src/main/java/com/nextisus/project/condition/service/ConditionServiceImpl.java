@@ -28,7 +28,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     //오늘의 상태 기록
     @Override
-    public SuccessResponse<?> createCondition(CreateConditionRequestDto request) {
+    public SuccessResponse<?> createCondition(CreateConditionRequestDto request, Long userId) {
 
         // 오늘 날짜
         LocalDateTime today = LocalDateTime.now();
@@ -42,7 +42,7 @@ public class ConditionServiceImpl implements ConditionService {
         String day = today.format(dayformatter);
 
         // 사용자 조회
-        User user = userRepository.getByUser(request.getUserId());
+        User user = userRepository.getByUser(userId);
 
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()
@@ -74,12 +74,12 @@ public class ConditionServiceImpl implements ConditionService {
 
     // 날짜별 상태 기록 여부 조회
     @Override
-    public ConditionListResponseDtoByDate getConditionByDate(DateRequestDto date) {
+    public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day) {
 
-        List<Condition> findConditionByYear = conditionRepository.findByYear(date.getYear());
+        List<Condition> findConditionByYear = conditionRepository.findByYear(year);
         Condition finConditionByDate = null;
         for(Condition condition : findConditionByYear) {
-            if(condition.getMonth().equals(date.getMonth()) && condition.getDay().equals(date.getDay())) {
+            if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
                 finConditionByDate = condition;
             }
             else {
@@ -104,12 +104,12 @@ public class ConditionServiceImpl implements ConditionService {
 
     //해당 날짜에 기록한 내용 상세 조회
     @Override
-    public ConditionListResponseDto getDetailConditionByDate(DateRequestDto date) {
+    public ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day) {
 
-        List<Condition> findConditionByYear = conditionRepository.findByYear(date.getYear());
+        List<Condition> findConditionByYear = conditionRepository.findByYear(year);
         Condition findConditionByDate = null;
         for(Condition condition : findConditionByYear) {
-            if(condition.getMonth().equals(date.getMonth()) && condition.getDay().equals(date.getDay())) {
+            if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
                 findConditionByDate = condition;
             }
         }
