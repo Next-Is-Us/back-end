@@ -1,6 +1,6 @@
 package com.nextisus.project.condition.repository;
 
-import com.nextisus.project.condition.exception.ConditionNotFoundException;
+import com.nextisus.project.condition.exception.UserConditionNotFoundException;
 import com.nextisus.project.domain.Condition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,14 +11,16 @@ import java.util.Optional;
 
 @Repository
 public interface ConditionRepository  extends JpaRepository<Condition, Long> {
-/*
-    Optional<Condition> findByUser(Long userId);
-
-    default Condition getByUser(Long userId) {
-        return findByUser(userId).orElseThrow(ConditionNotFoundException::new);
-    }*/
-
     List<Condition> findByYear(Long year);
+    List<Condition> findAllByUser_Id(Long id);
+
+    default List<Condition> getAllById(Long id) {
+        List<Condition> conditions = findAllByUser_Id(id);
+        if(conditions.isEmpty()) {
+            throw new UserConditionNotFoundException();
+        }
+        return conditions;
+    }
 }
 
 
