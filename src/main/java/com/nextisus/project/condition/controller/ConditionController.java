@@ -33,16 +33,22 @@ public class ConditionController {
     }
 
     // 날짜 별 상태 여부 조회
-    @GetMapping("/byDate")
-    public SuccessResponse<ConditionListResponseDtoByDate> getConditionByDate(@Valid @RequestBody DateRequestDto date) {
-        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(date);
+    @GetMapping("/byDate/{year}/{month}/{day}")
+    public SuccessResponse<ConditionListResponseDtoByDate> getConditionByDate(
+            @PathVariable Long year,
+            @PathVariable Long month,
+            @PathVariable Long day) {
+        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(year,month,day);
         return SuccessResponse.of(response);
     }
 
     // 날짜 별 상태 기록 세부 조회
-    @GetMapping("/detail")
-    public SuccessResponse<ConditionListResponseDto> getDetailConditionByDate(@Valid @RequestBody DateRequestDto date) {
-        ConditionListResponseDto response = conditionService.getDetailConditionByDate(date);
+    @GetMapping("/detail/{year}/{month}/{day}")
+    public SuccessResponse<ConditionListResponseDto> getDetailConditionByDate(
+            @PathVariable Long year,
+            @PathVariable Long month,
+            @PathVariable Long day) {
+        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year,month,day);
         return SuccessResponse.of(response);
     }
 }
