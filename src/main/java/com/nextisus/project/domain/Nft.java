@@ -23,6 +23,9 @@ public class Nft extends BaseEntity {
     @Column(name = "RECORD_PERIOD")
     private String recordPeriod;
 
+    @Column(name = "WEEK")
+    private String week;
+
     public void createNft (User user) {
         this.user = user;
     }
