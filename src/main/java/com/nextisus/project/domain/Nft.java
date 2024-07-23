@@ -25,6 +25,10 @@ public class Nft extends BaseEntity {
     @Column(name = "WEEK")
     private String week;
 
+    @ManyToOne
+    @JoinColumn(name="HEALTH_RECORD_ID")
+    private HealthRecord healthRecord;
+
     public void createNft (User user) {
         this.user = user;
     }
