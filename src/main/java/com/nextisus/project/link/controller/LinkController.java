@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/link")
-public class LinkController {
+public class LinkController implements LinkControllerApi {
 
     private final LinkService linkService;
 

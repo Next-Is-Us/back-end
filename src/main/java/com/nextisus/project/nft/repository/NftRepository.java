@@ -14,5 +14,4 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
     default Nft getByNft(Long nftId) {
         return findByNftId(nftId).orElseThrow(NftNotFoundException::new);
     }
-
 }

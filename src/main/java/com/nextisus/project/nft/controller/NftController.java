@@ -40,4 +40,5 @@ public class NftController {
         NftResponseDto response = nftService.getDetailNft(nftId);
         return SuccessResponse.of(response);
     }
+
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController implements UserControllerApi {
 
     /**
      * 엄마와 자녀가 공통으로 사용할 수 있는 API 작성
