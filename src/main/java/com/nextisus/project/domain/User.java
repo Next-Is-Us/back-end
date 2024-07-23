@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -25,8 +26,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class User extends BaseEntity {
 
     @Id
@@ -69,5 +70,13 @@ public class User extends BaseEntity {
         user.userRoles = userRoles;
 
         return user;
+    }
+
+    public void addUserRole(UserRole userRole) {
+        if (userRoles == null) {
+            userRoles = new ArrayList<>();
+        }
+        this.userRoles.add(userRole);
+        userRole.setUser(this); // 양방향 관계 설정
     }
 }
