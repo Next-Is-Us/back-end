@@ -15,10 +15,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findById(Long id);
     Optional<User> findByLinkAndNickname(Link link, String nickname);
+    Optional<User> findByNickname(String nickname);
     Optional<User> findByLink(Link link);
     Optional<User> findByIdAndLink(Long id, Link link);
     default User getByUser(Long id) {
         return findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    default User getByNickname(String nickname) {
+        return findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
 
 }
