@@ -26,7 +26,7 @@ public class ConditionController {
     // 오늘의 상태 기록
     @PostMapping
     public SuccessResponse<?> createCondition(@Valid @RequestBody CreateConditionRequestDto request) {
-        log.info(authUtil.getCurrentUserId()); // 사용자 PK 출력
+//        log.info(authUtil.getCurrentUserId()); // 사용자 PK 출력
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
         conditionService.createCondition(request,userId);
         return SuccessResponse.empty();
