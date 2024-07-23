@@ -4,6 +4,7 @@ import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.nft.dto.response.NftResponseDto;
 import com.nextisus.project.nft.repository.NftRepository;
 import com.nextisus.project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -79,5 +80,17 @@ public class NftServiceImpl implements NftService {
 
         // DB에 저장
         nftRepository.save(nft);
+    }
+
+    //nft 상세 조회
+    @Override
+    public NftResponseDto getDetailNft(Long nftId) {
+        Nft nft = nftRepository.getByNft(nftId);
+        NftResponseDto nftResponseDto = new NftResponseDto(
+                nft.getNftId(),
+                nft.getRecordPeriod(),
+                nft.getWeek()
+        );
+        return nftResponseDto;
     }
 }
