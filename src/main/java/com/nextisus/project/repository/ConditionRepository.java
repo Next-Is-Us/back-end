@@ -1,13 +1,11 @@
 package com.nextisus.project.repository;
 
-import com.nextisus.project.condition.exception.UserConditionNotFoundException;
+import com.nextisus.project.mom.condition.exception.UserConditionNotFoundException;
 import com.nextisus.project.domain.Condition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ConditionRepository  extends JpaRepository<Condition, Long> {

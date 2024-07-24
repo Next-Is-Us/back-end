@@ -5,8 +5,8 @@ import com.nextisus.project.admin.dto.CreateAccessTokenResponseDto;
 import com.nextisus.project.admin.dto.CreateInfoPostRequestDto;
 import com.nextisus.project.admin.dto.CreateInfoPostResponseDto;
 import com.nextisus.project.admin.service.AdminService;
-import com.nextisus.project.util.response.SuccessResponse;
 import com.nextisus.project.util.auth.AuthUtil;
+import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final AdminService adminService;
     private final AuthUtil authUtil;
+    private final AdminService adminService;
 
     // 관리자 accessToken 발급
     // 모두 접근 가능하지만 @RequestBody 에 nickname 값을 올바르게 입력해야 함

@@ -19,7 +19,7 @@ public class HealthRecordController {
     private final HealthRecordService healthRecordService;
     private final AuthUtil authUtils;
 
-    //건강 기록 조회
+    // 건강 기록 조회
     @GetMapping
     public SuccessResponse<HealthRecordResponseDto> getHealthRecord() {
         Long userId = Long.parseLong(authUtils.getCurrentUserId());

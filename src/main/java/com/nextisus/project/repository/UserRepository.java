@@ -1,12 +1,10 @@
 package com.nextisus.project.repository;
 
-import com.nextisus.project.condition.exception.ConditionNotFoundException;
-import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Link;
 import com.nextisus.project.domain.User;
 import java.util.Optional;
 
-import com.nextisus.project.user.exception.UserNotFoundException;
+import com.nextisus.project.client.user.exception.UserNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
