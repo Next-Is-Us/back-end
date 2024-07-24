@@ -1,6 +1,7 @@
 package com.nextisus.project.util.jwt;
 
 import com.nextisus.project.util.auth.AuthErrorCode;
+import com.nextisus.project.util.constant.WhitelistPaths;
 import com.nextisus.project.util.exception.BaseException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,6 +28,12 @@ public class JwtTokenFilter extends GenericFilterBean {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String token = jwtTokenProvider.resolveToken(request);
 
+        // 특정 경로에 대해서는 필터링하지 않도록 설정
+        if (isWhitelisted(request)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         try {
             if (StringUtils.hasText(token)) {
                 if (!jwtTokenProvider.validateToken(token)) {
@@ -51,5 +58,15 @@ public class JwtTokenFilter extends GenericFilterBean {
                     e.getErrorCode().getHttpStatus()
             ));
         }
+    }
+
+    private boolean isWhitelisted(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        for (String whitelisted : WhitelistPaths.WHITELIST) {
+            if (path.startsWith(whitelisted) || (whitelisted.contains("**") && path.contains(whitelisted.replace("**", "")))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
