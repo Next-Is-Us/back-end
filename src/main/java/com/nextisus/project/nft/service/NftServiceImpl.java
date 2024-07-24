@@ -4,6 +4,7 @@ import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.healthrecord.service.HealthRecordServiceImpl;
 import com.nextisus.project.nft.dto.response.NftResponseDto;
 import com.nextisus.project.nft.repository.NftRepository;
 import com.nextisus.project.user.repository.UserRepository;
@@ -26,23 +27,23 @@ public class NftServiceImpl implements NftService {
     private final ConditionRepository conditionRepository;
     private final NftRepository nftRepository;
     private final UserRepository userRepository;
+    private final HealthRecordServiceImpl healthRecordServiceImpl;
 
     @Override
     public Long getNfts(Long userId) {
         List<Condition> conditions = conditionRepository.getAllById(userId);
         int conditionSize = conditions.size();
         if (conditionSize % 5 == 0 && conditionSize != 0) { //기록한 상태가 5의 배수면 nft 조각 1개가 생성된 것
-            if (conditionSize % 30 == 0) { //기록한 상태가 30의 배수이면 완전한 nft 1개가 생성된 것
-                createNft(conditionSize, conditions, userId); //NFT 생성
-            }
             return (long) conditionSize;
         }
         return null;
     }
 
     @Override
-    public void createNft(int conditionSize, List<Condition> conditions, Long userId) {
+    public void createNft(Long userId) {
 
+        List<Condition> conditions = conditionRepository.getAllById(userId);
+        int conditionSize = conditions.size();
         LocalDateTime startTime = conditions.get(0).getCreateAt();
         LocalDateTime endTime = conditions.get(conditionSize - 1).getCreateAt();
 
@@ -80,7 +81,12 @@ public class NftServiceImpl implements NftService {
         nft.createNft(user);
 
         // DB에 저장
-        nftRepository.save(nft);
+        Nft save = nftRepository.save(nft);
+
+        //발급 받은 nft의 갯수가 6의 배수 (6 , 12, 18 ... )
+        if(save.getNftId() % 6 == 0 && save.getNftId() != 0) {
+            healthRecordServiceImpl.createHealthRecord(userId);
+        }
     }
 
     //nft 상세 조회

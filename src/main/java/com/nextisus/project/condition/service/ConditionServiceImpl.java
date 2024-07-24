@@ -7,6 +7,7 @@ import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDat
 import com.nextisus.project.condition.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.nft.service.NftServiceImpl;
 import com.nextisus.project.user.repository.UserRepository;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ConditionServiceImpl implements ConditionService {
 
     private final ConditionRepository conditionRepository;
     private final UserRepository userRepository;
+    private final NftServiceImpl nftServiceImpl;
 
     //오늘의 상태 기록
     @Override
@@ -66,7 +68,14 @@ public class ConditionServiceImpl implements ConditionService {
         // 연관관계 설정
         condition.createdCondition(user);
         // DB에 저장
-        conditionRepository.save(condition);
+        Condition save = conditionRepository.save(condition);
+
+        // 방금 기록한 상태의 상태id가 30의 배수면 (30번째, 60번째, 90번째 ... )
+        if(save.getConditionId() % 30 == 0 && save.getConditionId() != 0) {
+            //nft 생성
+            nftServiceImpl.createNft(userId);
+        }
+
         // 성공 응답 생성
         return SuccessResponse.of(condition);
     }
