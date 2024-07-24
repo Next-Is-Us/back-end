@@ -1,7 +1,7 @@
 package com.nextisus.project.util.jwt;
 
 import com.nextisus.project.domain.User;
-import com.nextisus.project.user.repository.UserRepository;
+import com.nextisus.project.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
