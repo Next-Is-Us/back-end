@@ -88,7 +88,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(getSignKey(secretKey)).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("만료되었거나 유효하지 않는 JWT 토큰입니다.");
+            throw new RuntimeException("JWT 오류 발생");
         }
     }
 
