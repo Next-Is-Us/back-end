@@ -1,7 +1,7 @@
 package com.nextisus.project.link.service;
 
 import com.nextisus.project.domain.Link;
-import com.nextisus.project.link.repository.LinkRepository;
+import com.nextisus.project.repository.LinkRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.nextisus.project.link.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Link;
 import com.nextisus.project.link.exception.LinkNotFoundException;

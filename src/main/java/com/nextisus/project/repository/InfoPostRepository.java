@@ -1,4 +1,4 @@
-package com.nextisus.project.infopost.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.InfoPost;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,11 +2,10 @@ package com.nextisus.project.healthrecord.service;
 
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
-import com.nextisus.project.domain.User;
 import com.nextisus.project.healthrecord.dto.response.HealthRecordResponseDto;
-import com.nextisus.project.healthrecord.repository.HealthRecordRepository;
-import com.nextisus.project.nft.repository.NftRepository;
-import com.nextisus.project.user.repository.UserRepository;
+import com.nextisus.project.repository.HealthRecordRepository;
+import com.nextisus.project.repository.NftRepository;
+import com.nextisus.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,13 +1,13 @@
 package com.nextisus.project.nft.service;
 
-import com.nextisus.project.condition.repository.ConditionRepository;
+import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.domain.User;
 import com.nextisus.project.healthrecord.service.HealthRecordServiceImpl;
 import com.nextisus.project.nft.dto.response.NftResponseDto;
-import com.nextisus.project.nft.repository.NftRepository;
-import com.nextisus.project.user.repository.UserRepository;
+import com.nextisus.project.repository.NftRepository;
+import com.nextisus.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service

@@ -1,4 +1,4 @@
-package com.nextisus.project.role.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Role;
 import com.nextisus.project.domain.RoleName;

@@ -1,4 +1,4 @@
-package com.nextisus.project.healthrecord.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.HealthRecord;
 import org.springframework.data.jpa.repository.JpaRepository;

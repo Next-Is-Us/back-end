@@ -1,4 +1,4 @@
-package com.nextisus.project.user.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.condition.exception.ConditionNotFoundException;
 import com.nextisus.project.domain.Condition;

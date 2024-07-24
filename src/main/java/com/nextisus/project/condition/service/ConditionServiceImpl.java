@@ -1,14 +1,13 @@
 package com.nextisus.project.condition.service;
 
 import com.nextisus.project.condition.dto.request.CreateConditionRequestDto;
-import com.nextisus.project.condition.dto.request.DateRequestDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDate;
-import com.nextisus.project.condition.repository.ConditionRepository;
+import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.User;
 import com.nextisus.project.nft.service.NftServiceImpl;
-import com.nextisus.project.user.repository.UserRepository;
+import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.nextisus.project.nft.repository;
+package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.nft.exception.NftNotFoundException;
