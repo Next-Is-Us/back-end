@@ -1,11 +1,11 @@
-package com.nextisus.project.nft.service;
+package com.nextisus.project.client.nft.service;
 
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.domain.User;
-import com.nextisus.project.healthrecord.service.HealthRecordServiceImpl;
-import com.nextisus.project.nft.dto.response.NftResponseDto;
+import com.nextisus.project.client.healthrecord.service.HealthRecordServiceImpl;
+import com.nextisus.project.client.nft.dto.response.NftResponseDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

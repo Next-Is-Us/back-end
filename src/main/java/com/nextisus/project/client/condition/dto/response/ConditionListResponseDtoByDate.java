@@ -8,6 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConditionListResponseDtoByDate {
-    Boolean isRecoding;
     String date;
 }

@@ -1,8 +1,8 @@
-package com.nextisus.project.healthrecord.service;
+package com.nextisus.project.client.healthrecord.service;
 
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
-import com.nextisus.project.healthrecord.dto.response.HealthRecordResponseDto;
+import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;

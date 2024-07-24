@@ -1,7 +1,7 @@
-package com.nextisus.project.nft.controller;
+package com.nextisus.project.client.nft.controller;
 
-import com.nextisus.project.nft.dto.response.NftResponseDto;
-import com.nextisus.project.nft.service.NftService;
+import com.nextisus.project.client.nft.service.NftService;
+import com.nextisus.project.client.nft.dto.response.NftResponseDto;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;

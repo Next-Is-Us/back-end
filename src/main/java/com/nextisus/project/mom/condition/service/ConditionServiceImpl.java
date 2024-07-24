@@ -6,7 +6,7 @@ import com.nextisus.project.client.condition.dto.response.ConditionListResponseD
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.User;
-import com.nextisus.project.nft.service.NftServiceImpl;
+import com.nextisus.project.client.nft.service.NftServiceImpl;
 import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -91,7 +91,6 @@ public class ConditionServiceImpl implements ConditionService {
             }
             else {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                        false,
                         null
                 );
                 return response;
@@ -103,7 +102,6 @@ public class ConditionServiceImpl implements ConditionService {
         String recordDate = createAt.format(formatter);
 
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                true,
                 recordDate
         );
         return response;

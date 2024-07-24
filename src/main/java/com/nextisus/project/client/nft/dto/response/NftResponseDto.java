@@ -1,4 +1,4 @@
-package com.nextisus.project.nft.dto.response;
+package com.nextisus.project.client.nft.dto.response;
 
 import lombok.*;
 

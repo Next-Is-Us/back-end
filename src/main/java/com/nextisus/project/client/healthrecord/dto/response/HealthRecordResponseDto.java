@@ -1,4 +1,4 @@
-package com.nextisus.project.healthrecord.dto.response;
+package com.nextisus.project.client.healthrecord.dto.response;
 
 import lombok.*;
 
