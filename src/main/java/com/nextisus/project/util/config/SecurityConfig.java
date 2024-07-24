@@ -1,5 +1,6 @@
 package com.nextisus.project.util.config;
 
+import com.nextisus.project.util.constant.WhitelistPaths;
 import com.nextisus.project.util.jwt.CustomAccessDeniedHandler;
 import com.nextisus.project.util.jwt.JwtTokenFilter;
 import com.nextisus.project.util.jwt.JwtTokenProvider;
@@ -24,22 +25,6 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    // Swagger 관련된 경로
-        private static final String[] SWAGGER_WHITELIST = {
-            "swagger-ui.html/**",
-            "swagger-ui/**",
-            "api-docs",
-            "api-docs/**",
-            "api-docs/**",
-            "v3/api-docs/**",
-            "v3/api-docs/swagger-config"
-    };
-
-    // 테스트와 관련된 경로
-    private static final String[] TEST_WHITELIST = {
-        "api/test/**",
-    };
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -51,8 +36,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
-                        .requestMatchers(TEST_WHITELIST).permitAll()
+                        .requestMatchers(WhitelistPaths.WHITELIST).permitAll()
                         .requestMatchers("/api/link", "/api/user/signUp").permitAll()
                         .requestMatchers("/api/child/**").hasAnyAuthority("ROLE_SON", "ROLE_DAUGHTER")
                         .requestMatchers("/api/admin/accessToken").permitAll()
