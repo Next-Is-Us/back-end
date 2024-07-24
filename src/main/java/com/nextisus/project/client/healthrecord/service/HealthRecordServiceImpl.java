@@ -1,8 +1,10 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
+import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
@@ -24,6 +26,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final NftRepository nftRepository;
     private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
+    private final ConditionRepository conditionRepository;
 
     //건강기록 조회
     @Override
@@ -39,11 +42,18 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     //건강기록 생성
     @Override
-    public HealthRecord createHealthRecord(Long userId) {
-
+    public HealthRecord createHealthRecord(Long userId, Long nftId) {
+        //해당 유저가 발급 받은 nft들
         List<Nft> nfts = nftRepository.getAllByUserId(userId);
-        int nftSize = nfts.size();
+        nfts.forEach(nft->{
 
+        });
+        //방금 발급 받은 nftId(6,12,18...)로 찾은 condition
+        //List<Condition> endCondition = conditionRepository.findAllByNft_Id(nftId);
+        //방금 발급 받은 nftId-5(1,7,13...)로 찾은 condition
+        //List<Condition> startCondition = conditionRepository.findAllByNft_Id(nftId-5);
+
+        int nftSize = nfts.size();
         LocalDateTime startTime = nfts.get(0).getCreateAt();
         LocalDateTime endTime = nfts.get(nftSize - 1).getCreateAt();
 

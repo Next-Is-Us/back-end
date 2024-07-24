@@ -75,8 +75,11 @@ public class ConditionServiceImpl implements ConditionService {
         // DB에 저장
         Condition save = conditionRepository.save(condition);
 
+        //해당 유저가 기록한 상태 기록의 갯수
+        Long countCondition = conditionRepository.countByUser_Id(userId);
+
         // 방금 기록한 상태의 상태id가 30의 배수면 (30번째, 60번째, 90번째 ... )
-        if( save.getConditionId() % 30 == 0) {
+        if( countCondition % 30 == 0 && countCondition != 0 ) {
             //nft 생성
             Nft nft = nftServiceImpl.createNft(userId);
 

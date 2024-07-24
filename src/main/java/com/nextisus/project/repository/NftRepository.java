@@ -28,4 +28,5 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
     }
 
     List<Nft> findAllByHealthRecordIsNull();
+    Long countByUser_Id(Long userId);
 }

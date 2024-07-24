@@ -85,9 +85,12 @@ public class NftServiceImpl implements NftService {
         // DB에 저장
         Nft save = nftRepository.save(nft);
 
+        //해당 유저가 발급 받은 nft의 수
+        Long countNft = nftRepository.countByUser_Id(userId);
+
         //발급 받은 nft의 갯수가 6의 배수 (6 , 12, 18 ... )
-        if(save.getNftId() % 6 == 0) {
-            HealthRecord healthRecord = healthRecordServiceImpl.createHealthRecord(userId);
+        if(countNft % 6 == 0 && countNft != 0) {
+            HealthRecord healthRecord = healthRecordServiceImpl.createHealthRecord(userId,save.getNftId());
 
             //healthInfoId가 null인 nft 가져오기
             List<Nft> allByHealthRecordIsNull = nftRepository.findAllByHealthRecordIsNull();

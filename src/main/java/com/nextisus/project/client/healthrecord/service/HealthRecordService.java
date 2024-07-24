@@ -5,5 +5,5 @@ import com.nextisus.project.domain.HealthRecord;
 
 public interface HealthRecordService {
     HealthRecordResponseDto getHealthRecord(Long userId);
-    HealthRecord createHealthRecord(Long userId);
+    HealthRecord createHealthRecord(Long userId,Long NftId);
 }
