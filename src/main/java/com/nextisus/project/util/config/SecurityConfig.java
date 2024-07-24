@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(TEST_WHITELIST).permitAll()
                         .requestMatchers("/api/link", "/api/user/signUp").permitAll()
                         .requestMatchers("/api/child/**").hasAnyAuthority("ROLE_SON", "ROLE_DAUGHTER")
+                        .requestMatchers("/api/admin/accessToken").permitAll()
                         .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/condition/**").hasAnyAuthority("ROLE_MOM", "ROLE_SON", "ROLE_DAUGHTER")
                         .anyRequest().authenticated()

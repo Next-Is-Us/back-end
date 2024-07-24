@@ -1,5 +1,6 @@
 package com.nextisus.project.domain;
 
+import com.nextisus.project.admin.dto.CreateInfoPostRequestDto;
 import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,4 +44,12 @@ public class InfoPost extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static InfoPost toEntity(CreateInfoPostRequestDto dto, User user) {
+        return InfoPost.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .user(user)
+                .build();
+    }
 }

@@ -1,4 +1,4 @@
-package com.nextisus.project.util.user;
+package com.nextisus.project.util.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
