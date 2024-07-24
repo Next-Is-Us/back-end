@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NftService {
     Long getNfts(Long userId);
-    void createNft(int conditionSize, List<Condition> conditions, Long userId);
+    void createNft(Long userId);
 
     NftResponseDto getDetailNft(Long nftId);
 }

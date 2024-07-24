@@ -10,7 +10,8 @@ import static com.nextisus.project.util.constant.StaticValue.NOT_FOUND;
 @AllArgsConstructor
 public enum NftErrorCode implements BaseErrorCode {
 
-    NFT_NOT_FOUND(NOT_FOUND,"NFT_404_1","존재하지 않는 nftId입니다.");
+    NFT_NOT_FOUND_1(NOT_FOUND,"NFT_404_1","존재하지 않는 nftId입니다."),
+    NFT_NOT_FOUND_2(NOT_FOUND,"NFT_404_2","해당 유저에게 발급된 NFT가 존재하지 않습니다.");
 
     private final int httpStatus;
     private final String code;
