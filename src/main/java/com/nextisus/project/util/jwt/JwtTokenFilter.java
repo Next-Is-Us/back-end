@@ -63,7 +63,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     private boolean isWhitelisted(HttpServletRequest request) {
         String path = request.getRequestURI();
         for (String whitelisted : WhitelistPaths.WHITELIST) {
-            if (path.startsWith(whitelisted) || (whitelisted.contains("**") && path.contains(whitelisted.replace("**", "")))) {
+            if (path.matches(whitelisted.replace("**", ".*"))) {
                 return true;
             }
         }
