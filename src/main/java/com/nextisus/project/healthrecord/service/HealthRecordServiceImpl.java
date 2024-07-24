@@ -33,7 +33,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         List<Nft> nfts = nftRepository.getAllByUserId(userId);
         int nftSize = nfts.size();
         if(nftSize != 0 && nftSize % 6 == 0) {
-
+            //로직 추가 해야함
         }
         return null;
     }

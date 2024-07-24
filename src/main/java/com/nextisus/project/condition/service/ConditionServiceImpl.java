@@ -73,9 +73,7 @@ public class ConditionServiceImpl implements ConditionService {
         // 방금 기록한 상태의 상태id가 30의 배수면 (30번째, 60번째, 90번째 ... )
         if(save.getConditionId() % 30 == 0 && save.getConditionId() != 0) {
             //nft 생성
-            for(int i=0; i<6; i++) {
-                nftServiceImpl.createNft(userId);
-            }
+            nftServiceImpl.createNft(userId);
         }
 
         // 성공 응답 생성
