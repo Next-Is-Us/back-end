@@ -1,6 +1,6 @@
 package com.nextisus.project.domain;
 
-import com.nextisus.project.user.dto.SignUpRequestDto;
+import com.nextisus.project.client.user.dto.SignUpRequestDto;
 import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

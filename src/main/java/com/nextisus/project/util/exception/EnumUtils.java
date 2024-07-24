@@ -2,7 +2,7 @@ package com.nextisus.project.util.exception;
 
 import com.nextisus.project.domain.RoleName;
 import com.nextisus.project.domain.UserRole;
-import com.nextisus.project.role.exception.RoleNotFoundException;
+import com.nextisus.project.exception.role.RoleNotFoundException;
 
 public class EnumUtils {
     public static RoleName fromString(String roleName) {
