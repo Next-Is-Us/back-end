@@ -2,8 +2,8 @@ package com.nextisus.project.healthrecord.controller;
 
 import com.nextisus.project.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.healthrecord.service.HealthRecordService;
+import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
-import com.nextisus.project.util.user.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
