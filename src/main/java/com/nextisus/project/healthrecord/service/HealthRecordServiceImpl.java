@@ -26,17 +26,19 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
 
+    //건강기록 조회
     @Override
     public HealthRecordResponseDto getHealthRecord(Long userId) {
 
         List<Nft> nfts = nftRepository.getAllByUserId(userId);
         int nftSize = nfts.size();
-        if(nftSize != 0 && nftSize % 6 == 0) { //발급 받은 nft의 갯수가 6의 배수이면 건강기록 1개 생성
-            //createHealthRecord(nftSize,nfts,userId);
+        if(nftSize != 0 && nftSize % 6 == 0) {
+
         }
         return null;
     }
 
+    //건강기록 생성
     @Override
     public void createHealthRecord(Long userId) {
 
