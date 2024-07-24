@@ -1,7 +1,7 @@
 package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Link;
-import com.nextisus.project.client.link.exception.LinkNotFoundException;
+import com.nextisus.project.exception.link.LinkNotFoundException;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

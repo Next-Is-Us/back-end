@@ -1,4 +1,4 @@
-package com.nextisus.project.client.link.exception;
+package com.nextisus.project.exception.role;
 
 import static com.nextisus.project.util.constant.StaticValue.NOT_FOUND;
 
@@ -8,9 +8,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LinkErrorCode implements BaseErrorCode {
+public enum RoleErrorCode implements BaseErrorCode {
 
-    LINK_NOT_FOUND(NOT_FOUND, "LINK_404_1", "링크가 존재하지 않습니다.");
+    ROLE_NOT_FOUND(NOT_FOUND, "ROLE_404_1", "역할이 존재하지 않습니다.");
 
     private final int httpStatus;
     private final String code;

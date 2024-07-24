@@ -2,7 +2,7 @@ package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Role;
 import com.nextisus.project.domain.RoleName;
-import com.nextisus.project.role.exception.RoleNotFoundException;
+import com.nextisus.project.exception.role.RoleNotFoundException;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

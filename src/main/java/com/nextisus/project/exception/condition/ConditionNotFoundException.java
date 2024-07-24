@@ -1,4 +1,4 @@
-package com.nextisus.project.mom.condition.exception;
+package com.nextisus.project.exception.condition;
 
 import com.nextisus.project.util.exception.BaseException;
 

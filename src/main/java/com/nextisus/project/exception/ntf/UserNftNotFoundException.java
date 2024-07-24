@@ -1,4 +1,4 @@
-package com.nextisus.project.nft.exception;
+package com.nextisus.project.exception.ntf;
 
 import com.nextisus.project.util.exception.BaseException;
 

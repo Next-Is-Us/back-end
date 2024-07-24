@@ -1,4 +1,4 @@
-package com.nextisus.project.client.user.exception;
+package com.nextisus.project.exception.user;
 
 import static com.nextisus.project.util.constant.StaticValue.DUPLICATED;
 import static com.nextisus.project.util.constant.StaticValue.NOT_FOUND;

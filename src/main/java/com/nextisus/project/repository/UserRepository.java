@@ -4,7 +4,7 @@ import com.nextisus.project.domain.Link;
 import com.nextisus.project.domain.User;
 import java.util.Optional;
 
-import com.nextisus.project.client.user.exception.UserNotFoundException;
+import com.nextisus.project.exception.user.UserNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
 package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Nft;
-import com.nextisus.project.nft.exception.NftNotFoundException;
-import com.nextisus.project.nft.exception.UserNftNotFoundException;
+import com.nextisus.project.exception.ntf.NftNotFoundException;
+import com.nextisus.project.exception.ntf.UserNftNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

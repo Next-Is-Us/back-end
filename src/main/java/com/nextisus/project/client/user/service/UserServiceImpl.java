@@ -7,7 +7,7 @@ import com.nextisus.project.repository.LinkRepository;
 import com.nextisus.project.repository.RoleRepository;
 import com.nextisus.project.client.user.dto.SignUpRequestDto;
 import com.nextisus.project.client.user.dto.SignUpResponseDto;
-import com.nextisus.project.client.user.exception.UserNicknameDuplicatedException;
+import com.nextisus.project.exception.user.UserNicknameDuplicatedException;
 import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.exception.EnumUtils;
 import com.nextisus.project.util.jwt.JwtTokenProvider;

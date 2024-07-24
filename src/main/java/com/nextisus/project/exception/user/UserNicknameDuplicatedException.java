@@ -1,4 +1,4 @@
-package com.nextisus.project.client.user.exception;
+package com.nextisus.project.exception.user;
 
 import com.nextisus.project.util.exception.BaseException;
 

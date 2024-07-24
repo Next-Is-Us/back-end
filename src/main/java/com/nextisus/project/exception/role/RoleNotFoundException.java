@@ -1,4 +1,4 @@
-package com.nextisus.project.role.exception;
+package com.nextisus.project.exception.role;
 
 import com.nextisus.project.util.exception.BaseException;
 

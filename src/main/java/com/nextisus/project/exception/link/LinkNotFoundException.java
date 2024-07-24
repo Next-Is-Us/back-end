@@ -1,4 +1,4 @@
-package com.nextisus.project.client.link.exception;
+package com.nextisus.project.exception.link;
 
 import com.nextisus.project.util.exception.BaseException;
 

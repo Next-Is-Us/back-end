@@ -1,6 +1,6 @@
 package com.nextisus.project.repository;
 
-import com.nextisus.project.mom.condition.exception.UserConditionNotFoundException;
+import com.nextisus.project.exception.condition.UserConditionNotFoundException;
 import com.nextisus.project.domain.Condition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
