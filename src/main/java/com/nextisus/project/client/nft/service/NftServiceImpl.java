@@ -38,7 +38,7 @@ public class NftServiceImpl implements NftService {
     }
 
     @Override
-    public void createNft(Long userId) {
+    public Nft createNft(Long userId) {
 
         List<Condition> conditions = conditionRepository.getAllById(userId);
         int conditionSize = conditions.size();
@@ -82,9 +82,11 @@ public class NftServiceImpl implements NftService {
         Nft save = nftRepository.save(nft);
 
         //발급 받은 nft의 갯수가 6의 배수 (6 , 12, 18 ... )
-        if(save.getNftId() % 6 == 0 && save.getNftId() != 0) {
+        if(save.getNftId() % 6 == 0) {
             healthRecordServiceImpl.createHealthRecord(userId);
         }
+
+        return save;
     }
 
     //nft 상세 조회

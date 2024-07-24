@@ -82,4 +82,8 @@ public class Condition extends BaseEntity {
     public void createdCondition(User user) {
         this.user = user;
     }
+
+    public void setNft(Nft nft) {
+        this.nft = nft;
+    }
 }
