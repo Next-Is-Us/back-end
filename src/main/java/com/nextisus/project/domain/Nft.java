@@ -32,5 +32,8 @@ public class Nft extends BaseEntity {
     public void createNft (User user) {
         this.user = user;
     }
+    public void setHealthRecord(HealthRecord healthRecord) {
+        this.healthRecord = healthRecord;
+    }
 
 }

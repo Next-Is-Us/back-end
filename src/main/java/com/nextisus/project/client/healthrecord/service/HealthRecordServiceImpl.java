@@ -39,7 +39,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     //건강기록 생성
     @Override
-    public void createHealthRecord(Long userId) {
+    public HealthRecord createHealthRecord(Long userId) {
 
         List<Nft> nfts = nftRepository.getAllByUserId(userId);
         int nftSize = nfts.size();
@@ -74,6 +74,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
                 .build();
 
         //DB에 저장
-        healthRecordRepository.save(healthRecord);
+        HealthRecord save = healthRecordRepository.save(healthRecord);
+        return save;
     }
 }

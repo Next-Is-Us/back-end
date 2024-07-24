@@ -26,4 +26,6 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
         }
         return nfts;
     }
+
+    List<Nft> findAllByHealthRecordIsNull();
 }
