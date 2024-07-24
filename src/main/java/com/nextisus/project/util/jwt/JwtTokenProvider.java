@@ -1,6 +1,8 @@
 package com.nextisus.project.util.jwt;
 
 import com.nextisus.project.domain.Role;
+import com.nextisus.project.util.auth.AuthErrorCode;
+import com.nextisus.project.util.exception.BaseException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -88,7 +90,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(getSignKey(secretKey)).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("JWT 오류 발생");
+            throw new BaseException(AuthErrorCode.INVALID_AUTH_TOKEN);
         }
     }
 

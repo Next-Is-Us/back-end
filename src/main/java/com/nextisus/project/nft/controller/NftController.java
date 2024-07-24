@@ -1,12 +1,9 @@
 package com.nextisus.project.nft.controller;
 
-import com.nextisus.project.domain.Nft;
 import com.nextisus.project.nft.dto.response.NftResponseDto;
 import com.nextisus.project.nft.service.NftService;
 import com.nextisus.project.util.response.SuccessResponse;
-import com.nextisus.project.util.user.AuthUtil;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.nextisus.project.util.auth.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;

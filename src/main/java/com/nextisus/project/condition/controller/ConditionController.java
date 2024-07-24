@@ -1,12 +1,11 @@
 package com.nextisus.project.condition.controller;
 
 import com.nextisus.project.condition.dto.request.CreateConditionRequestDto;
-import com.nextisus.project.condition.dto.request.DateRequestDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.condition.dto.response.ConditionListResponseDtoByDate;
 import com.nextisus.project.condition.service.ConditionService;
 import com.nextisus.project.util.response.SuccessResponse;
-import com.nextisus.project.util.user.AuthUtil;
+import com.nextisus.project.util.auth.AuthUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

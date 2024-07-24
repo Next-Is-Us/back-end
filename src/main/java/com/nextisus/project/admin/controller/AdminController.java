@@ -6,7 +6,7 @@ import com.nextisus.project.admin.dto.CreateInfoPostRequestDto;
 import com.nextisus.project.admin.dto.CreateInfoPostResponseDto;
 import com.nextisus.project.admin.service.AdminService;
 import com.nextisus.project.util.response.SuccessResponse;
-import com.nextisus.project.util.user.AuthUtil;
+import com.nextisus.project.util.auth.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
