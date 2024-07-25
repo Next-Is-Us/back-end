@@ -42,18 +42,26 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     //건강기록 생성
     @Override
-    public HealthRecord createHealthRecord(Long userId, Long nftId) {
-        //해당 유저가 발급 받은 nft들
-        List<Nft> nfts = nftRepository.getAllByUserId(userId);
-        nfts.forEach(nft->{
+    public HealthRecord createHealthRecord(Long userId, Long countNft) {
+        //엔티티 생성
+        HealthRecord healthRecord = HealthRecord.builder().build();
 
-        });
-        //방금 발급 받은 nftId(6,12,18...)로 찾은 condition
-        //List<Condition> endCondition = conditionRepository.findAllByNft_Id(nftId);
-        //방금 발급 받은 nftId-5(1,7,13...)로 찾은 condition
-        //List<Condition> startCondition = conditionRepository.findAllByNft_Id(nftId-5);
+        //DB에 저장
+        HealthRecord save = healthRecordRepository.save(healthRecord);
+        return save;
+    }
 
+    //건강기록 세부 조회
+    @Override
+    public HealthRecordResponseDto getHealthRecordDetail(Long userId, Long healthRecordId) {
+
+        //건강기록 가져오기
+        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
+
+        //클라이언트가 조회하고 싶은 건강 기록의 healthRecordId를 이용해서 nft찾기
+        List<Nft> nfts = nftRepository.findAllByHealthRecord_HealthRecordId(healthRecordId);
         int nftSize = nfts.size();
+
         LocalDateTime startTime = nfts.get(0).getCreateAt();
         LocalDateTime endTime = nfts.get(nftSize - 1).getCreateAt();
 
@@ -77,14 +85,11 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         String week = weeksBetween + "주";
 
-        //엔티티 생성
-        HealthRecord healthRecord = HealthRecord.builder()
-                .recordPeriod(recordPeriod)
-                .week(week)
-                .build();
-
-        //DB에 저장
-        HealthRecord save = healthRecordRepository.save(healthRecord);
-        return save;
+        HealthRecordResponseDto response = new HealthRecordResponseDto(
+                (long) healthRecord.getHealthRecordId(),
+                recordPeriod,
+                week
+        );
+        return response;
     }
 }

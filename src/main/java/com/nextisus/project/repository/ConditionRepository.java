@@ -22,7 +22,7 @@ public interface ConditionRepository  extends JpaRepository<Condition, Long> {
         return conditions;
     }
     List<Condition> findAllByNftIsNull();
-//    List<Condition> findAllByNft_Id(Long nftId);
+    List<Condition> findAllByNft_NftId(Long nftId);
     Long countByUser_Id(Long userId);
 }
 

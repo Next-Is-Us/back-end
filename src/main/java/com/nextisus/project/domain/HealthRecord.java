@@ -16,10 +16,4 @@ public class HealthRecord extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="HEALTH_RECORD_ID")
     private int healthRecordId;
-
-    @Column(name="RECORD_PERIOD")
-    private String recordPeriod;
-
-    @Column(name="WEEK")
-    private String week;
 }
