@@ -1,29 +1,28 @@
 package com.nextisus.project.domain;
 
+import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="HOSPITAL")
-public class Hospital {
+public class Hospital extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long HospitalId;
+    private Long hospitalId;
 
     @Column(name="HOSPITAL_NAME")
-    private String HospitalName;
+    private String hospitalName;
 
-    @Column(name="HOSPITSL_ADDRESS")
-    private String HospitalAddress;
+    @Column(name="HOSPITAL_ADDRESS")
+    private String hospitalAddress;
 
-    @Column(name="HOSPITAL_NUMBER")
-    private String HospitalNumber;
+    @Column(name="HOSPITAL_TEL")
+    private String hospitalTel;
 }
