@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.controller;
 
+import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.client.healthrecord.service.HealthRecordService;
 import com.nextisus.project.domain.HealthRecord;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/healthRecord")
 @RequiredArgsConstructor
@@ -21,19 +24,18 @@ public class HealthRecordController {
     private final HealthRecordService healthRecordService;
     private final AuthUtil authUtils;
 
-    // 건강 기록 조회
+    // 건강 기록 전체 조회
     @GetMapping
-    public SuccessResponse<HealthRecordResponseDto> getHealthRecord() {
+    public SuccessResponse<List<HealthRecordListDto>> getHealthRecord() {
         Long userId = Long.parseLong(authUtils.getCurrentUserId());
-        HealthRecordResponseDto response = healthRecordService.getHealthRecord(userId);
+        List<HealthRecordListDto> response = healthRecordService.getHealthRecord(userId);
         return SuccessResponse.of(response);
     }
 
     //건강 기록 세부 조회 (카드 컴포넌트 클릭 시)
     @GetMapping("/detail/{healthRecordId}")
     public SuccessResponse<HealthRecordResponseDto> getHealthRecordDetail(@PathVariable Long healthRecordId) {
-        Long userId = Long.parseLong(authUtils.getCurrentUserId());
-        HealthRecordResponseDto response = healthRecordService.getHealthRecordDetail(userId,healthRecordId);
+        HealthRecordResponseDto response = healthRecordService.getHealthRecordDetail(healthRecordId);
         return SuccessResponse.of(response);
     }
 }

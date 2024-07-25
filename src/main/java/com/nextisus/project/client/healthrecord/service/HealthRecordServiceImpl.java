@@ -1,13 +1,16 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
+import com.nextisus.project.domain.User;
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,24 +32,37 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final HealthRecordRepository healthRecordRepository;
     private final ConditionRepository conditionRepository;
 
-    //건강기록 조회
+    //건강기록 전체 조회
     @Override
-    public HealthRecordResponseDto getHealthRecord(Long userId) {
+    public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
-        List<Nft> nfts = nftRepository.getAllByUserId(userId);
-        int nftSize = nfts.size();
-        if(nftSize != 0 && nftSize % 6 == 0) {
-            //로직 추가 해야함
+        //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
+
+        List<HealthRecordListDto> healthRecordList = new ArrayList<>();
+
+        for(HealthRecord healthRecord : healthRecordsList) {
+            healthRecordList.add(HealthRecordListDto.builder()
+                    .healthRecordId(healthRecord.getHealthRecordId())
+                    .recordPeriod(healthRecord.getRecordPeriod())
+                    .build()
+            );
         }
-        return null;
+        return healthRecordList;
     }
 
     //건강기록 생성
     @Override
     public HealthRecord createHealthRecord(Long userId, Long countNft) {
-        //엔티티 생성
-        HealthRecord healthRecord = HealthRecord.builder().build();
 
+        User byUser = userRepository.getByUser(userId);
+
+        //엔티티 생성
+        HealthRecord healthRecord = HealthRecord.builder()
+                .user(byUser)
+                .build();
+        //연관관계 맺기
+        healthRecord.setUser(byUser);
         //DB에 저장
         HealthRecord save = healthRecordRepository.save(healthRecord);
         return save;
@@ -53,7 +70,8 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     //건강기록 세부 조회
     @Override
-    public HealthRecordResponseDto getHealthRecordDetail(Long userId, Long healthRecordId) {
+    @Transactional
+    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
 
         //건강기록 가져오기
         HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
@@ -69,7 +87,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.M.dd");
         String startDate1 = formatter1.format(startTime);
         String endDate1 = formatter1.format(endTime);
-        String recordPeriod = startDate1 + "~" + endDate1;
+        String recordPeriod = startDate1 + " ~ " + endDate1;
 
         // "yyyyMMdd" 형식으로 포맷
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -85,10 +103,13 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         String week = weeksBetween + "주";
 
+        //기록기간이랑 주 db에 넣어주기
+        healthRecord.setPriod(recordPeriod,week);
+
         HealthRecordResponseDto response = new HealthRecordResponseDto(
-                (long) healthRecord.getHealthRecordId(),
-                recordPeriod,
-                week
+                healthRecord.getHealthRecordId(),
+                healthRecord.getRecordPeriod(),
+                healthRecord.getWeek()
         );
         return response;
     }
