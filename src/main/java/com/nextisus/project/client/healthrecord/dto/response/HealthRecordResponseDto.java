@@ -10,5 +10,5 @@ import lombok.*;
 public class HealthRecordResponseDto {
     Long healthRecordId;
     String recordPeriod;
-    Long nftCount;
+    String week;
 }
