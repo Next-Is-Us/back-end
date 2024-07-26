@@ -1,6 +1,7 @@
 package com.nextisus.project.all.infopost.service;
 
 import com.nextisus.project.all.infopost.dto.GetDetailInfoPostResDto;
+import com.nextisus.project.domain.InfoPost;
 import com.nextisus.project.repository.InfoPostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ public class AllInfoPostServiceImpl implements AllInfoPostService {
 
     @Override
     public GetDetailInfoPostResDto getDetailInfoPost(Long infoPostId) {
-        return null;
+        InfoPost infoPost = infoPostRepository.getByInfoPostId(infoPostId);
+        return GetDetailInfoPostResDto.from(infoPost);
     }
 }
