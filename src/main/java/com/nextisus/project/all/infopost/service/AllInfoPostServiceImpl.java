@@ -22,10 +22,9 @@ public class AllInfoPostServiceImpl implements AllInfoPostService {
 
     @Override
     public PageResponse<GetListInfoPostResDto> getListInfoPost(Pageable pageable) {
-        Page<GetListInfoPostResDto> posts = infoPostRepository.findAll(pageable).map(GetListInfoPostResDto::from);
-        List<GetListInfoPostResDto> list = posts.stream().toList();
-        PageImpl<GetListInfoPostResDto> data = new PageImpl<>(list, pageable,
-                posts.getTotalElements());
+        Page<GetListInfoPostResDto> posts = infoPostRepository.findAllByOrderByCreateAtDesc(pageable).map(GetListInfoPostResDto::from);
+        List<GetListInfoPostResDto> list = posts.getContent();
+        PageImpl<GetListInfoPostResDto> data = new PageImpl<>(list, pageable, posts.getTotalElements());
         return PageResponse.of(data);
     }
 

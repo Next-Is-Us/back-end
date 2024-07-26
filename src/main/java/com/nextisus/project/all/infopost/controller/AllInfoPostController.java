@@ -31,6 +31,7 @@ public class AllInfoPostController {
         PageResponse<GetListInfoPostResDto> res = allInfoPostService.getListInfoPost(pageable);
         return SuccessResponse.of(res);
     }
+
     @GetMapping("/{infoPostId}")
     public SuccessResponse<GetDetailInfoPostResDto> getDetailInfoPost(@PathVariable("infoPostId") Long infoPostId) {
         GetDetailInfoPostResDto res = allInfoPostService.getDetailInfoPost(infoPostId);
