@@ -9,11 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class HospitalListResponseDto {
-    String HospitalName ;
-    String HospitalAddress ;
-    String HospitalTel ;
+    Long hospitalId;
+    String hospitalName ;
+    String hospitalAddress ;
+    String hospitalTel ;
     public static HospitalListResponseDto from(Hospital hospital) {
         return new HospitalListResponseDto(
+                hospital.getHospitalId(),
                 hospital.getHospitalName(),
                 hospital.getHospitalAddress(),
                 hospital.getHospitalTel()

@@ -22,9 +22,13 @@ public class HospitalServiceImpl implements HospitalService {
         //검색한 키워드가 포함된 병원이름 리스트 받아오기
         List<Hospital> allByHospitalNameContaining = hospitalRepository.findAllByHospitalNameContaining(keyword);
         List<HospitalListResponseDto> responseDto = new ArrayList<>();
-
-        for(Hospital hospital : allByHospitalNameContaining) {
-            responseDto.add(HospitalListResponseDto.from(hospital));
+        if(allByHospitalNameContaining.size() == 1000) {
+            responseDto.add(null);
+        }
+        else{
+            for(Hospital hospital : allByHospitalNameContaining) {
+                responseDto.add(HospitalListResponseDto.from(hospital));
+            }
         }
         return  responseDto;
     }
