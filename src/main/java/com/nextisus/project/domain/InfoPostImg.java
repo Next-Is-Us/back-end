@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="INFO_POST_IMG")
+@Table(name="INFOPOSTIMG")
 public class InfoPostImg extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,10 @@ public class InfoPostImg extends BaseEntity {
     private String url;
 
     @ManyToOne
-    @JoinColumn
-    private InfoPost post;
+    @JoinColumn(name="INFO_POST")
+    private InfoPost infoPost;
 
-    public void setPost(InfoPost post) {
-        this.post = post;
+    public void setPost(InfoPost infoPost) {
+        this.infoPost = infoPost;
     }
 }
