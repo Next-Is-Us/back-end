@@ -15,11 +15,27 @@ public class HealthRecord extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="HEALTH_RECORD_ID")
-    private int healthRecordId;
+    private Long healthRecordId;
 
-    @Column(name="RECORD_PERIOD")
+    @Column(name = "RECORD_PERIOD")
     private String recordPeriod;
 
-    @Column(name="WEEK")
+    @Column(name = "WEEK")
     private String week;
+
+    @Column(name ="NFT_COUNT")
+    private Long nftCount;
+
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setPriod(String recordPeriod, String week) {
+        this.recordPeriod = recordPeriod;
+        this.week = week;
+    }
 }

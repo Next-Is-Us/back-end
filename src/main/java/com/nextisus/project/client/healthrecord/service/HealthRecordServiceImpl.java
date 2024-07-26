@@ -1,11 +1,16 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
+import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
+import com.nextisus.project.domain.User;
+import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,34 +30,68 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final NftRepository nftRepository;
     private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
+    private final ConditionRepository conditionRepository;
 
-    //건강기록 조회
+    //건강기록 전체 조회
     @Override
-    public HealthRecordResponseDto getHealthRecord(Long userId) {
+    public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
-        List<Nft> nfts = nftRepository.getAllByUserId(userId);
-        int nftSize = nfts.size();
-        if(nftSize != 0 && nftSize % 6 == 0) {
-            //로직 추가 해야함
+        //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId+1); //이거 왜 1번으로?
+        List<HealthRecordListDto> healthRecordList = new ArrayList<>();
+        log.info("userID : " + userId);
+
+        for(HealthRecord healthRecord : healthRecordsList) {
+            healthRecordList.add(HealthRecordListDto.from(healthRecord));
         }
-        return null;
+        return healthRecordList;
     }
 
     //건강기록 생성
     @Override
-    public void createHealthRecord(Long userId) {
+    public HealthRecord createHealthRecord(Long userId, Long countNft) {
 
-        List<Nft> nfts = nftRepository.getAllByUserId(userId);
+        User byUser = userRepository.getByUser(userId);
+
+        //엔티티 생성
+        HealthRecord healthRecord = HealthRecord.builder()
+                .user(byUser)
+                .build();
+        //연관관계 맺기
+        healthRecord.setUser(byUser);
+        //DB에 저장
+        HealthRecord save = healthRecordRepository.save(healthRecord);
+        return save;
+    }
+
+    //건강기록 세부 조회
+    @Override
+    @Transactional
+    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
+
+        //건강기록 가져오기
+        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
+
+        //클라이언트가 조회하고 싶은 건강 기록의 healthRecordId를 이용해서 nft찾기
+        List<Nft> nfts = nftRepository.findAllByHealthRecord_HealthRecordId(healthRecordId);
         int nftSize = nfts.size();
 
-        LocalDateTime startTime = nfts.get(0).getCreateAt();
-        LocalDateTime endTime = nfts.get(nftSize - 1).getCreateAt();
+        //첫번째로 기록한 상태
+        List<Condition> firstConditions = conditionRepository.findAllByNft_NftId(nfts.get(0).getNftId());
+        //마지막으로 기록한 상태
+        List<Condition> lastConditions = conditionRepository.findAllByNft_NftId(nfts.get(nftSize-1).getNftId());
+
+        List<HealthRecordResponseDto> healthRecordList = new ArrayList<>();
+
+        int lastConditionSize = lastConditions.size();
+        LocalDateTime startTime = firstConditions.get(0).getCreateAt();
+        LocalDateTime endTime = firstConditions.get(lastConditionSize - 1).getCreateAt();
 
         // "yyyy.M.dd"형식으로 포맷
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.M.dd");
         String startDate1 = formatter1.format(startTime);
         String endDate1 = formatter1.format(endTime);
-        String recordPeriod = startDate1 + "~" + endDate1;
+        String recordPeriod = startDate1 + " ~ " + endDate1;
 
         // "yyyyMMdd" 형식으로 포맷
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -67,13 +107,14 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         String week = weeksBetween + "주";
 
-        //엔티티 생성
-        HealthRecord healthRecord = HealthRecord.builder()
-                .recordPeriod(recordPeriod)
-                .week(week)
-                .build();
+        //기록기간이랑 주 db에 넣어주기
+        healthRecord.setPriod(recordPeriod,week);
 
-        //DB에 저장
-        healthRecordRepository.save(healthRecord);
+        HealthRecordResponseDto response = new HealthRecordResponseDto(
+                healthRecord.getHealthRecordId(),
+                healthRecord.getRecordPeriod(),
+                healthRecord.getWeek()
+        );
+        return response;
     }
 }

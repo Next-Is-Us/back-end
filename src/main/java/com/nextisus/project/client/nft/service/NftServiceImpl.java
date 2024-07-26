@@ -1,5 +1,6 @@
 package com.nextisus.project.client.nft.service;
 
+import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.Nft;
@@ -8,6 +9,8 @@ import com.nextisus.project.client.healthrecord.service.HealthRecordServiceImpl;
 import com.nextisus.project.client.nft.dto.response.NftResponseDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +41,8 @@ public class NftServiceImpl implements NftService {
     }
 
     @Override
-    public void createNft(Long userId) {
+    @Transactional
+    public Nft createNft(Long userId) {
 
         List<Condition> conditions = conditionRepository.getAllById(userId);
         int conditionSize = conditions.size();
@@ -81,10 +85,20 @@ public class NftServiceImpl implements NftService {
         // DB에 저장
         Nft save = nftRepository.save(nft);
 
+        //해당 유저가 발급 받은 nft의 수
+        Long countNft = nftRepository.countByUser_Id(userId);
+
         //발급 받은 nft의 갯수가 6의 배수 (6 , 12, 18 ... )
-        if(save.getNftId() % 6 == 0 && save.getNftId() != 0) {
-            healthRecordServiceImpl.createHealthRecord(userId);
+        if(countNft % 6 == 0 && countNft != 0) {
+            HealthRecord healthRecord = healthRecordServiceImpl.createHealthRecord(userId,countNft);
+
+            //healthInfoId가 null인 nft 가져오기
+            List<Nft> allByHealthRecordIsNull = nftRepository.findAllByHealthRecordIsNull();
+            allByHealthRecordIsNull.forEach(hr -> {
+                hr.setHealthRecord(healthRecord);
+            });
         }
+        return save;
     }
 
     //nft 상세 조회
