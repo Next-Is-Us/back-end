@@ -37,16 +37,12 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
-        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
-
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId+1); //이거 왜 1번으로?
         List<HealthRecordListDto> healthRecordList = new ArrayList<>();
+        log.info("userID : " + userId);
 
         for(HealthRecord healthRecord : healthRecordsList) {
-            healthRecordList.add(HealthRecordListDto.builder()
-                    .healthRecordId(healthRecord.getHealthRecordId())
-                    .recordPeriod(healthRecord.getRecordPeriod())
-                    .build()
-            );
+            healthRecordList.add(HealthRecordListDto.from(healthRecord));
         }
         return healthRecordList;
     }
@@ -80,8 +76,16 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         List<Nft> nfts = nftRepository.findAllByHealthRecord_HealthRecordId(healthRecordId);
         int nftSize = nfts.size();
 
-        LocalDateTime startTime = nfts.get(0).getCreateAt();
-        LocalDateTime endTime = nfts.get(nftSize - 1).getCreateAt();
+        //첫번째로 기록한 상태
+        List<Condition> firstConditions = conditionRepository.findAllByNft_NftId(nfts.get(0).getNftId());
+        //마지막으로 기록한 상태
+        List<Condition> lastConditions = conditionRepository.findAllByNft_NftId(nfts.get(nftSize-1).getNftId());
+
+        List<HealthRecordResponseDto> healthRecordList = new ArrayList<>();
+
+        int lastConditionSize = lastConditions.size();
+        LocalDateTime startTime = firstConditions.get(0).getCreateAt();
+        LocalDateTime endTime = firstConditions.get(lastConditionSize - 1).getCreateAt();
 
         // "yyyy.M.dd"형식으로 포맷
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.M.dd");

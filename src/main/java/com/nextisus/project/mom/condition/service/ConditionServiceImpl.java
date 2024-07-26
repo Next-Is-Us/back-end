@@ -81,13 +81,12 @@ public class ConditionServiceImpl implements ConditionService {
         // 방금 기록한 상태의 상태id가 30의 배수면 (30번째, 60번째, 90번째 ... )
         if( countCondition % 30 == 0 && countCondition != 0 ) {
             //nft 생성
-            Nft nft = nftServiceImpl.createNft(userId);
-
-            //nftId가 null인 condition 가져옴
-            List<Condition> allByNftIsNull = conditionRepository.findAllByNftIsNull();
-            allByNftIsNull.forEach( c -> {
-                c.setNft(nft); //영속성 컨텍스트 어쩌구..
-            });
+                Nft nft = nftServiceImpl.createNft(userId);
+                //nftId가 null인 condition 가져옴
+                List<Condition> allByNftIsNull = conditionRepository.findAllByNftIsNull();
+                allByNftIsNull.forEach(c -> {
+                    c.setNft(nft); //영속성 컨텍스트 어쩌구..
+                });
         }
         // 성공 응답 생성
         return SuccessResponse.of(condition);
