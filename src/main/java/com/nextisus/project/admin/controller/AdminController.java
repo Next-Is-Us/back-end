@@ -7,13 +7,12 @@ import com.nextisus.project.admin.dto.CreateInfoPostResponseDto;
 import com.nextisus.project.admin.service.AdminService;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -33,9 +32,9 @@ public class AdminController {
     }
 
     // 관리자가 InfoPost 생성
-    @PostMapping("/createPost")
+    @PostMapping(value = "/createPost", consumes = {"multipart/form-data"})
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public SuccessResponse<CreateInfoPostResponseDto> createInfoPost(@RequestBody CreateInfoPostRequestDto dto) {
+    public SuccessResponse<CreateInfoPostResponseDto> createInfoPost(@Valid @ModelAttribute CreateInfoPostRequestDto dto) {
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
         CreateInfoPostResponseDto res = adminService.createInfoPost(dto, userId);
         return SuccessResponse.of(res);
