@@ -12,13 +12,14 @@ public class GetListInfoPostResDto {
     private Long infoPostId;
     private String title;
     private String content;
-    // TODO: [주연] 이미지 필드 추가 필요
+    private String imageUrl;
 
     private static GetListInfoPostResDto fromInfoPost(InfoPost infoPost) {
         return GetListInfoPostResDto.builder()
                 .infoPostId(infoPost.getId())
                 .title(infoPost.getTitle())
                 .content(infoPost.getContent())
+                .imageUrl(infoPost.getThumbnail())
                 .build();
     }
 

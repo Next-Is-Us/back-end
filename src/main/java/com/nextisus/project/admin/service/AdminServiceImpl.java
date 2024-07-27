@@ -64,10 +64,13 @@ public class AdminServiceImpl implements AdminService {
         try{
             // 관리자 계정 찾기
             User adminUser = userRepository.getByUser(id);
+            MultipartFile thumbnail = dto.getImageUrl().get(0);
+            String thumbnailPath = s3UploadService.upload(thumbnail,"info-post-thumbnail");
 
             // InfoPost 생성
-            InfoPost infoPost = InfoPost.toEntity(dto, adminUser);
+            InfoPost infoPost = InfoPost.toEntity(dto, adminUser,thumbnailPath);
             infoPostRepository.save(infoPost);
+
 
             //이미지 업로드
             String imgPath = null;
