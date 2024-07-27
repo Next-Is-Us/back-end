@@ -32,10 +32,16 @@ public class NftServiceImpl implements NftService {
 
     @Override
     public Long getNfts(Long userId) {
-        List<Condition> conditions = conditionRepository.getAllById(userId);
-        int conditionSize = conditions.size();
-        if (conditionSize % 5 == 0 && conditionSize != 0) { //기록한 상태가 5의 배수면 nft 조각 1개가 생성된 것
-            return (long) conditionSize;
+        List<Condition> conditions = conditionRepository.findAllByUser_Id(userId);
+        List<Nft> nfts = nftRepository.findAllByUser_Id(userId);
+        Long[] pieceOfNft = { 5L, 10L, 15L, 20L, 25L, 0L };
+        int conditionSize = conditions.size(); //유저가 기록한 오늘의 상태 수
+        int nftSize = nfts.size(); //유저가 발급 받은 nft 개수
+        int index = conditionSize - (nftSize * 30);
+        for(Long piece : pieceOfNft) {
+            if(piece == index && conditionSize != 0){
+                return piece;
+            }
         }
         return null;
     }
