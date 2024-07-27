@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "USERS")
@@ -42,14 +43,15 @@ public class User extends BaseEntity {
     @Column(name = "is_notification_enabled")
     private Boolean isNotificationEnabled = true;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<UserRole> userRoles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<InfoPost> infoPosts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InfoPost> infoPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserRoom> userRooms;
+    @Setter
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRoom> userRooms = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "link_id")
@@ -81,5 +83,13 @@ public class User extends BaseEntity {
         }
         this.userRoles.add(userRole);
         userRole.setUser(this); // 양방향 관계 설정
+    }
+
+    public void addUserRoom(UserRoom userRoom) {
+        if (userRooms == null) {
+            userRooms = new ArrayList<>();
+        }
+        this.userRooms.add(userRoom);
+        userRoom.setUser(this); // 양방향 관계 설정
     }
 }
