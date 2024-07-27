@@ -45,13 +45,15 @@ public class InfoPost extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // TODO: [주연] 이미지 필드 추가 필요
+    @Column(name="thumbnail")
+    private String thumbnail;
 
-    public static InfoPost toEntity(CreateInfoPostRequestDto dto, User user) {
+    public static InfoPost toEntity(CreateInfoPostRequestDto dto, User user, String thumbnail) {
         return InfoPost.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .user(user)
+                .thumbnail(thumbnail)
                 .build();
     }
 }
