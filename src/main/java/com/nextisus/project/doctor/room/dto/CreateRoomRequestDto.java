@@ -8,5 +8,5 @@ import lombok.Getter;
 public class CreateRoomRequestDto {
     private String name;
     private String introduction;
-    private Long necessaryNtfCount;
+    private Long necessaryNftCount;
 }

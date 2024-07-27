@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAnyRole('ROLE_DOCTOR', 'ROLE_ADMIN')")
 public class DoctorRoomController {
 
-    private AuthUtil authUtil;
-    private DoctorRoomService doctorRoomService;
+    private final AuthUtil authUtil;
+    private final DoctorRoomService doctorRoomService;
 
     @PostMapping("/createRoom")
     public SuccessResponse<CreateRoomResponseDto> createRoom(@RequestBody CreateRoomRequestDto dto) {
