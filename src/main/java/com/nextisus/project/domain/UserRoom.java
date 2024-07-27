@@ -22,8 +22,8 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class UserRoom {
 
     @Id
@@ -42,23 +42,5 @@ public class UserRoom {
     public UserRoom(User user, Room room) {
         this.user = user;
         this.room = room;
-        user.addUserRoom(this); // 양방향 관계 설정
-        room.addUserRoom(this); // 양방향 관계 설정
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        if (user.getUserRooms() == null) {
-            user.setUserRooms(new ArrayList<>());
-        }
-        user.getUserRooms().add(this);
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-        if (room.getUserRooms() == null) {
-            room.setUserRooms(new ArrayList<>());
-        }
-        room.getUserRooms().add(this);
     }
 }
