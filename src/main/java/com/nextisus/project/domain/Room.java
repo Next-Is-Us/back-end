@@ -46,7 +46,7 @@ public class Room {
     private Long necessaryNftCount = 0L;
 
     @Setter
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRoom> userRooms = new ArrayList<>();
 
     public static Room toEntity(CreateRoomRequestDto dto) {
@@ -62,5 +62,6 @@ public class Room {
             userRooms = new ArrayList<>();
         }
         this.userRooms.add(userRoom);
+        userRoom.setRoom(this); // 양방향 관계 설정
     }
 }
