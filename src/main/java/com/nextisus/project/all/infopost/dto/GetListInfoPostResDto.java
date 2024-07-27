@@ -19,6 +19,7 @@ public class GetListInfoPostResDto {
                 .infoPostId(infoPost.getId())
                 .title(infoPost.getTitle())
                 .content(infoPost.getContent())
+                .imageUrl(infoPost.getThumbnail())
                 .build();
     }
 
