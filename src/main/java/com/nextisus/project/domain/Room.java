@@ -1,5 +1,6 @@
 package com.nextisus.project.domain;
 
+import com.nextisus.project.doctor.room.dto.CreateRoomRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,4 +45,12 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<UserRoom> userRooms;
+
+    public static Room toEntity(CreateRoomRequestDto dto) {
+        return Room.builder()
+                .name(dto.getName())
+                .introduction(dto.getIntroduction())
+                .necessaryNtfCount(dto.getNecessaryNtfCount())
+                .build();
+    }
 }

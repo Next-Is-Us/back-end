@@ -21,7 +21,7 @@ public class DoctorRoomController {
     private AuthUtil authUtil;
     private DoctorRoomService doctorRoomService;
 
-    @PostMapping("createRoom")
+    @PostMapping("/createRoom")
     public SuccessResponse<CreateRoomResponseDto> createRoom(@RequestBody CreateRoomRequestDto dto) {
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
         CreateRoomResponseDto res = doctorRoomService.createRoom(dto, userId);
