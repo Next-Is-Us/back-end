@@ -1,6 +1,7 @@
 package com.nextisus.project.domain;
 
 import com.nextisus.project.doctor.room.dto.CreateRoomRequestDto;
+import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class Room {
+public class Room extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
