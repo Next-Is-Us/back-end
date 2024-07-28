@@ -45,15 +45,19 @@ public class Room {
     @Builder.Default
     private Long necessaryNftCount = 0L;
 
+    @Column(name="thumbnail")
+    private String thumbnail;
+
     @Setter
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRoom> userRooms = new ArrayList<>();
 
-    public static Room toEntity(CreateRoomRequestDto dto) {
+    public static Room toEntity(CreateRoomRequestDto dto, String thumbnail) {
         return Room.builder()
                 .name(dto.getName())
                 .introduction(dto.getIntroduction())
                 .necessaryNftCount(dto.getNecessaryNftCount())
+                .thumbnail(thumbnail)
                 .build();
     }
 
