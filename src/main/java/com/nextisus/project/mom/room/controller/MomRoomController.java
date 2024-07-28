@@ -1,6 +1,7 @@
 package com.nextisus.project.mom.room.controller;
 
 import com.nextisus.project.mom.room.dto.EnterRoomRequestDto;
+import com.nextisus.project.mom.room.dto.GetRoomListResponseDto;
 import com.nextisus.project.mom.room.service.MomRoomService;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.PageResponse;
