@@ -5,6 +5,7 @@ import com.nextisus.project.domain.User;
 import com.nextisus.project.domain.UserRoom;
 import com.nextisus.project.exception.room.RoomNftNotEnough;
 import com.nextisus.project.mom.room.dto.EnterRoomRequestDto;
+import com.nextisus.project.mom.room.dto.GetRoomDetailResponseDto;
 import com.nextisus.project.mom.room.dto.GetRoomListResponseDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.RoomRepository;
@@ -75,5 +76,11 @@ public class MomRoomServiceImpl implements MomRoomService {
         List<GetRoomListResponseDto> list = rooms.getContent();
         PageImpl<GetRoomListResponseDto> data = new PageImpl<>(list, pageable, rooms.getTotalElements());
         return PageResponse.of(data);
+    }
+
+    @Override
+    public GetRoomDetailResponseDto getRoomDetail(Long roomId) {
+        Room room = roomRepository.getById(roomId);
+        return GetRoomDetailResponseDto.from(room);
     }
 }
