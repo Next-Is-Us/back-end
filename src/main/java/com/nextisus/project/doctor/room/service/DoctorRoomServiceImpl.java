@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class DoctorRoomServiceImpl implements DoctorRoomService {
     @Transactional
     @Override
     public CreateRoomResponseDto createRoom(CreateRoomRequestDto dto, Long userId) {
-        try{
+        try {
             // 사용자 존재하는지 확인
             User user = userRepository.getByUser(userId);
 
@@ -37,8 +38,12 @@ public class DoctorRoomServiceImpl implements DoctorRoomService {
                         throw new RoomNameDuplicatedException();
                     });
 
-            //이미지 주소 변환
-            String thumbnailPath = s3UploadService.upload(dto.getThumbnail(),"room-thumbnail");
+            // thumbnail이 있는 경우에만 이미지 주소 변환
+            String thumbnailPath = null;
+            MultipartFile thumbnail = dto.getThumbnail();
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                thumbnailPath = s3UploadService.upload(thumbnail, "room-thumbnail");
+            }
 
             // 생성 및 저장
             Room room = roomRepository.save(Room.toEntity(dto,thumbnailPath));
@@ -50,7 +55,6 @@ public class DoctorRoomServiceImpl implements DoctorRoomService {
 
             // UserRoom 저장
             userRoomRepository.save(userRoom);
-
             return CreateRoomResponseDto.builder().roomId(room.getId()).build();
         }
         catch (DataAccessException dae) {

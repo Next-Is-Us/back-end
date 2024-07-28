@@ -1,6 +1,7 @@
 package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Nft;
+import com.nextisus.project.domain.User;
 import com.nextisus.project.exception.ntf.NftNotFoundException;
 import com.nextisus.project.exception.ntf.UserNftNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
 
     Optional<Nft> findByNftId(Long nftId);
     List<Nft> findAllByUser_Id(Long userNftId);
+
+    Long countByUser(User user);
 
     default Nft getByNft(Long nftId) {
         return findByNftId(nftId).orElseThrow(NftNotFoundException::new);
