@@ -2,10 +2,12 @@ package com.nextisus.project.mom.room.service;
 
 import com.nextisus.project.domain.Room;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.exception.room.RoomNftNotEnough;
 import com.nextisus.project.mom.room.dto.EnterRoomRequestDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,9 +35,9 @@ public class MomRoomServiceImpl implements MomRoomService {
         Long numOfNftToEnterRoom = roomRepository.getById(dto.getRoomId()).getNecessaryNftCount();
         log.info("[방에 입장하기 위한 꽃피 개수] " + numOfNftToEnterRoom);
 
-        if (numOfNftToEnterRoom > numOfNftUserHas) {
-            System.out.println("hi");
-        }
+        Optional.ofNullable(numOfNftToEnterRoom)
+                .filter(nftToEnter -> nftToEnter <= numOfNftUserHas)
+                .orElseThrow(RoomNftNotEnough::new);
 
         // 성공
         // 이미 입장해 있는지 확인 - 연관관계 맺을 필요 X
