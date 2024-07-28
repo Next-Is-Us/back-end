@@ -11,6 +11,7 @@ import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.repository.UserRoomRepository;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class DoctorRoomServiceImpl implements DoctorRoomService {
             }
 
             // 생성 및 저장
-            Room room = roomRepository.save(Room.toEntity(dto,thumbnailPath));
+            Room room = roomRepository.save(Room.toEntity(dto, thumbnailPath));
 
             // 사용자와 룸 간의 연관관계 설정
             UserRoom userRoom = new UserRoom(user, room);
@@ -56,11 +57,12 @@ public class DoctorRoomServiceImpl implements DoctorRoomService {
             // UserRoom 저장
             userRoomRepository.save(userRoom);
             return CreateRoomResponseDto.builder().roomId(room.getId()).build();
-        }
-        catch (DataAccessException dae) {
-            return null;
+        } catch (DataAccessException | RoomNameDuplicatedException e) {
+            throw e; // DataAccessException 및 RoomNameDuplicatedException을 그대로 던지도록 수정
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload thumbnail", e); // IOException을 처리하여 RuntimeException으로 래핑
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException("Unexpected error occurred", e); // 기타 예외 처리
         }
 
     }

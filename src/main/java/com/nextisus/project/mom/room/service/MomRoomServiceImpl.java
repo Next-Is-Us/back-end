@@ -5,12 +5,18 @@ import com.nextisus.project.domain.User;
 import com.nextisus.project.domain.UserRoom;
 import com.nextisus.project.exception.room.RoomNftNotEnough;
 import com.nextisus.project.mom.room.dto.EnterRoomRequestDto;
+import com.nextisus.project.mom.room.dto.GetRoomListResponseDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.repository.UserRoomRepository;
+import com.nextisus.project.util.response.PageResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -59,5 +65,15 @@ public class MomRoomServiceImpl implements MomRoomService {
             userRoomRepository.save(userRoom);
             log.info("방에 성공적으로 입장했습니다.");
         }
+    }
+
+    @Override
+    public PageResponse<GetRoomListResponseDto> getRoomList(Long userId, Pageable pageable) {
+        Long numOfNftUserHas = nftRepository.countByUser(userRepository.getByUser(userId));
+        Page<GetRoomListResponseDto> rooms = roomRepository.findAllByOrderByCreateAtDesc(pageable)
+                .map(room -> GetRoomListResponseDto.from(room, numOfNftUserHas));
+        List<GetRoomListResponseDto> list = rooms.getContent();
+        PageImpl<GetRoomListResponseDto> data = new PageImpl<>(list, pageable, rooms.getTotalElements());
+        return PageResponse.of(data);
     }
 }
