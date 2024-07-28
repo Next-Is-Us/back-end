@@ -2,12 +2,13 @@ package com.nextisus.project.mom.room.service;
 
 import com.nextisus.project.domain.Room;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.domain.UserRoom;
 import com.nextisus.project.exception.room.RoomNftNotEnough;
 import com.nextisus.project.mom.room.dto.EnterRoomRequestDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
-import java.util.Optional;
+import com.nextisus.project.repository.UserRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,11 @@ public class MomRoomServiceImpl implements MomRoomService {
     private final RoomRepository roomRepository;
     private final NftRepository nftRepository;
     private final UserRepository userRepository;
+    private final UserRoomRepository userRoomRepository;
 
 
     @Override
     public void enterRoom(Long userId, EnterRoomRequestDto dto) {
-
-        // [1] 꽃피 개수 부족한지 확인
 
         // [1-1] 유저가 가진 꽃피 개수
         Long numOfNftUserHas = nftRepository.countByUser(userRepository.getByUser(userId));
@@ -35,12 +35,29 @@ public class MomRoomServiceImpl implements MomRoomService {
         Long numOfNftToEnterRoom = roomRepository.getById(dto.getRoomId()).getNecessaryNftCount();
         log.info("[방에 입장하기 위한 꽃피 개수] " + numOfNftToEnterRoom);
 
-        Optional.ofNullable(numOfNftToEnterRoom)
-                .filter(nftToEnter -> nftToEnter <= numOfNftUserHas)
-                .orElseThrow(RoomNftNotEnough::new);
+        // [1-3] 소통방 입장 조건 확인
+        if (numOfNftToEnterRoom > numOfNftUserHas) {
+            throw new RoomNftNotEnough();
+        }
 
-        // 성공
-        // 이미 입장해 있는지 확인 - 연관관계 맺을 필요 X
-        // 이미 입장하지 않았다면 - 연관관계 맺어야 함
+        // [2] 유저 정보 가져오기
+        User user = userRepository.getByUser(userId);
+        Room room = roomRepository.getById(dto.getRoomId());
+
+        // [3] 이미 입장해 있는지 확인
+        boolean alreadyEntered = user.getUserRooms().stream()
+                .anyMatch(userRoom -> userRoom.getRoom().equals(room));
+
+        if (alreadyEntered) {
+            log.info("이미 방에 입장해 있습니다.");
+        } else {
+            // [4] 입장하지 않았다면 연관관계 맺고 데이터 저장
+            UserRoom userRoom = new UserRoom(user, room);
+            user.addUserRoom(userRoom);
+            room.addUserRoom(userRoom);
+
+            userRoomRepository.save(userRoom);
+            log.info("방에 성공적으로 입장했습니다.");
+        }
     }
 }
