@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,9 +23,10 @@ public class MomRoomPostController {
     @GetMapping("/list")
     @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_DOCTOR', 'ROLE_ADMIN')")
     public SuccessResponse<PageResponse<GetRoomPostListResponseDto>> getRoomPostList(
+            @RequestParam Long roomId,
             @PageableDefault(size = 4) Pageable pageable
             ) {
-        PageResponse<GetRoomPostListResponseDto> res = momRoomPostService.getRoomPostList(pageable);
+        PageResponse<GetRoomPostListResponseDto> res = momRoomPostService.getRoomPostList(roomId, pageable);
         return SuccessResponse.of(res);
     }
 }

@@ -5,5 +5,5 @@ import com.nextisus.project.util.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 
 public interface MomRoomPostService {
-    PageResponse<GetRoomPostListResponseDto> getRoomPostList(Pageable pageable);
+    PageResponse<GetRoomPostListResponseDto> getRoomPostList(Long roomId, Pageable pageable);
 }

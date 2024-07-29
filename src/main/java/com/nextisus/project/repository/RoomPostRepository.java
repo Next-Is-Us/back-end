@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface RoomPostRepository extends JpaRepository<RoomPost, Long> {
 
     Optional<RoomPost> findById(Long id);
-    Page<RoomPost> findAllByOrderByCreateAtDesc(Pageable pageable);
+    Page<RoomPost> findAllByRoomIdOrderByCreateAtDesc(Long roomId, Pageable pageable);
 
     default RoomPost getById(Long id) {
         return findById(id).orElseThrow(RoomPostNotFoundException::new);
