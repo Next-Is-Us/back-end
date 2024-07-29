@@ -1,5 +1,7 @@
 package com.nextisus.project.client.link.service;
 
+import com.nextisus.project.client.link.dto.LinkResponseDto;
+
 public interface LinkService {
-    String link();
+    LinkResponseDto link();
 }
