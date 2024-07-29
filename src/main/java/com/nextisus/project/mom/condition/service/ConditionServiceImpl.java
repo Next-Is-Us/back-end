@@ -14,7 +14,10 @@ import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -98,28 +101,28 @@ public class ConditionServiceImpl implements ConditionService {
 
         User user = userRepository.getByUser(userId);
         List<Condition> findConditionByYear = conditionRepository.findByYear(year);
-        Condition finConditionByDate = null;
+        String recordDate = null;
+        Boolean isRecording = false;
         for(Condition condition : findConditionByYear) {
             if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
-                finConditionByDate = condition;
+                //날짜 형식 포맷
+                LocalDateTime createAt = condition.getCreateAt();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                recordDate = createAt.format(formatter);
+                isRecording = true;
             }
             else {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                         null,
-                        false,
+                        isRecording,
                         user.getNickname()
                 );
                 return response;
             }
         }
-        //날짜 형식 포맷
-        LocalDateTime createAt = finConditionByDate.getCreateAt();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        String recordDate = createAt.format(formatter);
-
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                 recordDate,
-                true,
+                isRecording,
                 user.getNickname()
         );
         return response;
@@ -130,28 +133,13 @@ public class ConditionServiceImpl implements ConditionService {
     public ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day) {
 
         List<Condition> findConditionByYear = conditionRepository.findByYear(year);
-        Condition findConditionByDate = null;
+        ConditionListResponseDto response = null;
         for(Condition condition : findConditionByYear) {
             if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
-                findConditionByDate = condition;
+                String date = year + "년 " + month + "월 " + day + "일";
+                response = ConditionListResponseDto.from(condition,date);
             }
         }
-        ConditionListResponseDto response = new ConditionListResponseDto(
-                findConditionByDate.getYear(),
-                findConditionByDate.getMonth(),
-                findConditionByDate.getDay(),
-                findConditionByDate.getSleepTime(),
-                findConditionByDate.getIsBlushing(),
-                findConditionByDate.getIsHeadache(),
-                findConditionByDate.getIsStomachache(),
-                findConditionByDate.getIsConstipated(),
-                findConditionByDate.getIsMusclePainful(),
-                findConditionByDate.getIsSkinTroubled(),
-                findConditionByDate.getIsNumbness(),
-                findConditionByDate.getIsChilled(),
-                findConditionByDate.getIsDepressed(),
-                findConditionByDate.getRecord()
-        );
         return response;
     }
 }
