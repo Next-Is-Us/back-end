@@ -92,11 +92,11 @@ public class ConditionServiceImpl implements ConditionService {
         return SuccessResponse.of(condition);
     }
 
-
     // 날짜별 상태 기록 여부 조회
     @Override
-    public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day) {
+    public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId) {
 
+        User user = userRepository.getByUser(userId);
         List<Condition> findConditionByYear = conditionRepository.findByYear(year);
         Condition finConditionByDate = null;
         for(Condition condition : findConditionByYear) {
@@ -105,7 +105,9 @@ public class ConditionServiceImpl implements ConditionService {
             }
             else {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                        null
+                        null,
+                        false,
+                        user.getNickname()
                 );
                 return response;
             }
@@ -116,7 +118,9 @@ public class ConditionServiceImpl implements ConditionService {
         String recordDate = createAt.format(formatter);
 
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                recordDate
+                recordDate,
+                true,
+                user.getNickname()
         );
         return response;
     }

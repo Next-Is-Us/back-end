@@ -78,6 +78,10 @@ public class Condition extends BaseEntity {
     @JoinColumn(name="NFT_ID")
     private Nft nft;
 
+    @ManyToOne
+    @JoinColumn(name="health_record_id")
+    private HealthRecord healthRecord;
+
     //연관관계 설정
     public void createdCondition(User user) {
         this.user = user;
@@ -85,5 +89,8 @@ public class Condition extends BaseEntity {
 
     public void setNft(Nft nft) {
         this.nft = nft;
+    }
+    public void setHealthRecord(HealthRecord healthRecord) {
+        this.healthRecord = healthRecord;
     }
 }

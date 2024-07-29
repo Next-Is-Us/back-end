@@ -1,6 +1,7 @@
 package com.nextisus.project.client.healthrecord.service;
 
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
+import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
@@ -10,9 +11,13 @@ import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -116,6 +121,11 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         // DB에 저장
         HealthRecord savedHealthRecord = healthRecordRepository.save(healthRecord);
+
+        List<Condition> nullCondition = conditionRepository.findAllByHealthRecordIsNullAndUser_Id(userId);
+        nullCondition.forEach(condition -> {
+            condition.setHealthRecord(savedHealthRecord);
+        });
         return savedHealthRecord;
     }
 
@@ -127,5 +137,14 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         //건강기록 가져오기
         HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
         return HealthRecordResponseDto.from(healthRecord);
+    }
+
+    @Override
+    public PageResponse<PdfListDto> getHealthRecordPdf(Long healthRecordId, Long userId, Pageable pageable) {
+        conditionRepository.getAllByHealthRecord(healthRecordId);
+        Page<PdfListDto> conditions = conditionRepository.findAllByHealthRecord_HealthRecordId(healthRecordId,pageable).map(PdfListDto::from);
+        List<PdfListDto> pdfList = conditions.getContent();
+        PageImpl<PdfListDto> data = new PageImpl<>(pdfList, pageable, conditions.getTotalElements());
+        return PageResponse.of(data);
     }
 }

@@ -9,7 +9,7 @@ public interface ConditionService {
 
     SuccessResponse<?> createCondition(CreateConditionRequestDto request, Long userId);
 
-    ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day);
+    ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId);
 
     ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day);
 }
