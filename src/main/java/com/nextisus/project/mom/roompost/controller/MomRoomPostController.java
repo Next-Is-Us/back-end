@@ -1,9 +1,11 @@
 package com.nextisus.project.mom.roompost.controller;
 
+import com.nextisus.project.mom.roompost.dto.GetRoomPostListResponseDto;
+import com.nextisus.project.mom.roompost.service.MomRoomPostService;
 import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
-import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
