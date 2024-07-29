@@ -33,6 +33,7 @@ public class MomRoomPostServiceImpl implements MomRoomPostService {
     @Override
     public GetRoomPostDetailResponseDto getRoomPostDetail(Long userId, Long roomPostId) {
         RoomPost roomPost = roomPostRepository.getById(roomPostId);
+        roomPost.execute();
         return GetRoomPostDetailResponseDto.from(roomPost);
     }
 }

@@ -71,4 +71,8 @@ public class RoomPost extends BaseEntity {
         }
     }
 
+    public void execute() {
+        this.viewCount++;
+    }
+
 }
