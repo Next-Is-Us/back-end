@@ -40,7 +40,7 @@ public class ClientConditionController {
             @PathVariable Long year,
             @PathVariable Long month,
             @PathVariable Long day) {
-        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year,month,day);
+        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year, month, day);
         return SuccessResponse.of(response);
     }
 }
