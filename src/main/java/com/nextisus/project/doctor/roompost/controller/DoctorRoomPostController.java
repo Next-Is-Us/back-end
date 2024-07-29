@@ -2,6 +2,7 @@ package com.nextisus.project.doctor.roompost.controller;
 
 import com.nextisus.project.doctor.roompost.dto.CreateRoomPostRequestDto;
 import com.nextisus.project.doctor.roompost.dto.CreateRoomPostResponseDto;
+import com.nextisus.project.doctor.roompost.service.DoctorRoomPostService;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
