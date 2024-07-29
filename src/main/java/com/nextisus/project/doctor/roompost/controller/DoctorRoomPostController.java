@@ -1,5 +1,7 @@
 package com.nextisus.project.doctor.roompost.controller;
 
+import com.nextisus.project.doctor.roompost.dto.CreateRoomPostRequestDto;
+import com.nextisus.project.doctor.roompost.dto.CreateRoomPostResponseDto;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ public class DoctorRoomPostController {
     private final AuthUtil authUtil;
     private final DoctorRoomPostService doctorRoomPostService;
 
-    @PostMapping("/{roomId}")
+    @PostMapping
     public SuccessResponse<CreateRoomPostResponseDto> createRoomPost(@RequestBody CreateRoomPostRequestDto dto) {
         long userId = Long.parseLong(authUtil.getCurrentUserId());
         CreateRoomPostResponseDto res = doctorRoomPostService.createRoomPost(userId, dto);
