@@ -34,8 +34,7 @@ public class HealthRecord extends BaseEntity {
         this.user = user;
     }
 
-    public void setPriod(String recordPeriod, String week) {
-        this.recordPeriod = recordPeriod;
-        this.week = week;
+    public void setCount(Long nftCount) {
+        this.nftCount = nftCount;
     }
 }

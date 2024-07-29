@@ -9,6 +9,5 @@ import java.util.List;
 public interface HealthRecordService {
     List<HealthRecordListDto> getHealthRecord(Long userId);
     HealthRecord createHealthRecord(Long userId,Long countNft);
-
     HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId);
 }
