@@ -1,5 +1,6 @@
 package com.nextisus.project.client.link.service;
 
+import com.nextisus.project.client.link.dto.LinkResponseDto;
 import com.nextisus.project.domain.Link;
 import com.nextisus.project.repository.LinkRepository;
 import java.util.UUID;
@@ -15,13 +16,13 @@ public class LinkServiceImpl implements LinkService{
     private final LinkRepository linkRepository;
 
     @Override
-    public String link() {
+    public LinkResponseDto link() {
 
         UUID url = UUID.randomUUID();
         log.info(String.valueOf(url));
 
-        Link save = linkRepository.save(Link.toEntity(url.toString()));
-        return save.getLink();
+        Link link = linkRepository.save(Link.toEntity(url.toString()));
+        return LinkResponseDto.of(link.getLink());
     }
 
 }
