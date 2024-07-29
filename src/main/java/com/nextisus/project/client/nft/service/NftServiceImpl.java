@@ -99,9 +99,9 @@ public class NftServiceImpl implements NftService {
             HealthRecord healthRecord = healthRecordServiceImpl.createHealthRecord(userId,countNft);
 
             //healthInfoId가 null인 nft 가져오기
-            List<Nft> allByHealthRecordIsNull = nftRepository.findAllByHealthRecordIsNull();
-            allByHealthRecordIsNull.forEach(hr -> {
-                hr.setHealthRecord(healthRecord);
+            List<Nft> allByHealthRecordIsNull = nftRepository.findAllByHealthRecordIsNullAndUser_Id(userId);
+            allByHealthRecordIsNull.forEach(n -> {
+                n.setHealthRecord(healthRecord);
             });
         }
         return save;

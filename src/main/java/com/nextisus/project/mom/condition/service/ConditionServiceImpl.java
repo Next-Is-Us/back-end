@@ -83,7 +83,7 @@ public class ConditionServiceImpl implements ConditionService {
             //nft 생성
                 Nft nft = nftServiceImpl.createNft(userId);
                 //nftId가 null인 condition 가져옴
-                List<Condition> allByNftIsNull = conditionRepository.findAllByNftIsNull();
+                List<Condition> allByNftIsNull = conditionRepository.findAllByNftIsNullAndUser_Id(userId);
                 allByNftIsNull.forEach(c -> {
                     c.setNft(nft); //영속성 컨텍스트 어쩌구..
                 });
