@@ -19,13 +19,18 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public List<HospitalListResponseDto> getSearchHospitals(String keyword) {
 
-        //검색한 키워드가 포함된 병원이름 리스트 받아오기
+        // 검색한 키워드가 포함된 병원이름 리스트 받아오기
         List<Hospital> allByHospitalNameContaining = hospitalRepository.findAllByHospitalNameContaining(keyword);
         List<HospitalListResponseDto> responseDto = new ArrayList<>();
+
+        /**
+         * 두 번 호출되는거 해결되면 빼도 됨
+         */
         if(allByHospitalNameContaining.size() == 1000) {
             responseDto.add(null);
         }
-        else{
+
+        else {
             for(Hospital hospital : allByHospitalNameContaining) {
                 responseDto.add(HospitalListResponseDto.from(hospital));
             }

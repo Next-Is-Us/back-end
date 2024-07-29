@@ -80,12 +80,12 @@ public class ApiDataLoader implements CommandLineRunner {
                         String dutyName = getTagValue("dutyName", item);
                         String dutyTel = getTagValue("dutyTel1", item);
 
-//                        Hospital hospital = Hospital.builder()
-//                                .hospitalName(dutyName)
-//                                .hospitalAddress(dutyAddr)
-//                                .hospitalTel(dutyTel)
-//                                .build();
-//                        hospitalRepository.save(hospital);
+                        Hospital hospital = Hospital.builder()
+                                .hospitalName(dutyName)
+                                .hospitalAddress(dutyAddr)
+                                .hospitalTel(dutyTel)
+                                .build();
+                        hospitalRepository.save(hospital);
                     }
 
                 } catch (Exception e) {
