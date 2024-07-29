@@ -53,6 +53,10 @@ public class Room extends BaseEntity {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRoom> userRooms = new ArrayList<>();
 
+    @Setter
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomPost> roomPosts = new ArrayList<>();
+
     public static Room toEntity(CreateRoomRequestDto dto, String thumbnail) {
         return Room.builder()
                 .name(dto.getName())
