@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MomRoomPostController {
 
-    private MomRoomPostService momRoomPostService;
+    private final MomRoomPostService momRoomPostService;
 
     @GetMapping("/list")
     @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_DOCTOR', 'ROLE_ADMIN')")
