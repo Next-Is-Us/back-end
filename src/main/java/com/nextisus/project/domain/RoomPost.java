@@ -1,5 +1,6 @@
 package com.nextisus.project.domain;
 
+import com.nextisus.project.doctor.roompost.dto.CreateRoomPostRequestDto;
 import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,4 +43,13 @@ public class RoomPost extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static RoomPost toEntity(User user, Room room, CreateRoomPostRequestDto dto) {
+        return RoomPost.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .user(user)
+                .room(room)
+                .build();
+    }
 }
