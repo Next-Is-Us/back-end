@@ -9,8 +9,12 @@ import com.nextisus.project.mom.roomcomment.dto.RoomCommentListDto;
 import com.nextisus.project.repository.RoomCommentRepository;
 import com.nextisus.project.repository.RoomPostRepository;
 import com.nextisus.project.repository.UserRepository;
+import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +30,6 @@ public class MomRoomCommentServiceImpl implements MomRoomCommentService {
 
     @Override
     public SuccessResponse<?> createComment(CreateCommentRequestDto dto, Long userId) {
-
         User user = userRepository.getByUser(userId);
         RoomPost roomdPost = roomPostRepository.getById(dto.getRoomPostId());
 
@@ -44,14 +47,12 @@ public class MomRoomCommentServiceImpl implements MomRoomCommentService {
     }
 
     @Override
-    public List<RoomCommentListDto> getComments(Long roomPostId) {
+    public PageResponse<RoomCommentListDto> getComments(Long roomPostId, Pageable pageable) {
+        roomPostRepository.getById(roomPostId);
+        Page<RoomCommentListDto> roomComments = roomCommentRepository.findAllByRoomPost_IdOrderByCreateAtDesc(roomPostId,pageable).map(RoomCommentListDto::from);
+        List<RoomCommentListDto> list = roomComments.getContent();
 
-        RoomPost roomPost = roomPostRepository.getById(roomPostId);
-        List<RoomComment> roomComments = roomCommentRepository.findAllByRoomPost_Id(roomPostId);
-        List<RoomCommentListDto> roomCommentListDtos = new ArrayList<>();
-        for(RoomComment comment : roomComments) {
-            roomCommentListDtos.add(RoomCommentListDto.from(comment));
-        }
-        return roomCommentListDtos;
+        PageImpl<RoomCommentListDto> data = new PageImpl<>(list,pageable,roomComments.getTotalElements());
+        return PageResponse.of(data);
     }
 }
