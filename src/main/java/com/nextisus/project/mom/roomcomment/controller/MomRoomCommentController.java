@@ -8,10 +8,7 @@ import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/roomComment")
@@ -28,4 +25,11 @@ public class MomRoomCommentController {
         momRoomCommentService.createComment(dto,userId);
         return SuccessResponse.empty();
     }
+
+/*    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_DOCTOR', 'ROLE_ADMIN')")
+    public SuccessResponse<List<RoomCommentListDto>> getComments() {
+
+    }*/
+
 }

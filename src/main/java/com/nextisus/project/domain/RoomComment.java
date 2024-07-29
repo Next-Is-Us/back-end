@@ -22,10 +22,15 @@ public class RoomComment extends BaseEntity {
     private String commentContent;
 
     @ManyToOne
+    @JoinColumn(name="room_post_id")
+    private RoomPost roomPost;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setUser (User user) {
+    public void setUser (User user, RoomPost roomPost) {
         this.user = user;
+        this.roomPost = roomPost;
     }
 }
