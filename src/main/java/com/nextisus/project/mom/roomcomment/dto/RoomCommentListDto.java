@@ -1,26 +1,25 @@
 package com.nextisus.project.mom.roomcomment.dto;
 
 import com.nextisus.project.domain.RoomComment;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class RoomCommentListDto {
     private Long commentId;
     private String commentContent;
     private String author;
 
+    public static RoomCommentListDto fromRoomComment(RoomComment roomComment) {
+        return RoomCommentListDto.builder()
+                .commentId(roomComment.getCommentId())
+                .commentContent(roomComment.getCommentContent())
+                .author(roomComment.getUser().getNickname())
+                .build();
+    }
     public static RoomCommentListDto from(RoomComment roomComment) {
-        return new RoomCommentListDto(
-                roomComment.getCommentId(),
-                roomComment.getCommentContent(),
-                roomComment.getUser().getNickname()
-        );
+        return fromRoomComment(roomComment);
     }
 
 }

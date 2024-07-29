@@ -5,9 +5,12 @@ import com.nextisus.project.mom.roomcomment.dto.RoomCommentListDto;
 import com.nextisus.project.mom.roomcomment.service.MomRoomCommentService;
 import com.nextisus.project.mom.roomcomment.service.MomRoomCommentServiceImpl;
 import com.nextisus.project.util.auth.AuthUtil;
+import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +34,11 @@ public class MomRoomCommentController {
 
     @GetMapping("/all/{roomPostId}")
     @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_DOCTOR', 'ROLE_ADMIN')")
-    public SuccessResponse<List<RoomCommentListDto>> getComments(@PathVariable Long roomPostId) {
-        List<RoomCommentListDto> response = momRoomCommentService.getComments(roomPostId);
+    public SuccessResponse<PageResponse<RoomCommentListDto>> getComments(
+            @PathVariable Long roomPostId,
+            @PageableDefault(size=10) Pageable pageable
+    ) {
+        PageResponse<RoomCommentListDto> response = momRoomCommentService.getComments(roomPostId, pageable);
         return SuccessResponse.of(response);
     }
 
