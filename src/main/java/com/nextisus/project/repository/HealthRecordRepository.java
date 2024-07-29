@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface HealthRecordRepository extends JpaRepository<HealthRecord, Integer> {
     Optional<HealthRecord> findByHealthRecordId(Long healthRecordId);
     List<HealthRecord> findAllByUser_Id(Long userId);
+
     default HealthRecord getByHealthRecordId(Long healthRecordId) {
         return findByHealthRecordId(healthRecordId).orElseThrow(HealthRecordNotFoundException::new);
     }

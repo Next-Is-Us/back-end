@@ -9,4 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class ConditionListResponseDtoByDate {
     String date;
+    Boolean isRecording;
+    String nickname;
 }

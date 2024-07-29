@@ -32,7 +32,7 @@ public class AllInfoPostController {
         return SuccessResponse.of(res);
     }
 
-    @GetMapping("/{infoPostId}")
+    @GetMapping("/detail/{infoPostId}")
     public SuccessResponse<GetDetailInfoPostResDto> getDetailInfoPost(@PathVariable("infoPostId") Long infoPostId) {
         GetDetailInfoPostResDto res = allInfoPostService.getDetailInfoPost(infoPostId);
         return SuccessResponse.of(res);

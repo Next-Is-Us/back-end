@@ -1,18 +1,15 @@
 package com.nextisus.project.client.condition.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.nextisus.project.domain.Condition;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ConditionListResponseDto {
-    Long year;
-    Long month;
-    Long day;
+    String nickname;
+    String date;
     String sleepTime;
     Boolean isBlushing;
     Boolean isHeadache;
@@ -24,4 +21,22 @@ public class ConditionListResponseDto {
     Boolean isChilled;
     Boolean isDepressed;
     String record;
+
+    public static ConditionListResponseDto from(Condition condition, String date){
+        return new ConditionListResponseDto(
+                condition.getUser().getNickname(),
+                date,
+                condition.getSleepTime(),
+                condition.getIsBlushing(),
+                condition.getIsHeadache(),
+                condition.getIsStomachache(),
+                condition.getIsConstipated(),
+                condition.getIsMusclePainful(),
+                condition.getIsSkinTroubled(),
+                condition.getIsNumbness(),
+                condition.getIsChilled(),
+                condition.getIsDepressed(),
+                condition.getRecord()
+        );
+    }
 }

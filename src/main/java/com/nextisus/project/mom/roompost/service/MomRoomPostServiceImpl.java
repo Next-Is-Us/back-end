@@ -6,6 +6,7 @@ import com.nextisus.project.domain.User;
 import com.nextisus.project.exception.roompost.RoomPostCreateForbiddenException;
 import com.nextisus.project.mom.roompost.dto.GetRoomPostDetailResponseDto;
 import com.nextisus.project.mom.roompost.dto.GetRoomPostListResponseDto;
+import com.nextisus.project.repository.RoomCommentRepository;
 import com.nextisus.project.repository.RoomPostRepository;
 import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
@@ -25,12 +26,16 @@ public class MomRoomPostServiceImpl implements MomRoomPostService {
     private final RoomRepository roomRepository;
     private final RoomPostRepository roomPostRepository;
     private final UserRepository userRepository;
+    private final RoomCommentRepository roomCommentRepository;
 
     @Override
     public PageResponse<GetRoomPostListResponseDto> getRoomPostList(Long roomId, Pageable pageable) {
         roomRepository.getById(roomId);
         Page<GetRoomPostListResponseDto> roomPosts = roomPostRepository.findAllByRoomIdOrderByCreateAtDesc(roomId, pageable).map(GetRoomPostListResponseDto::from);
         List<GetRoomPostListResponseDto> list = roomPosts.getContent();
+//        list.forEach(post -> {
+//            Long countComment = roomCommentRepository.CountByRoomPost_Id(post.getRoomPostId());
+//        });
         PageImpl<GetRoomPostListResponseDto> data = new PageImpl<>(list, pageable, roomPosts.getTotalElements());
         return PageResponse.of(data);
     }

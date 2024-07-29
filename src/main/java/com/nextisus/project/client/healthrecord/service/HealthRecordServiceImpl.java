@@ -1,6 +1,7 @@
 package com.nextisus.project.client.healthrecord.service;
 
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
+import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.domain.Condition;
 import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
@@ -10,9 +11,13 @@ import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,55 +42,41 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
-        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId+1); //이거 왜 1번으로?
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
+        Boolean isComplete = false;
+        Long totalCount = nftRepository.countByUser_Id(userId);
+        Long nftCount = totalCount % 6; //아직 건강기록으로 변환 안된 nft 갯수
         List<HealthRecordListDto> healthRecordList = new ArrayList<>();
-        log.info("userID : " + userId);
-
-        for(HealthRecord healthRecord : healthRecordsList) {
-            healthRecordList.add(HealthRecordListDto.from(healthRecord));
+        if(nftCount == 0) {
+            for(HealthRecord healthRecord : healthRecordsList) {
+                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
+            }
         }
+        else {
+            HealthRecord nullHealthRecord = HealthRecord.builder()
+                    .healthRecordId(null)
+                    .recordPeriod(null)
+                    .nftCount(nftCount)
+                    .build();
+            for(HealthRecord healthRecord : healthRecordsList) {
+                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
+            }
+            healthRecordList.add(HealthRecordListDto.from(nullHealthRecord,false));
+        }
+
         return healthRecordList;
     }
 
     //건강기록 생성
     @Override
+    @Transactional
     public HealthRecord createHealthRecord(Long userId, Long countNft) {
 
         User byUser = userRepository.getByUser(userId);
 
-        //엔티티 생성
-        HealthRecord healthRecord = HealthRecord.builder()
-                .user(byUser)
-                .build();
-        //연관관계 맺기
-        healthRecord.setUser(byUser);
-        //DB에 저장
-        HealthRecord save = healthRecordRepository.save(healthRecord);
-        return save;
-    }
-
-    //건강기록 세부 조회
-    @Override
-    @Transactional
-    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
-
-        //건강기록 가져오기
-        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
-
-        //클라이언트가 조회하고 싶은 건강 기록의 healthRecordId를 이용해서 nft찾기
-        List<Nft> nfts = nftRepository.findAllByHealthRecord_HealthRecordId(healthRecordId);
-        int nftSize = nfts.size();
-
-        //첫번째로 기록한 상태
-        List<Condition> firstConditions = conditionRepository.findAllByNft_NftId(nfts.get(0).getNftId());
-        //마지막으로 기록한 상태
-        List<Condition> lastConditions = conditionRepository.findAllByNft_NftId(nfts.get(nftSize-1).getNftId());
-
-        List<HealthRecordResponseDto> healthRecordList = new ArrayList<>();
-
-        int lastConditionSize = lastConditions.size();
-        LocalDateTime startTime = firstConditions.get(0).getCreateAt();
-        LocalDateTime endTime = firstConditions.get(lastConditionSize - 1).getCreateAt();
+        //recordPeroid, week 데이터 가공
+        LocalDateTime startTime = conditionRepository.findOldestCreateAtByUserId(userId);
+        LocalDateTime endTime = conditionRepository.findLatestCreateAtByUserId(userId);
 
         // "yyyy.M.dd"형식으로 포맷
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.M.dd");
@@ -107,14 +98,53 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         String week = weeksBetween + "주";
 
-        //기록기간이랑 주 db에 넣어주기
-        healthRecord.setPriod(recordPeriod,week);
+        //nftCount 설정
+        Long totalNft = nftRepository.countByUser_Id(userId);
+        Long nftCount = null;
+        if(totalNft % 6 == 0) {
+            nftCount = 6L;
+        }
+        else{
+            nftCount = totalNft % 6;
+        }
 
-        HealthRecordResponseDto response = new HealthRecordResponseDto(
-                healthRecord.getHealthRecordId(),
-                healthRecord.getRecordPeriod(),
-                healthRecord.getWeek()
-        );
-        return response;
+        // 엔티티 생성
+        HealthRecord healthRecord = HealthRecord.builder()
+                .user(byUser)
+                .recordPeriod(recordPeriod)
+                .week(week)
+                .nftCount(nftCount)
+                .build();
+
+        // 연관관계 맺기
+        healthRecord.setUser(byUser);
+
+        // DB에 저장
+        HealthRecord savedHealthRecord = healthRecordRepository.save(healthRecord);
+
+        List<Condition> nullCondition = conditionRepository.findAllByHealthRecordIsNullAndUser_Id(userId);
+        nullCondition.forEach(condition -> {
+            condition.setHealthRecord(savedHealthRecord);
+        });
+        return savedHealthRecord;
+    }
+
+    //건강기록 세부 조회
+    @Override
+    @Transactional
+    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
+
+        //건강기록 가져오기
+        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
+        return HealthRecordResponseDto.from(healthRecord);
+    }
+
+    @Override
+    public PageResponse<PdfListDto> getHealthRecordPdf(Long healthRecordId, Long userId, Pageable pageable) {
+        conditionRepository.getAllByHealthRecord(healthRecordId);
+        Page<PdfListDto> conditions = conditionRepository.findAllByHealthRecord_HealthRecordId(healthRecordId,pageable).map(PdfListDto::from);
+        List<PdfListDto> pdfList = conditions.getContent();
+        PageImpl<PdfListDto> data = new PageImpl<>(pdfList, pageable, conditions.getTotalElements());
+        return PageResponse.of(data);
     }
 }

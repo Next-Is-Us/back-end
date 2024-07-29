@@ -40,7 +40,7 @@ public class Room extends BaseEntity {
 
     @Column(name = "people_count")
     @Builder.Default
-    private Long peopleCount = 1L; // 소통방 생성 시 전문의가 무조건 존재하기 때문
+    private Long peopleCount = 0L;
 
     @Column(name = "necessary_nft_count")
     @Builder.Default
@@ -72,5 +72,9 @@ public class Room extends BaseEntity {
         }
         this.userRooms.add(userRoom);
         userRoom.setRoom(this); // 양방향 관계 설정
+    }
+
+    public void incrementPeopleCount() {
+        this.peopleCount += 1;
     }
 }
