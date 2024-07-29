@@ -5,8 +5,11 @@ import com.nextisus.project.domain.User;
 import com.nextisus.project.exception.ntf.NftNotFoundException;
 import com.nextisus.project.exception.ntf.UserNftNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +33,6 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
         return nfts;
     }
 
-    List<Nft> findAllByHealthRecordIsNull();
+    List<Nft> findAllByHealthRecordIsNullAndUser_Id(Long userId);
     Long countByUser_Id(Long userId);
-
-    List<Nft> findAllByHealthRecord_HealthRecordId(Long healthRecordId);
 }

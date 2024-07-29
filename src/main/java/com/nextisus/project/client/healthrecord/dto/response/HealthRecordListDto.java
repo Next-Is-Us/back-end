@@ -11,10 +11,13 @@ import lombok.*;
 public class HealthRecordListDto {
     Long healthRecordId;
     String recordPeriod;
+    Long nftCount;
+
     public static HealthRecordListDto from(HealthRecord healthRecord) {
         return new HealthRecordListDto(
                 healthRecord.getHealthRecordId(),
-                healthRecord.getRecordPeriod()
+                healthRecord.getRecordPeriod(),
+                healthRecord.getNftCount()
         );
     }
 }

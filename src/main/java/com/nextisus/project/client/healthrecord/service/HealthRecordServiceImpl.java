@@ -37,10 +37,9 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
-        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId+1); //이거 왜 1번으로?
-        List<HealthRecordListDto> healthRecordList = new ArrayList<>();
-        log.info("userID : " + userId);
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
 
+        List<HealthRecordListDto> healthRecordList = new ArrayList<>();
         for(HealthRecord healthRecord : healthRecordsList) {
             healthRecordList.add(HealthRecordListDto.from(healthRecord));
         }
@@ -49,43 +48,14 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     //건강기록 생성
     @Override
+    @Transactional
     public HealthRecord createHealthRecord(Long userId, Long countNft) {
 
         User byUser = userRepository.getByUser(userId);
 
-        //엔티티 생성
-        HealthRecord healthRecord = HealthRecord.builder()
-                .user(byUser)
-                .build();
-        //연관관계 맺기
-        healthRecord.setUser(byUser);
-        //DB에 저장
-        HealthRecord save = healthRecordRepository.save(healthRecord);
-        return save;
-    }
-
-    //건강기록 세부 조회
-    @Override
-    @Transactional
-    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
-
-        //건강기록 가져오기
-        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
-
-        //클라이언트가 조회하고 싶은 건강 기록의 healthRecordId를 이용해서 nft찾기
-        List<Nft> nfts = nftRepository.findAllByHealthRecord_HealthRecordId(healthRecordId);
-        int nftSize = nfts.size();
-
-        //첫번째로 기록한 상태
-        List<Condition> firstConditions = conditionRepository.findAllByNft_NftId(nfts.get(0).getNftId());
-        //마지막으로 기록한 상태
-        List<Condition> lastConditions = conditionRepository.findAllByNft_NftId(nfts.get(nftSize-1).getNftId());
-
-        List<HealthRecordResponseDto> healthRecordList = new ArrayList<>();
-
-        int lastConditionSize = lastConditions.size();
-        LocalDateTime startTime = firstConditions.get(0).getCreateAt();
-        LocalDateTime endTime = firstConditions.get(lastConditionSize - 1).getCreateAt();
+        //recordPeroid, week 데이터 가공
+        LocalDateTime startTime = conditionRepository.findOldestCreateAtByUserId(userId);
+        LocalDateTime endTime = conditionRepository.findLatestCreateAtByUserId(userId);
 
         // "yyyy.M.dd"형식으로 포맷
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.M.dd");
@@ -107,14 +77,39 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
         String week = weeksBetween + "주";
 
-        //기록기간이랑 주 db에 넣어주기
-        healthRecord.setPriod(recordPeriod,week);
+        //nftCount 설정
+        Long totalNft = nftRepository.countByUser_Id(userId);
+        Long nftCount = null;
+        if(totalNft % 6 == 0) {
+            nftCount = 6L;
+        }
+        else{
+            nftCount = totalNft % 6;
+        }
 
-        HealthRecordResponseDto response = new HealthRecordResponseDto(
-                healthRecord.getHealthRecordId(),
-                healthRecord.getRecordPeriod(),
-                healthRecord.getWeek()
-        );
-        return response;
+        // 엔티티 생성
+        HealthRecord healthRecord = HealthRecord.builder()
+                .user(byUser)
+                .recordPeriod(recordPeriod)
+                .week(week)
+                .nftCount(nftCount)
+                .build();
+
+        // 연관관계 맺기
+        healthRecord.setUser(byUser);
+
+        // DB에 저장
+        HealthRecord savedHealthRecord = healthRecordRepository.save(healthRecord);
+        return savedHealthRecord;
+    }
+
+    //건강기록 세부 조회
+    @Override
+    @Transactional
+    public HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId) {
+
+        //건강기록 가져오기
+        HealthRecord healthRecord = healthRecordRepository.getByHealthRecordId(healthRecordId);
+        return HealthRecordResponseDto.from(healthRecord);
     }
 }
