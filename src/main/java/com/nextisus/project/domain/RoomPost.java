@@ -1,6 +1,7 @@
 package com.nextisus.project.domain;
 
 import com.nextisus.project.doctor.roompost.dto.CreateRoomPostRequestDto;
+import com.nextisus.project.exception.roompost.RoomPostCreateForbiddenException;
 import com.nextisus.project.util.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +47,7 @@ public class RoomPost extends BaseEntity {
     private User user;
 
     public static RoomPost toEntity(User user, Room room, CreateRoomPostRequestDto dto) {
+        checkWriteRoomPostAuthority(user, room);
         return RoomPost.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
@@ -52,4 +55,16 @@ public class RoomPost extends BaseEntity {
                 .room(room)
                 .build();
     }
+
+    // 의사가 해당 방에 글을 작성할 권한이 있는지 확인
+    private static void checkWriteRoomPostAuthority(User user, Room room) {
+        Optional<UserRoom> userRoom = user.getUserRooms().stream()
+                .filter(ur -> ur.getRoom().equals(room))
+                .findFirst();
+
+        if (userRoom.isEmpty()) {
+            throw new RoomPostCreateForbiddenException();
+        }
+    }
+
 }
