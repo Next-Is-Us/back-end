@@ -63,6 +63,9 @@ public class MomRoomServiceImpl implements MomRoomService {
             user.addUserRoom(userRoom);
             room.addUserRoom(userRoom);
 
+            // [5] Room의 peopleCount 1 증가
+            room.incrementPeopleCount();
+
             userRoomRepository.save(userRoom);
             log.info("방에 성공적으로 입장했습니다.");
         }

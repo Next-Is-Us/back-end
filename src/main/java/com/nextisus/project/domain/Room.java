@@ -73,4 +73,8 @@ public class Room extends BaseEntity {
         this.userRooms.add(userRoom);
         userRoom.setRoom(this); // 양방향 관계 설정
     }
+
+    public void incrementPeopleCount() {
+        this.peopleCount += 1;
+    }
 }
