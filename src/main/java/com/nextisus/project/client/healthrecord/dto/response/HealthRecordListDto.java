@@ -12,12 +12,14 @@ public class HealthRecordListDto {
     Long healthRecordId;
     String recordPeriod;
     Long nftCount;
+    Boolean isComplete;
 
-    public static HealthRecordListDto from(HealthRecord healthRecord) {
+    public static HealthRecordListDto from(HealthRecord healthRecord, Boolean isComplete) {
         return new HealthRecordListDto(
                 healthRecord.getHealthRecordId(),
                 healthRecord.getRecordPeriod(),
-                healthRecord.getNftCount()
+                healthRecord.getNftCount(),
+                isComplete
         );
     }
 }
