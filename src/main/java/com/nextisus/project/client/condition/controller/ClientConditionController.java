@@ -29,7 +29,8 @@ public class ClientConditionController {
             @PathVariable Long year,
             @PathVariable Long month,
             @PathVariable Long day) {
-        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(year,month,day);
+        Long userId = Long.parseLong(authUtil.getCurrentUserId());
+        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(year,month,day,userId);
         return SuccessResponse.of(response);
     }
 

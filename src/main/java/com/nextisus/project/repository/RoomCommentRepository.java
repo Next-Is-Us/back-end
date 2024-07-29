@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface RoomCommentRepository extends CrudRepository<RoomComment, Long> {
     List<RoomComment> findAllByRoomPost_Id(Long roomPostId);
+//    Long CountByRoomPost_Id(Long roomPostId);
 }
