@@ -1,5 +1,7 @@
 package com.nextisus.project.mom.roompost.dto;
 
+import static com.nextisus.project.util.format.CreateAtFormat.formatToRelativeTime;
+
 import com.nextisus.project.domain.RoomPost;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +22,11 @@ public class GetRoomPostListResponseDto {
                 .roomPostId(roomPost.getId())
                 .title(roomPost.getTitle())
                 .content(roomPost.getContent())
-                .whenCreated(null) // TODO: 가공 필요
+                .whenCreated(formatToRelativeTime(roomPost.getCreateAt()))
                 .build();
     }
 
     public static GetRoomPostListResponseDto from(RoomPost roomPost) {
         return fromRoomPost(roomPost);
     }
-
 }
