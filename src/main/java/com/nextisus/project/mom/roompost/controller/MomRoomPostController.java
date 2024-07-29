@@ -1,5 +1,6 @@
 package com.nextisus.project.mom.roompost.controller;
 
+import com.nextisus.project.mom.roompost.dto.GetRoomPostDetailResponseDto;
 import com.nextisus.project.mom.roompost.dto.GetRoomPostListResponseDto;
 import com.nextisus.project.mom.roompost.service.MomRoomPostService;
 import com.nextisus.project.util.auth.AuthUtil;
