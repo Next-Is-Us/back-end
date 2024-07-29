@@ -98,28 +98,28 @@ public class ConditionServiceImpl implements ConditionService {
 
         User user = userRepository.getByUser(userId);
         List<Condition> findConditionByYear = conditionRepository.findByYear(year);
-        Condition finConditionByDate = null;
+        String recordDate = null;
+        Boolean isRecording = false;
         for(Condition condition : findConditionByYear) {
             if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
-                finConditionByDate = condition;
+                //날짜 형식 포맷
+                LocalDateTime createAt = condition.getCreateAt();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                recordDate = createAt.format(formatter);
+                isRecording = true;
             }
             else {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                         null,
-                        false,
+                        isRecording,
                         user.getNickname()
                 );
                 return response;
             }
         }
-        //날짜 형식 포맷
-        LocalDateTime createAt = finConditionByDate.getCreateAt();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        String recordDate = createAt.format(formatter);
-
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                 recordDate,
-                true,
+                isRecording,
                 user.getNickname()
         );
         return response;
