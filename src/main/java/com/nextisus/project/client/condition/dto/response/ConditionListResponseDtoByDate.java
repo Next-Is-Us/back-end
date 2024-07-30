@@ -11,4 +11,5 @@ public class ConditionListResponseDtoByDate {
     String date;
     Boolean isRecording;
     String nickname;
+    Boolean isInvited;
 }
