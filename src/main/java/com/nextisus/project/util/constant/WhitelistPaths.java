@@ -5,7 +5,8 @@ public class WhitelistPaths {
             "/api/test", // 통신 테스트
             "/api/link", // 온보딩
             "/api/user/signUp", // 온보딩
-            "/api/admin/accessToken", // 관리자 건강 정보 게시글 작성
+            "/api/admin/accessToken", // 관리자 accessToken 발급
+            "/api/doctor/accessToken", // 의사 accessToken 발급
 
             // Swagger
             "/swagger-ui.html",
