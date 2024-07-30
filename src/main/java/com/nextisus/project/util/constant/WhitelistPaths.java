@@ -7,6 +7,7 @@ public class WhitelistPaths {
             "/api/user/signUp", // 온보딩
             "/api/admin/accessToken", // 관리자 accessToken 발급
             "/api/doctor/accessToken", // 의사 accessToken 발급
+            "/api/email/**", // TODO: 권한 있는 유저로 막기
 
             // Swagger
             "/swagger-ui.html",
