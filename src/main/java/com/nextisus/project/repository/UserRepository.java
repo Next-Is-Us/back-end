@@ -21,6 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByNickname(String nickname);
     Optional<User> findByLink(Link link);
     Optional<User> findByIdAndLink(Long id, Link link);
+
+    boolean existsByNickname(String nickname);
 //    List<User> findAllByLinkAndUserRoles(Link link, List<UserRole> userRoles);
     @Query("SELECT u FROM User u JOIN u.userRoles ur WHERE ur.role IN :roles AND u.link = :link")
     List<User> findAllByLinkAndRoles(@Param("link") Link link, @Param("roles") List<Role> roles);
