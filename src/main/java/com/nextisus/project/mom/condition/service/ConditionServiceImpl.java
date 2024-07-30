@@ -50,12 +50,15 @@ public class ConditionServiceImpl implements ConditionService {
         String month = today.format(monthformatter);
         String day = today.format(dayformatter);
 
+        //수면 시간 포맷
+        String sleepTime = request.getSleepTime() + "시간";
+
         // 사용자 조회
         User user = userRepository.getByUser(userId);
 
         // 새로운 상태 엔티티 생성
         Condition condition = Condition.builder()
-                .sleepTime(request.getSleepTime())
+                .sleepTime(sleepTime)
                 .isBlushing(request.getIsBlushing())
                 .isHeadache(request.getIsHeadache())
                 .isStomachache(request.getIsStomachache())
