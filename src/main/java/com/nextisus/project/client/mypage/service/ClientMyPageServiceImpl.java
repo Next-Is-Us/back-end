@@ -7,7 +7,6 @@ import com.nextisus.project.domain.Link;
 import com.nextisus.project.domain.Role;
 import com.nextisus.project.domain.RoleName;
 import com.nextisus.project.domain.User;
-import com.nextisus.project.domain.UserRole;
 import com.nextisus.project.repository.LinkRepository;
 import com.nextisus.project.repository.RoleRepository;
 import com.nextisus.project.repository.UserRepository;
@@ -41,11 +40,7 @@ public class ClientMyPageServiceImpl implements ClientMyPageService {
                 .map(roleRepository::getByRoleName)
                 .toList();
 
-        List<UserRole> userRoles = roles.stream()
-                .map(role -> UserRole.builder().role(role).build())
-                .collect(Collectors.toList());
-
-        List<User> allUsers = userRepository.findAllByLinkAndUserRoles(link, userRoles);
+        List<User> allUsers = userRepository.findAllByLinkAndRoles(link, roles);
 
         return allUsers.stream()
                 .filter(u -> !u.getId().equals(userId)) // 현재 유저 제외
