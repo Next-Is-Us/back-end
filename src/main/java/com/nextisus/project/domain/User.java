@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +25,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"link_id", "nickname"})
+        })
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)

@@ -47,15 +47,12 @@ public class UserServiceImpl implements UserService {
 
         // 회원가입
         User user = User.toEntity(dto, roles, link);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         // accessToken 발급
         String accessToken = jwtTokenProvider.createToken(user.getId().toString(), roles);
 
         // 응답
-        return SignUpResponseDto.builder()
-                .id(user.getId())
-                .accessToken(accessToken)
-                .build();
+        return SignUpResponseDto.from(savedUser, accessToken);
     }
 }
