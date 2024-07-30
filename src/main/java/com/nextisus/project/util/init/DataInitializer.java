@@ -1,14 +1,17 @@
 package com.nextisus.project.util.init;
 
-import com.nextisus.project.domain.*;
-import com.nextisus.project.repository.*;
+import com.nextisus.project.domain.Role;
+import com.nextisus.project.domain.RoleName;
+import com.nextisus.project.domain.User;
+import com.nextisus.project.domain.UserRole;
+import com.nextisus.project.repository.ConditionRepository;
+import com.nextisus.project.repository.HealthRecordRepository;
+import com.nextisus.project.repository.NftRepository;
+import com.nextisus.project.repository.RoleRepository;
+import com.nextisus.project.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class DataInitializer {
     public void init() {
         createRole();
         User adminUser = createAdminAccount();
-        User doctorUser = createDoctorAccount();
+        createDoctorAccounts(5);
 //        createConditions(adminUser);
 //        createNftsAndHealthRecord(adminUser);
     }
@@ -66,28 +69,36 @@ public class DataInitializer {
         return userRepository.findAll().get(0); // 이미 존재하는 사용자가 있는 경우 첫 번째 사용자 반환
     }
 
-    // 의사 계정 생성
-    // 의사 계정 생성
-    private User createDoctorAccount() {
+    // 의사 계정 여러 개 생성
+    private void createDoctorAccounts(int numberOfDoctors) {
         Role doctorRole = roleRepository.getByRoleName(RoleName.ROLE_DOCTOR);
 
-        // User 생성
-        User doctorUser = User.builder()
-                .nickname("의사1")
-                .isNotificationEnabled(true)
-                .build();
+        for (int i = 1; i <= numberOfDoctors; i++) {
+            String nickname = "의사" + i;
 
-        // UserRole 생성
-        UserRole doctorUserRole = UserRole.builder()
-                .user(doctorUser)
-                .role(doctorRole)
-                .build();
+            // 중복된 닉네임 체크
+            if (userRepository.existsByNickname(nickname)) {
+                continue; // 중복된 닉네임이 있으면 다음으로 넘어감
+            }
 
-        // UserRole 설정
-        doctorUser.addUserRole(doctorUserRole);
+            // User 생성
+            User doctorUser = User.builder()
+                    .nickname(nickname)
+                    .isNotificationEnabled(true)
+                    .build();
 
-        // User 저장
-        return userRepository.save(doctorUser);
+            // UserRole 생성
+            UserRole doctorUserRole = UserRole.builder()
+                    .user(doctorUser)
+                    .role(doctorRole)
+                    .build();
+
+            // UserRole 설정
+            doctorUser.addUserRole(doctorUserRole);
+
+            // User 저장
+            userRepository.save(doctorUser);
+        }
     }
 
     /*// 초기 Condition 생성
