@@ -111,7 +111,6 @@ public class ConditionServiceImpl implements ConditionService {
         if(countLink > 1) {
             isInvited = true;
         }
-
         List<Condition> conditionsByUser = conditionRepository.findAllByUser_Id(userId);
         String recordDate = null;
         Boolean isRecording = false;
