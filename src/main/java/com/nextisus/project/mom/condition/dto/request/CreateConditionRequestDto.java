@@ -12,8 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateConditionRequestDto {
 
-    @NotBlank(message = "수면 시간을 입력해주세요")
-    String sleepTime;
+    @NotNull(message = "수면 시간을 선택해주세요")
+    Long sleepTime;
 
     Boolean isBlushing;
     Boolean isHeadache;
@@ -25,7 +25,6 @@ public class CreateConditionRequestDto {
     Boolean isChilled;
     Boolean isDepressed;
 
-    @NotBlank
     @Size(max = 300, message = "추가 기록은 최대 300자 입니다.")
     String record;
 }
