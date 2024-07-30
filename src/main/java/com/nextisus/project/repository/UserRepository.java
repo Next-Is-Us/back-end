@@ -2,6 +2,8 @@ package com.nextisus.project.repository;
 
 import com.nextisus.project.domain.Link;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.domain.UserRole;
+import java.util.List;
 import java.util.Optional;
 
 import com.nextisus.project.exception.user.UserNotFoundException;
@@ -16,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByNickname(String nickname);
     Optional<User> findByLink(Link link);
     Optional<User> findByIdAndLink(Long id, Link link);
+    List<User> findAllByLinkAndUserRoles(Link link, List<UserRole> userRoles);
     default User getByUser(Long id) {
         return findById(id).orElseThrow(UserNotFoundException::new);
     }

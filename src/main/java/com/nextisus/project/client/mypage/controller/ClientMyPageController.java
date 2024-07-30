@@ -6,6 +6,7 @@ import com.nextisus.project.client.mypage.dto.GetMyNicknameResponseDto;
 import com.nextisus.project.client.mypage.service.ClientMyPageService;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.SuccessResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +31,9 @@ public class ClientMyPageController {
 
     @GetMapping("/familyInformation")
     @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_DAUGHTER', 'ROLE_SON', 'ROLE_ADMIN')")
-    public SuccessResponse<GetMyFamilyInformationResponseDto> getMyFamilyInformation() {
+    public SuccessResponse<List<GetMyFamilyInformationResponseDto>> getMyFamilyInformation() {
         long userId = Long.parseLong(authUtil.getCurrentUserId());
-        GetMyFamilyInformationResponseDto res = clientMyPageService.getMyFamilyInformation(userId);
+        List<GetMyFamilyInformationResponseDto> res = clientMyPageService.getMyFamilyInformation(userId);
         return SuccessResponse.of(res);
     }
 
