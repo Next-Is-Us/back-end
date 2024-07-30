@@ -1,7 +1,5 @@
 package com.nextisus.project.mom.condition.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.nextisus.project.all.infopost.service.AllInfoPostServiceImpl;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.mom.condition.dto.request.CreateConditionRequestDto;
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDto;
@@ -35,7 +33,6 @@ public class ConditionServiceImpl implements ConditionService {
     private final UserRepository userRepository;
     private final NftServiceImpl nftServiceImpl;
     private final NftRepository nftRepository;
-    private final AllInfoPostServiceImpl allInfoPostServiceImpl;
 
     //오늘의 상태 기록
     @Override
@@ -106,11 +103,11 @@ public class ConditionServiceImpl implements ConditionService {
     public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId) {
 
         User user = userRepository.getByUser(userId);
-        List<Condition> conditionsByUser = conditionRepository.findAllByUser_Id(userId);
+        List<Condition> findConditionByYear = conditionRepository.findByYear(year);
         String recordDate = null;
         Boolean isRecording = false;
-        for(Condition condition : conditionsByUser) {
-            if(condition.getMonth().equals(month) && condition.getDay().equals(day) && condition.getYear().equals(year)) {
+        for(Condition condition : findConditionByYear) {
+            if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
                 //날짜 형식 포맷
                 LocalDateTime createAt = condition.getCreateAt();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
