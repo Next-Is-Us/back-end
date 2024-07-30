@@ -48,10 +48,9 @@ public class ClientMyPageServiceImpl implements ClientMyPageService {
         List<User> allUsers = userRepository.findAllByLinkAndUserRoles(link, userRoles);
 
         return allUsers.stream()
+                .filter(u -> !u.getId().equals(userId)) // 현재 유저 제외
                 .map(GetMyFamilyInformationResponseDto::from)
                 .collect(Collectors.toList());
-
-        // TODO: 현재 유저는 제외하기
     }
 
     @Override
