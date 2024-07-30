@@ -56,6 +56,7 @@ public class ClientMyPageServiceImpl implements ClientMyPageService {
 
     @Override
     public GetLinkResponseDto getLink(Long userId) {
-        return null;
+        User user = userRepository.getByUser(userId);
+        return GetLinkResponseDto.of(user);
     }
 }
