@@ -106,6 +106,12 @@ public class ConditionServiceImpl implements ConditionService {
     public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId) {
 
         User user = userRepository.getByUser(userId);
+        Long countLink = userRepository.countByLink_Id(user.getLink().getId());
+        Boolean isInvited = false;
+        if(countLink > 1) {
+            isInvited = true;
+        }
+
         List<Condition> conditionsByUser = conditionRepository.findAllByUser_Id(userId);
         String recordDate = null;
         Boolean isRecording = false;
@@ -121,7 +127,8 @@ public class ConditionServiceImpl implements ConditionService {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                         null,
                         isRecording,
-                        user.getNickname()
+                        user.getNickname(),
+                        isInvited
                 );
                 return response;
             }
@@ -129,7 +136,8 @@ public class ConditionServiceImpl implements ConditionService {
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                 recordDate,
                 isRecording,
-                user.getNickname()
+                user.getNickname(),
+                isInvited
         );
         return response;
     }

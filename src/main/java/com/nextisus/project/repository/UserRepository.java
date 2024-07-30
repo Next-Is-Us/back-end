@@ -31,5 +31,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     default User getByNickname(String nickname) {
         return findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
+    Long countByLink_Id(Long linkId);
 
 }
