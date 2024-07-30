@@ -29,3 +29,7 @@ cloud:
     credentials:
       access-key: AKIA3SUSXNPNEH7MTUFE
       secret-key: 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
+
+logging:
+  level:
+    root: info
