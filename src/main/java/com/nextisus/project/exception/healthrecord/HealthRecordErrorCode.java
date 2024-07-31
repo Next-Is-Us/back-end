@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import static com.nextisus.project.util.constant.StaticValue.*;
+import static com.nextisus.project.util.constant.StaticValue.NOT_FOUND;
 
 @Getter
 @AllArgsConstructor
