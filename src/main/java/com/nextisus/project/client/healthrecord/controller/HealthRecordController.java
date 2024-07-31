@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.controller;
 
+import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
@@ -8,6 +9,7 @@ import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.util.auth.AuthUtil;
 import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -52,6 +55,13 @@ public class HealthRecordController {
         Long userId = Long.parseLong(authUtils.getCurrentUserId());
         PageResponse<PdfListDto> response = healthRecordService.getHealthRecordPdf(healthRecordId, userId, pageable);
         return SuccessResponse.of(response);
+    }
+
+    //PDF 파일 저장
+    @PostMapping(value = "/savePdf", consumes = {"multipart/form-data"})
+    public SuccessResponse<?> savePdf(@Valid @ModelAttribute CreatePdfDto createPdfDto) {
+        healthRecordService.savePdf(createPdfDto);
+        return SuccessResponse.empty();
     }
 
 }
