@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
@@ -15,4 +16,7 @@ public interface HealthRecordService {
     HealthRecordResponseDto getHealthRecordDetail(Long healthRecordId);
 
     PageResponse<PdfListDto> getHealthRecordPdf(Long healthRecordId, Long userId, Pageable pageable);
+
+    void savePdf(CreatePdfDto createPdfDto);
 }
+

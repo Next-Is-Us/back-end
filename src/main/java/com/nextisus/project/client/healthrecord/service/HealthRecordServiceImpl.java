@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.domain.Condition;
@@ -7,6 +8,8 @@ import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
+import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
@@ -15,6 +18,7 @@ import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +40,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
     private final ConditionRepository conditionRepository;
+    private final S3UploadService s3UploadService;
 
     //건강기록 전체 조회
     @Override
@@ -146,5 +151,15 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         List<PdfListDto> pdfList = conditions.getContent();
         PageImpl<PdfListDto> data = new PageImpl<>(pdfList, pageable, conditions.getTotalElements());
         return PageResponse.of(data);
+    }
+
+    @Override
+    public void savePdf(CreatePdfDto createPdfDto) {
+        try {
+            s3UploadService.upload(createPdfDto.getPdfFile(),"pdf-file");
+        }
+        catch (Exception e) {
+            throw new PdfInternalServerErrorException();
+        }
     }
 }
