@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,11 +32,9 @@ public class S3UploadService {
         } catch (IOException e) {
             throw new RuntimeException("오류: MultipartFile -> File 변환 실패", e);
         }
-
-        String fileName = dirName + "/" + convFile.getName();
+        String fileName =  dirName + "/" + convFile.getName() + UUID.randomUUID();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(convFile.length());
-
         try {
             amazonS3.putObject(bucket, fileName, convFile);
         } catch (Exception e) {
