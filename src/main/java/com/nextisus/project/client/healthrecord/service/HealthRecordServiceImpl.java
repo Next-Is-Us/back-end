@@ -47,28 +47,19 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
-        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
-        Boolean isComplete = false;
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_IdOrderByCreateAtDesc(userId);
         Long totalCount = nftRepository.countByUser_Id(userId);
         Long nftCount = totalCount % 6; //아직 건강기록으로 변환 안된 nft 갯수
         List<HealthRecordListDto> healthRecordList = new ArrayList<>();
-        if(nftCount == 0) {
-            for(HealthRecord healthRecord : healthRecordsList) {
-                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
-            }
+        HealthRecord nullHealthRecord = HealthRecord.builder()
+                .healthRecordId(null)
+                .recordPeriod(null)
+                .nftCount(nftCount)
+                .build();
+        healthRecordList.add(HealthRecordListDto.from(nullHealthRecord,false));
+        for(HealthRecord healthRecord : healthRecordsList) {
+            healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
         }
-        else {
-            HealthRecord nullHealthRecord = HealthRecord.builder()
-                    .healthRecordId(null)
-                    .recordPeriod(null)
-                    .nftCount(nftCount)
-                    .build();
-            for(HealthRecord healthRecord : healthRecordsList) {
-                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
-            }
-            healthRecordList.add(HealthRecordListDto.from(nullHealthRecord,false));
-        }
-
         return healthRecordList;
     }
 

@@ -11,6 +11,7 @@ import lombok.*;
 public class HealthRecordListDto {
     Long healthRecordId;
     String recordPeriod;
+    String week;
     Long nftCount;
     Boolean isComplete;
 
@@ -18,6 +19,7 @@ public class HealthRecordListDto {
         return new HealthRecordListDto(
                 healthRecord.getHealthRecordId(),
                 healthRecord.getRecordPeriod(),
+                healthRecord.getWeek(),
                 healthRecord.getNftCount(),
                 isComplete
         );
