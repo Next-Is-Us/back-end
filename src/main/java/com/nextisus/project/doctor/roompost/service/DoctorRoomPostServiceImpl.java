@@ -10,6 +10,7 @@ import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class DoctorRoomPostServiceImpl implements DoctorRoomPostService {
     private final RoomRepository roomRepository;
 
     @Override
+    @Transactional
     public CreateRoomPostResponseDto createRoomPost(Long userId, CreateRoomPostRequestDto dto) {
 
         // [1-1] User 가져오기
