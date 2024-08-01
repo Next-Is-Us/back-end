@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.service;
 
+import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.domain.Condition;
@@ -7,6 +8,8 @@ import com.nextisus.project.domain.HealthRecord;
 import com.nextisus.project.domain.Nft;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
 import com.nextisus.project.domain.User;
+import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
+import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
@@ -15,6 +18,7 @@ import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,34 +40,26 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
     private final ConditionRepository conditionRepository;
+    private final S3UploadService s3UploadService;
 
     //건강기록 전체 조회
     @Override
     public List<HealthRecordListDto> getHealthRecord(Long userId) {
 
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
-        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_Id(userId);
-        Boolean isComplete = false;
+        List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_IdOrderByCreateAtDesc(userId);
         Long totalCount = nftRepository.countByUser_Id(userId);
         Long nftCount = totalCount % 6; //아직 건강기록으로 변환 안된 nft 갯수
         List<HealthRecordListDto> healthRecordList = new ArrayList<>();
-        if(nftCount == 0) {
-            for(HealthRecord healthRecord : healthRecordsList) {
-                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
-            }
+        HealthRecord nullHealthRecord = HealthRecord.builder()
+                .healthRecordId(null)
+                .recordPeriod(null)
+                .nftCount(nftCount)
+                .build();
+        healthRecordList.add(HealthRecordListDto.from(nullHealthRecord,false));
+        for(HealthRecord healthRecord : healthRecordsList) {
+            healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
         }
-        else {
-            HealthRecord nullHealthRecord = HealthRecord.builder()
-                    .healthRecordId(null)
-                    .recordPeriod(null)
-                    .nftCount(nftCount)
-                    .build();
-            for(HealthRecord healthRecord : healthRecordsList) {
-                healthRecordList.add(HealthRecordListDto.from(healthRecord,true));
-            }
-            healthRecordList.add(HealthRecordListDto.from(nullHealthRecord,false));
-        }
-
         return healthRecordList;
     }
 
@@ -146,5 +142,15 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         List<PdfListDto> pdfList = conditions.getContent();
         PageImpl<PdfListDto> data = new PageImpl<>(pdfList, pageable, conditions.getTotalElements());
         return PageResponse.of(data);
+    }
+
+    @Override
+    public void savePdf(CreatePdfDto createPdfDto) {
+        try {
+            s3UploadService.upload(createPdfDto.getPdfFile(),"pdf-file");
+        }
+        catch (Exception e) {
+            throw new PdfInternalServerErrorException();
+        }
     }
 }
