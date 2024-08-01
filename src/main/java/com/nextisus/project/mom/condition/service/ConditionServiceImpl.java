@@ -124,7 +124,7 @@ public class ConditionServiceImpl implements ConditionService {
             }
             else {
                 ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                        null,
+                        recordDate,
                         isRecording,
                         user.getNickname(),
                         isInvited
