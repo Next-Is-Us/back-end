@@ -9,10 +9,18 @@ import com.nextisus.project.exception.healthrecord.MomNotFoundExecption;
 import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
 import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.*;
+import com.nextisus.project.domain.User;
+import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
+import com.nextisus.project.image.service.S3UploadService;
+import com.nextisus.project.repository.ConditionRepository;
+import com.nextisus.project.repository.HealthRecordRepository;
+import com.nextisus.project.repository.NftRepository;
+import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +45,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final ConditionRepository conditionRepository;
     private final S3UploadService s3UploadService;
     private final UserRoleRepository userRoleRepository;
+
 
     //건강기록 전체 조회
     @Override
