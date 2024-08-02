@@ -121,8 +121,7 @@ public class ConditionServiceImpl implements ConditionService {
             isRecording = true;
         }else{
             recordDate = null;
-            isRecording = false;
-
+            isRecording = false;    
         }
         //엔티티 생성
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
