@@ -33,9 +33,9 @@ public class HealthRecordController {
 
     // 건강 기록 전체 조회
     @GetMapping
-    public SuccessResponse<List<HealthRecordListDto>> getHealthRecord() {
+    public SuccessResponse<List<HealthRecordListDto>> getHealthRecord(@RequestParam String userRole) {
         Long userId = Long.parseLong(authUtils.getCurrentUserId());
-        List<HealthRecordListDto> response = healthRecordService.getHealthRecord(userId);
+        List<HealthRecordListDto> response = healthRecordService.getHealthRecord(userId, userRole);
         return SuccessResponse.of(response);
     }
 

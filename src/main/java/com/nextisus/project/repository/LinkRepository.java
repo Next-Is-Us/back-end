@@ -15,4 +15,6 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
         return findByLink(link).orElseThrow(LinkNotFoundException::new);
     }
 
+    Optional<Link> findById(Long id);
+
 }

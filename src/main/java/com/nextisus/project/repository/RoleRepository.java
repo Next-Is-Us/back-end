@@ -14,4 +14,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     default Role getByRoleName(RoleName roleName) {
         return findByRoleName(roleName).orElseThrow(RoleNotFoundException::new);
     }
+
+    Optional<Role> findById(Long id);
 }
