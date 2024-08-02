@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
     Optional<User> findByLinkAndNickname(Link link, String nickname);
     Optional<User> findByNickname(String nickname);
-    Optional<User> findByLink(Link link);
+    List<User> findByLink(Link link);
     Optional<User> findByIdAndLink(Long id, Link link);
 
     boolean existsByNickname(String nickname);
@@ -34,5 +34,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
     Long countByLink_Id(Long linkId);
-
 }
