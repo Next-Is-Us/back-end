@@ -2,16 +2,12 @@ package com.nextisus.project.mom.condition.service;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.nextisus.project.all.infopost.service.AllInfoPostServiceImpl;
-import com.nextisus.project.domain.Nft;
+import com.nextisus.project.domain.*;
 import com.nextisus.project.mom.condition.dto.request.CreateConditionRequestDto;
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDtoByDate;
-import com.nextisus.project.repository.ConditionRepository;
-import com.nextisus.project.domain.Condition;
-import com.nextisus.project.domain.User;
+import com.nextisus.project.repository.*;
 import com.nextisus.project.client.nft.service.NftServiceImpl;
-import com.nextisus.project.repository.NftRepository;
-import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +32,9 @@ public class ConditionServiceImpl implements ConditionService {
     private final NftServiceImpl nftServiceImpl;
     private final NftRepository nftRepository;
     private final AllInfoPostServiceImpl allInfoPostServiceImpl;
+    private final LinkRepository linkRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository roleRepository;
 
     //오늘의 상태 기록
     @Override
@@ -107,36 +106,32 @@ public class ConditionServiceImpl implements ConditionService {
 
         User user = userRepository.getByUser(userId);
         Long countLink = userRepository.countByLink_Id(user.getLink().getId());
+        Optional<Link> link = linkRepository.findById(user.getLink().getId());
         Boolean isInvited = false;
+        UserRole userRole = userRoleRepository.findByUser_Id(userId);
+        Optional<Role> role = roleRepository.findById(userRole.getRole().getId());
         if(countLink > 1) {
             isInvited = true;
         }
-        List<Condition> conditionsByUser = conditionRepository.findAllByUser_Id(userId);
-        String recordDate = null;
-        Boolean isRecording = false;
-        for(Condition condition : conditionsByUser) {
-            if(condition.getMonth().equals(month) && condition.getDay().equals(day) && condition.getYear().equals(year)) {
-                //날짜 형식 포맷
-                LocalDateTime createAt = condition.getCreateAt();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-                recordDate = createAt.format(formatter);
-                isRecording = true;
-            }
-            else {
-                ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
-                        recordDate,
-                        isRecording,
-                        user.getNickname(),
-                        isInvited
-                );
-                return response;
-            }
+        String recordDate;
+        Boolean isRecording;
+        Boolean existCondition = conditionRepository.existsByYearAndMonthAndDayAndUser_Id(year, month, day, userId);
+        if(existCondition) {
+            recordDate = year+"."+month+"."+day;
+            isRecording = true;
+        }else{
+            recordDate = null;
+            isRecording = false;
+
         }
+        //엔티티 생성
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
                 recordDate,
                 isRecording,
                 user.getNickname(),
-                isInvited
+                isInvited,
+                link.get().getLink(),
+                role.get().getRoleName().toString()
         );
         return response;
     }
