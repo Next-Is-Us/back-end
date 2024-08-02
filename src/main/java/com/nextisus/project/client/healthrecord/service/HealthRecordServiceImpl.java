@@ -3,10 +3,12 @@ package com.nextisus.project.client.healthrecord.service;
 import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
-import com.nextisus.project.domain.Condition;
-import com.nextisus.project.domain.HealthRecord;
-import com.nextisus.project.domain.Nft;
+import com.nextisus.project.domain.*;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;
+import com.nextisus.project.exception.healthrecord.MomNotFoundExecption;
+import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
+import com.nextisus.project.image.service.S3UploadService;
+import com.nextisus.project.repository.*;
 import com.nextisus.project.domain.User;
 import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
 import com.nextisus.project.image.service.S3UploadService;
@@ -30,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +44,37 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     private final HealthRecordRepository healthRecordRepository;
     private final ConditionRepository conditionRepository;
     private final S3UploadService s3UploadService;
+    private final UserRoleRepository userRoleRepository;
+
 
     //건강기록 전체 조회
     @Override
-    public List<HealthRecordListDto> getHealthRecord(Long userId) {
+    public List<HealthRecordListDto> getHealthRecord(Long userId, String userRole) {
 
+        if(userRole.equals("ROLE_MOM")){
+            return getHealthRecordList(userId);
+        }
+        else {
+            //자녀 유저
+            Optional<User> user = userRepository.findById(userId);
+            //엄마와 자녀유저를 담은 리스트
+            List<User> byLink = userRepository.findByLink(user.get().getLink());
+            User findUser = null;
+            for(User u : byLink){
+                UserRole findMom = userRoleRepository.findByUser_IdAndRole_Id(u.getId(), 2L);
+                    if(findMom != null){
+                        Optional<User> mom = userRepository.findById(findMom.getId());
+                        findUser = mom.get();
+                        break;
+                    } else {
+                        throw new MomNotFoundExecption();
+                    }
+            }
+            return getHealthRecordList(findUser.getId());
+        }
+    }
+
+    public List<HealthRecordListDto> getHealthRecordList(Long userId) {
         //조회한 유저에게 존재하는 건강 기록 리스트 받아오기
         List<HealthRecord> healthRecordsList = healthRecordRepository.findAllByUser_IdOrderByCreateAtDesc(userId);
         Long totalCount = nftRepository.countByUser_Id(userId);
