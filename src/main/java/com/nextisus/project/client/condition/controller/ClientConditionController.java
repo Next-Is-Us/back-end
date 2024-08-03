@@ -4,6 +4,7 @@ import com.nextisus.project.client.condition.dto.response.ConditionListResponseD
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDtoByDate;
 import com.nextisus.project.mom.condition.service.ConditionService;
 import com.nextisus.project.util.auth.AuthUtil;
+import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,23 +25,28 @@ public class ClientConditionController {
     private final ConditionService conditionService;
 
     // 날짜 별 상태 여부 조회
-    @GetMapping("/byDate/{year}/{month}/{day}")
+    @GetMapping("/byDate/{year}/{month}/{day}/{userRole}")
     public SuccessResponse<ConditionListResponseDtoByDate> getConditionByDate(
             @PathVariable Long year,
             @PathVariable Long month,
-            @PathVariable Long day) {
+            @PathVariable Long day,
+            @PathVariable String userRole
+    ) {
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
-        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(year,month,day,userId);
+        ConditionListResponseDtoByDate response = conditionService.getConditionByDate(year,month,day,userId, userRole);
         return SuccessResponse.of(response);
     }
 
     // 날짜 별 상태 기록 세부 조회
-    @GetMapping("/detail/{year}/{month}/{day}")
+    @GetMapping("/detail/{year}/{month}/{day}/{userRole}")
     public SuccessResponse<ConditionListResponseDto> getDetailConditionByDate(
             @PathVariable Long year,
             @PathVariable Long month,
-            @PathVariable Long day) {
-        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year, month, day);
+            @PathVariable Long day,
+            @PathVariable String userRole
+    ) {
+        Long userId = Long.parseLong(authUtil.getCurrentUserId());
+        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year, month, day, userRole, userId);
         return SuccessResponse.of(response);
     }
 }
