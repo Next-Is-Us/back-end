@@ -38,12 +38,15 @@ public class ClientConditionController {
     }
 
     // 날짜 별 상태 기록 세부 조회
-    @GetMapping("/detail/{year}/{month}/{day}")
+    @GetMapping("/detail/{year}/{month}/{day}/{userRole}")
     public SuccessResponse<ConditionListResponseDto> getDetailConditionByDate(
             @PathVariable Long year,
             @PathVariable Long month,
-            @PathVariable Long day) {
-        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year, month, day);
+            @PathVariable Long day,
+            @PathVariable String userRole
+    ) {
+        Long userId = Long.parseLong(authUtil.getCurrentUserId());
+        ConditionListResponseDto response = conditionService.getDetailConditionByDate(year, month, day, userRole, userId);
         return SuccessResponse.of(response);
     }
 }

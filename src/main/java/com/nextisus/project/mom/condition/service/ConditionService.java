@@ -11,5 +11,5 @@ public interface ConditionService {
 
     ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId,String userRole);
 
-    ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day);
+    ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day, String userRole, Long userId);
 }

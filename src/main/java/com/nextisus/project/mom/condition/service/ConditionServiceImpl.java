@@ -160,15 +160,37 @@ public class ConditionServiceImpl implements ConditionService {
 
     //해당 날짜에 기록한 내용 상세 조회
     @Override
-    public ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day) {
-
-        List<Condition> findConditionByYear = conditionRepository.findByYear(year);
-        ConditionListResponseDto response = null;
-        for(Condition condition : findConditionByYear) {
-            if(condition.getMonth().equals(month) && condition.getDay().equals(day)) {
-                String date = year + "년 " + month + "월 " + day + "일";
-                response = ConditionListResponseDto.from(condition,date);
+    public ConditionListResponseDto getDetailConditionByDate(Long year, Long month, Long day, String userRole, Long userId) {
+        if(userRole.equals("ROLE_MOM")){
+            return getDetailConditionByDateResult(year,month,day, userId);
+        }
+        else {
+            //자녀 유저
+            Optional<User> user = userRepository.findById(userId);
+            //엄마와 자녀유저를 담은 리스트
+            List<User> byLink = userRepository.findByLink(user.get().getLink());
+            User findUser = null;
+            for(User u : byLink){
+                UserRole findMom = userRoleRepository.findByUser_IdAndRole_Id(u.getId(), 2L);
+                if(findMom != null){
+                    Optional<User> mom = userRepository.findById(findMom.getId());
+                    findUser = mom.get();
+                    break;
+                }
             }
+            return getDetailConditionByDateResult(year,month,day, findUser.getId());
+        }
+
+    }
+
+    public ConditionListResponseDto getDetailConditionByDateResult(Long year, Long month, Long day, Long userId) {
+
+        //요청한 유저가 가지고 있는 기록
+        ConditionListResponseDto response = null;
+        List<Condition> findConditions = conditionRepository.findAllByYearAndMonthAndDayAndUser_Id(year, month, day, userId);
+        if(findConditions.size() > 0) {
+            String date = year + "년 " + month + "월 " + day + "일";
+            response = ConditionListResponseDto.from(findConditions.get(0),date);
         }
         return response;
     }
