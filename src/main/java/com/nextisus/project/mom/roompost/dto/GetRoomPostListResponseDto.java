@@ -16,17 +16,19 @@ public class GetRoomPostListResponseDto {
     private String title;
     private String content;
     private String whenCreated;
+    private Long commentCount;
 
-    private static GetRoomPostListResponseDto fromRoomPost(RoomPost roomPost) {
+    private static GetRoomPostListResponseDto fromRoomPost(RoomPost roomPost, Long commentCount) {
         return GetRoomPostListResponseDto.builder()
                 .roomPostId(roomPost.getId())
                 .title(roomPost.getTitle())
                 .content(roomPost.getContent())
                 .whenCreated(formatToRelativeTime(roomPost.getCreateAt()))
+                .commentCount(commentCount)
                 .build();
     }
 
-    public static GetRoomPostListResponseDto from(RoomPost roomPost) {
-        return fromRoomPost(roomPost);
+    public static GetRoomPostListResponseDto from(RoomPost roomPost, Long commentCount) {
+        return fromRoomPost(roomPost,commentCount);
     }
 }
