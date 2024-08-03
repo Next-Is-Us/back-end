@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface RoomCommentRepository extends JpaRepository<RoomComment, Long> {
     Page<RoomComment> findAllByRoomPost_IdOrderByCreateAtDesc(Long roomPostId, Pageable pageable);
-//    Long countByRoomPost_Id(Long roomPostId);
+    Long countByRoomPost_Id(Long roomPostId);
 }

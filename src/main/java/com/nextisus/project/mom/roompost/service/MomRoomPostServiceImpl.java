@@ -31,12 +31,12 @@ public class MomRoomPostServiceImpl implements MomRoomPostService {
     @Override
     public PageResponse<GetRoomPostListResponseDto> getRoomPostList(Long roomId, Pageable pageable) {
         roomRepository.getById(roomId);
-        Page<GetRoomPostListResponseDto> roomPosts = roomPostRepository.findAllByRoomIdOrderByCreateAtDesc(roomId, pageable).map(GetRoomPostListResponseDto::from);
-        List<GetRoomPostListResponseDto> list = roomPosts.getContent();
-//        list.forEach(post -> {
-//            Long countComment = roomCommentRepository.CountByRoomPost_Id(post.getRoomPostId());
-//        });
-        PageImpl<GetRoomPostListResponseDto> data = new PageImpl<>(list, pageable, roomPosts.getTotalElements());
+        Page<GetRoomPostListResponseDto> roomPosts = roomPostRepository.findAllByRoomIdOrderByCreateAtDesc(roomId, pageable)
+                .map(roomPost -> {
+                    Long commentCount = roomCommentRepository.countByRoomPost_Id(roomPost.getId());
+                    return GetRoomPostListResponseDto.from(roomPost, commentCount);
+                });
+        PageImpl<GetRoomPostListResponseDto> data = new PageImpl<>(roomPosts.getContent(), pageable, roomPosts.getTotalElements());
         return PageResponse.of(data);
     }
 
