@@ -1,14 +1,12 @@
 package com.nextisus.project.client.nft.service;
 
-import com.nextisus.project.domain.HealthRecord;
+import com.nextisus.project.domain.*;
 import com.nextisus.project.repository.ConditionRepository;
-import com.nextisus.project.domain.Condition;
-import com.nextisus.project.domain.Nft;
-import com.nextisus.project.domain.User;
 import com.nextisus.project.client.healthrecord.service.HealthRecordServiceImpl;
 import com.nextisus.project.client.nft.dto.response.NftResponseDto;
 import com.nextisus.project.repository.NftRepository;
 import com.nextisus.project.repository.UserRepository;
+import com.nextisus.project.repository.UserRoleRepository;
 import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +28,32 @@ public class NftServiceImpl implements NftService {
     private final NftRepository nftRepository;
     private final UserRepository userRepository;
     private final HealthRecordServiceImpl healthRecordServiceImpl;
+    private final UserRoleRepository userRoleRepository;
 
     @Override
-    public Long getNfts(Long userId) {
+    public Long getNfts(Long userId, String userRole) {
+        if(userRole.equals("ROLE_MOM")){
+            return getNftsResult(userId);
+        }
+        else {
+            //자녀 유저
+            Optional<User> user = userRepository.findById(userId);
+            //엄마와 자녀유저를 담은 리스트
+            List<User> byLink = userRepository.findByLink(user.get().getLink());
+            User findUser = null;
+            for(User u : byLink){
+                UserRole findMom = userRoleRepository.findByUser_IdAndRole_Id(u.getId(), 2L);
+                if(findMom != null){
+                    Optional<User> mom = userRepository.findById(findMom.getId());
+                    findUser = mom.get();
+                    break;
+                }
+            }
+            return getNftsResult(findUser.getId());
+        }
+    }
+
+    public Long getNftsResult(Long userId) {
         List<Condition> conditions = conditionRepository.findAllByUser_Id(userId);
         List<Nft> nfts = nftRepository.findAllByUser_Id(userId);
         Long[] pieceOfNft = {0L, 1L, 2L, 3L, 4L, 5L, 6L};

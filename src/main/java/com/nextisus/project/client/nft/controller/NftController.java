@@ -23,10 +23,10 @@ public class NftController {
     private final NftService nftService;
 
     // nft 조회
-    @GetMapping
-    public SuccessResponse<Long> getNfts() {
+    @GetMapping("/{userRole}")
+    public SuccessResponse<Long> getNfts(@PathVariable String userRole) {
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
-        Long response = nftService.getNfts(userId);
+        Long response = nftService.getNfts(userId,userRole);
         return SuccessResponse.of(response);
     }
 
