@@ -50,6 +50,8 @@ public interface ConditionRepository  extends JpaRepository<Condition, Long> {
     Page<Condition> findAllByHealthRecord_HealthRecordId(Long healthRecordId, Pageable pageable);
 
     Boolean existsByYearAndMonthAndDayAndUser_Id(Long year, Long month, Long day, Long userId);
+
+    List<Condition> findAllByYearAndMonthAndDayAndUser_Id(Long year, Long month, Long day, Long userId);
 }
 
 
