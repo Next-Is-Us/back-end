@@ -3,6 +3,7 @@ package com.nextisus.project.mom.condition.service;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.nextisus.project.all.infopost.service.AllInfoPostServiceImpl;
 import com.nextisus.project.domain.*;
+import com.nextisus.project.exception.healthrecord.MomNotFoundExecption;
 import com.nextisus.project.mom.condition.dto.request.CreateConditionRequestDto;
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDto;
 import com.nextisus.project.client.condition.dto.response.ConditionListResponseDtoByDate;
@@ -102,7 +103,29 @@ public class ConditionServiceImpl implements ConditionService {
 
     // 날짜별 상태 기록 여부 조회
     @Override
-    public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId) {
+    public ConditionListResponseDtoByDate getConditionByDate(Long year, Long month, Long day, Long userId, String userRole) {
+        if(userRole.equals("ROLE_MOM")){
+            return getConditionByDateResult(year,month,day,userId);
+        }
+        else {
+            //자녀 유저
+            Optional<User> user = userRepository.findById(userId);
+            //엄마와 자녀유저를 담은 리스트
+            List<User> byLink = userRepository.findByLink(user.get().getLink());
+            User findUser = null;
+            for(User u : byLink){
+                UserRole findMom = userRoleRepository.findByUser_IdAndRole_Id(u.getId(), 2L);
+                if(findMom != null){
+                    Optional<User> mom = userRepository.findById(findMom.getId());
+                    findUser = mom.get();
+                    break;
+                }
+            }
+            return getConditionByDateResult(year,month,day,findUser.getId());
+        }
+    }
+
+    public ConditionListResponseDtoByDate getConditionByDateResult(Long year, Long month, Long day, Long userId) {
 
         User user = userRepository.getByUser(userId);
         Long countLink = userRepository.countByLink_Id(user.getLink().getId());
@@ -121,7 +144,7 @@ public class ConditionServiceImpl implements ConditionService {
             isRecording = true;
         }else{
             recordDate = null;
-            isRecording = false;    
+            isRecording = false;
         }
         //엔티티 생성
         ConditionListResponseDtoByDate response = new ConditionListResponseDtoByDate(
