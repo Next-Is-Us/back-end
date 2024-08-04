@@ -24,17 +24,9 @@ public class NftController {
 
     // nft 조회
     @GetMapping("/{userRole}")
-    public SuccessResponse<Long> getNfts(@PathVariable String userRole) {
+    public SuccessResponse<NftResponseDto> getNfts(@PathVariable String userRole) {
         Long userId = Long.parseLong(authUtil.getCurrentUserId());
-        Long response = nftService.getNfts(userId,userRole);
+        NftResponseDto response = nftService.getNfts(userId,userRole);
         return SuccessResponse.of(response);
     }
-
-    // nft 상세 조회
-    @GetMapping("/detail/{nftId}")
-    public SuccessResponse<NftResponseDto> getDetailNft(@PathVariable Long nftId) {
-        NftResponseDto response = nftService.getDetailNft(nftId);
-        return SuccessResponse.of(response);
-    }
-
 }
