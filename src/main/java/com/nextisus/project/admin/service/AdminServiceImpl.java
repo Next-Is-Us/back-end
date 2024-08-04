@@ -1,28 +1,19 @@
 package com.nextisus.project.admin.service;
 
-import com.nextisus.project.admin.dto.CreateAccessTokenRequestDto;
-import com.nextisus.project.admin.dto.CreateAccessTokenResponseDto;
 import com.nextisus.project.admin.dto.CreateInfoPostRequestDto;
 import com.nextisus.project.admin.dto.CreateInfoPostResponseDto;
 import com.nextisus.project.domain.InfoPost;
 import com.nextisus.project.domain.InfoPostImg;
-import com.nextisus.project.domain.Role;
 import com.nextisus.project.domain.User;
-import com.nextisus.project.exception.infopost.InfoPostInternalServerException;
 import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.InfoPostImgRepository;
 import com.nextisus.project.repository.InfoPostRepository;
 import com.nextisus.project.repository.RoleRepository;
 import com.nextisus.project.repository.UserRepository;
-import com.nextisus.project.util.exception.EnumUtils;
 import com.nextisus.project.util.jwt.JwtTokenProvider;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +30,7 @@ public class AdminServiceImpl implements AdminService {
     private final S3UploadService s3UploadService;
     private final InfoPostImgRepository infoPostImgRepository;
 
+    /**
     @Override
     public CreateAccessTokenResponseDto createAccessToken(CreateAccessTokenRequestDto dto) {
 
@@ -59,11 +51,12 @@ public class AdminServiceImpl implements AdminService {
                 .accessToken(accessToken)
                 .build();
     }
+     **/
 
     @Override
     @Transactional
     public CreateInfoPostResponseDto createInfoPost(CreateInfoPostRequestDto dto, Long id) {
-        try{
+        try {
             // 관리자 계정 찾기
             User adminUser = userRepository.getByUser(id);
             MultipartFile thumbnail = dto.getImageUrl().get(0);

@@ -39,8 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(WhitelistPaths.WHITELIST).permitAll()
                         .requestMatchers("/api/link", "/api/user/signUp").permitAll()
                         .requestMatchers("/api/child/**").hasAnyAuthority("ROLE_SON", "ROLE_DAUGHTER")
-                        .requestMatchers("/api/admin/accessToken").permitAll()
-                        .requestMatchers("/api/doctor/accessToken").permitAll()
+                        .requestMatchers("/api/accessToken").permitAll()
                         .requestMatchers("/api/email/**").permitAll() // TODO: 나중에 막기
                         .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/condition/**").hasAnyAuthority("ROLE_MOM", "ROLE_SON", "ROLE_DAUGHTER")

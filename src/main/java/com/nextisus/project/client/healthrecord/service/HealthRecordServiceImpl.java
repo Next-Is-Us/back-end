@@ -176,7 +176,8 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     @Override
     public void savePdf(CreatePdfDto createPdfDto) {
         try {
-            s3UploadService.upload(createPdfDto.getPdfFile(),"pdf-file");
+            String upload = s3UploadService.upload(createPdfDto.getPdfFile(), "pdf-file");
+            System.out.println(upload);
         }
         catch (Exception e) {
             throw new PdfInternalServerErrorException();
