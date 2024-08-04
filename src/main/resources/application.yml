@@ -6,7 +6,7 @@ spring:
     time-zone: Asia/Seoul
 
   profiles:
-    active: deploy
+    active: local
 
   security:
     user:
