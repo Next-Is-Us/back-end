@@ -31,7 +31,7 @@ public class NftServiceImpl implements NftService {
     private final UserRoleRepository userRoleRepository;
 
     @Override
-    public Long getNfts(Long userId, String userRole) {
+    public NftResponseDto getNfts(Long userId, String userRole) {
         if(userRole.equals("ROLE_MOM")){
             return getNftsResult(userId);
         }
@@ -53,22 +53,20 @@ public class NftServiceImpl implements NftService {
         }
     }
 
-    public Long getNftsResult(Long userId) {
+    public NftResponseDto getNftsResult(Long userId) {
         List<Condition> conditions = conditionRepository.findAllByUser_Id(userId);
         List<Nft> nfts = nftRepository.findAllByUser_Id(userId);
-        Long[] pieceOfNft = {0L, 1L, 2L, 3L, 4L, 5L, 6L};
+        Long[] pieceOfNfts = {0L, 1L, 2L, 3L, 4L, 5L, 6L};
 
         int conditionSize = conditions.size(); // 유저가 기록한 오늘의 상태 수
         int nftSize = nfts.size(); // 유저가 발급 받은 nft 개수
         int index = conditionSize - (nftSize * 30);
-
-        if (index < 0) {
-            return null;
-        } else if (index <= 30) {
-            return pieceOfNft[Math.min(index / 5, 6)];
-        } else {
-            return null;
+        Long pieceOfNft = null;
+        if (index <= 30) {
+            pieceOfNft = pieceOfNfts[Math.min(index / 5, 6)];
         }
+        NftResponseDto nftResponseDto = NftResponseDto.from(pieceOfNft,nftSize);
+        return nftResponseDto;
     }
 
     @Override
@@ -132,15 +130,4 @@ public class NftServiceImpl implements NftService {
         return save;
     }
 
-    //nft 상세 조회
-    @Override
-    public NftResponseDto getDetailNft(Long nftId) {
-        Nft nft = nftRepository.getByNft(nftId);
-        NftResponseDto nftResponseDto = new NftResponseDto(
-                nft.getNftId(),
-                nft.getRecordPeriod(),
-                nft.getWeek()
-        );
-        return nftResponseDto;
-    }
 }
