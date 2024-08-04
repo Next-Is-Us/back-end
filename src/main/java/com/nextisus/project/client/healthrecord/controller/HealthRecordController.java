@@ -1,5 +1,6 @@
 package com.nextisus.project.client.healthrecord.controller;
 
+import com.nextisus.project.client.healthrecord.dto.request.EmailRequestDto;
 import com.nextisus.project.client.healthrecord.dto.request.CreatePdfRequestDto;
 import com.nextisus.project.client.healthrecord.dto.response.CreatePdfResponseDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
@@ -7,6 +8,7 @@ import com.nextisus.project.client.healthrecord.dto.response.HealthRecordRespons
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.client.healthrecord.service.HealthRecordService;
 import com.nextisus.project.util.auth.AuthUtil;
+import com.nextisus.project.util.email.service.EmailService;
 import com.nextisus.project.util.response.PageResponse;
 import com.nextisus.project.util.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAnyRole('ROLE_MOM', 'ROLE_SON', 'ROLE_DAUGHTER')")
 public class HealthRecordController {
 
-    private final HealthRecordService healthRecordService;
     private final AuthUtil authUtils;
+    private final HealthRecordService healthRecordService;
+    private final EmailService emailService;
 
     // 건강 기록 전체 조회
     @GetMapping
@@ -67,4 +71,10 @@ public class HealthRecordController {
         return SuccessResponse.of(res);
     }
 
+    @PostMapping("/sendEmail")
+    public SuccessResponse<Void> sendEmail(@RequestBody @Valid EmailRequestDto dto) {
+        long userId = Long.parseLong(authUtils.getCurrentUserId());
+        emailService.sendPdf(dto, userId);
+        return SuccessResponse.empty();
+    }
 }
