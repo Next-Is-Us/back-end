@@ -25,4 +25,9 @@ public class LinkServiceImpl implements LinkService{
         return LinkResponseDto.of(link.getLink());
     }
 
+    @Override
+    public void isLinkExist(String linkUrl) {
+        linkRepository.getByLink(linkUrl);
+    }
+
 }
