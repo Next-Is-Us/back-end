@@ -1,6 +1,7 @@
 package com.nextisus.project.client.healthrecord.service;
 
-import com.nextisus.project.client.healthrecord.dto.response.CreatePdfDto;
+import com.nextisus.project.client.healthrecord.dto.request.CreatePdfRequestDto;
+import com.nextisus.project.client.healthrecord.dto.response.CreatePdfResponseDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.PdfListDto;
 import com.nextisus.project.domain.*;
@@ -10,8 +11,6 @@ import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorExcepti
 import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.*;
 import com.nextisus.project.domain.User;
-import com.nextisus.project.exception.healthrecord.PdfInternalServerErrorException;
-import com.nextisus.project.image.service.S3UploadService;
 import com.nextisus.project.repository.ConditionRepository;
 import com.nextisus.project.repository.HealthRecordRepository;
 import com.nextisus.project.repository.NftRepository;
@@ -20,7 +19,6 @@ import com.nextisus.project.util.response.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -174,9 +172,10 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     }
 
     @Override
-    public void savePdf(CreatePdfDto createPdfDto) {
+    public CreatePdfResponseDto savePdf(CreatePdfRequestDto createPdfRequestDto) {
         try {
-            s3UploadService.upload(createPdfDto.getPdfFile(),"pdf-file");
+            String upload = s3UploadService.upload(createPdfRequestDto.getPdfFile(), "pdf-file");
+            return CreatePdfResponseDto.of(upload);
         }
         catch (Exception e) {
             throw new PdfInternalServerErrorException();

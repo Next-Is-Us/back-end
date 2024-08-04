@@ -1,4 +1,4 @@
-package com.nextisus.project.doctor.accesstoken.dto;
+package com.nextisus.project.all.accesstoken.dto;
 
 import lombok.Builder;
 import lombok.Getter;

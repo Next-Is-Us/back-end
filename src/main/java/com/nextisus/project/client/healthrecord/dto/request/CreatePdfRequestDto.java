@@ -1,7 +1,5 @@
-package com.nextisus.project.client.healthrecord.dto.response;
+package com.nextisus.project.client.healthrecord.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePdfDto {
+public class CreatePdfRequestDto {
     @NotNull(message = "pdf 파일을 넣어주세요")
     MultipartFile pdfFile;
 }
