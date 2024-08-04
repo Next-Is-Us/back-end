@@ -1,7 +1,7 @@
 package com.nextisus.project.client.healthrecord.controller;
 
-import com.nextisus.project.client.healthrecord.dto.request.EmailRequestDto;
 import com.nextisus.project.client.healthrecord.dto.request.CreatePdfRequestDto;
+import com.nextisus.project.client.healthrecord.dto.request.EmailRequestDto;
 import com.nextisus.project.client.healthrecord.dto.response.CreatePdfResponseDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordListDto;
 import com.nextisus.project.client.healthrecord.dto.response.HealthRecordResponseDto;

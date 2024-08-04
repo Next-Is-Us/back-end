@@ -50,37 +50,22 @@ public class S3UploadService {
         return url;
     }
 
-
-    // S3에서 파일을 다운로드하고 로컬 파일 시스템에 저장하는 메소드
-    public File downloadFile(String fileUrl) {
+    // S3에서 파일을 다운로드하고 InputStream 으로 반환하는 메소드
+    public InputStream getFileAsInputStream(String fileUrl) {
         String bucketName = extractBucketName(fileUrl);
         String key = extractKey(fileUrl);
 
         S3Object s3object = amazonS3.getObject(bucketName, key);
-        InputStream inputStream = s3object.getObjectContent();
-        File localFile = new File(UUID.randomUUID().toString());
-
-        try (FileOutputStream outputStream = new FileOutputStream(localFile)) {
-            byte[] read_buf = new byte[1024];
-            int read_len;
-            while ((read_len = inputStream.read(read_buf)) > 0) {
-                outputStream.write(read_buf, 0, read_len);
-            }
-        } catch (IOException e) {
-            log.error("파일을 S3에서 다운로드하는 중 오류 발생: {}", e.getMessage());
-            throw new RuntimeException("파일 다운로드 실패", e);
-        }
-
-        return localFile;
+        return s3object.getObjectContent();
     }
 
-    // 파일 URL에서 버킷 이름을 추출하는 헬퍼 메소드
+    // 파일 URL 에서 버킷 이름을 추출하는 헬퍼 메소드
     private String extractBucketName(String fileUrl) {
         String[] parts = fileUrl.split("/");
         return parts[2].split("\\.")[0];
     }
 
-    // 파일 URL에서 키를 추출하는 헬퍼 메소드
+    // 파일 URL 에서 키를 추출하는 헬퍼 메소드
     private String extractKey(String fileUrl) {
         String[] parts = fileUrl.split("/", 4);
         return parts[3];
