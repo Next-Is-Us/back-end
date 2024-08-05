@@ -11,6 +11,7 @@ import com.nextisus.project.repository.RoomPostRepository;
 import com.nextisus.project.repository.RoomRepository;
 import com.nextisus.project.repository.UserRepository;
 import com.nextisus.project.util.response.PageResponse;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class MomRoomPostServiceImpl implements MomRoomPostService {
     }
 
     @Override
+    @Transactional
     public GetRoomPostDetailResponseDto getRoomPostDetail(Long userId, Long roomPostId) {
         User user = userRepository.getByUser(userId);
         RoomPost roomPost = roomPostRepository.getById(roomPostId);
